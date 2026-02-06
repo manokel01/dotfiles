@@ -1,0 +1,18 @@
+# Ignore temporary editor files
+*.swp
+*~
+.DS_Store
+
+# Ignore cache and logs
+*.log
+__pycache__/
+.cache/
+
+# Ignore compiled binaries (if any)
+*.o
+*.out
+
+# Ignore specific sensitive files (just in case)
+.bash_history
+.zsh_history
+ssh_keys/
