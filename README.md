@@ -100,3 +100,10 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 2. **Automated Watchdog:** A custom watchdog script (`~/dotfiles/scripts/check_locks.sh`) is integrated into `.bashrc` to monitor system state. It performs a silent check of the DNF versionlock list upon every terminal session; if the `wireplumber` lock is missing, a high-visibility red warning is issued to prevent accidental breakage of the audio stack.
 3. **System Updates:** Running `sudo dnf upgrade` is safe. The audio package is shielded by the version lock, configuration files are insulated in the `~/dotfiles` vault, and Snapper guarantees a recovery point.
 4. **Hyprland Syntax:** This configuration uses modern Hyprland syntax (e.g., the dedicated `shadow {}` block instead of the deprecated `drop_shadow` variable inside the `decoration {}` block). Verify syntax against current documentation before modifying.
+
+## 8. Maintenance Workflow
+
+### Standard Sync
+When making changes to the UI or system config:
+```bash
+void
