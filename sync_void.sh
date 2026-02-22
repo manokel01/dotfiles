@@ -2,7 +2,8 @@
 
 # --- CONFIGURATION ---
 DOTFILES_DIR="$HOME/dotfiles"
-COMMIT_MSG="Void Hardening: $(date +'%Y-%m-%d %H:%M:%S') - Fedora 43 Stable"
+read -p "Enter change description (or Enter for generic): " user_msg
+if [ -z "$user_msg" ]; then COMMIT_MSG="Void Hardening: $(date +"%Y-%m-%d %H:%M:%S")"; else COMMIT_MSG="Void: $user_msg"; fi
 
 # Ensure we are in the correct directory
 cd "$DOTFILES_DIR" || exit
