@@ -67,7 +67,7 @@ System backups are managed via **Snapper** and **Btrfs Assistant**, leveraging F
 * **UI Scaling Fix:** Brave's default UI renders too large. It is forced to render at 90% scale using the `--force-device-scale-factor=0.90` flag, which is hardcoded into the local desktop entry (`~/.local/share/applications/brave-browser.desktop`).
 
 ## 6. Keybindings (The "Smart Hybrid" Layout)
-The layout combines Hyprland Official Navigation Defaults with essential utilities. 
+The layout combines Hyprland Official Navigation Defaults with essential utilities.
 
 **Modifier Key:** `SUPER` (Windows Key)
 
@@ -77,7 +77,7 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 | **Terminal** | `Super + Q` | Kitty |
 | **Close Window** | `Super + C` | `killactive` |
 | **App Launcher** | `Super + Space` | Rofi |
-| **File Manager** |  `Super + E` | Thunar |
+| **File Manager** | `Super + E` | Thunar |
 | **Toggle Floating** | `Super + V` | `togglefloating` |
 | **Fullscreen** | `Super + F` | `fullscreen` |
 | **Focus Window** | `Super + Arrow Keys` | `movefocus` |
@@ -97,5 +97,6 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 ## 7. Critical System Quirks & Maintenance
 
 1. **Audio Stability (WirePlumber Lock):** High-fidelity Bluetooth audio (LDAC/aptX) for the Bowers & Wilkins Px8 requires a specific audio stack state. `wireplumber` is strictly locked to version `0.5.11` via the DNF versionlock plugin (`sudo dnf versionlock add wireplumber`). Upgrading past this version causes catastrophic audio crashes. **Do not unlock this package.**
-2. **System Updates:** Running `sudo dnf upgrade` is safe. The audio package is shielded by the version lock, configuration files are insulated in the `~/dotfiles` vault, and Snapper guarantees a recovery point.
-3. **Hyprland Syntax:** This configuration uses modern Hyprland syntax (e.g., the dedicated `shadow {}` block instead of the deprecated `drop_shadow` variable inside the `decoration {}` block). Verify syntax against current documentation before modifying.
+2. **Automated Watchdog:** A custom watchdog script (`~/dotfiles/scripts/check_locks.sh`) is integrated into `.bashrc` to monitor system state. It performs a silent check of the DNF versionlock list upon every terminal session; if the `wireplumber` lock is missing, a high-visibility red warning is issued to prevent accidental breakage of the audio stack.
+3. **System Updates:** Running `sudo dnf upgrade` is safe. The audio package is shielded by the version lock, configuration files are insulated in the `~/dotfiles` vault, and Snapper guarantees a recovery point.
+4. **Hyprland Syntax:** This configuration uses modern Hyprland syntax (e.g., the dedicated `shadow {}` block instead of the deprecated `drop_shadow` variable inside the `decoration {}` block). Verify syntax against current documentation before modifying.
