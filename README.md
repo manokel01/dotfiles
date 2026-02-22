@@ -1,17 +1,19 @@
 # System Architecture & Configuration Guide
 
-**Hardware:** Lenovo ThinkPad P14s (AMD Ryzen, 400-nit Matte IPS)  
+**Hardware:** Lenovo ThinkPad P14s Gen 4 (AMD Ryzen 7 Pro 7840U, 64GB RAM, 2TB NVMe)  
+**Display:** 400-nit Matte IPS  
+**Peripherals:** Bowers & Wilkins Px8 (Bluetooth, LDAC/aptX), Logitech MX Master 3S  
 **OS:** Fedora Linux (v43+)  
 **Window Manager:** Hyprland (Wayland)  
 
 ## 1. Design Philosophy
-This system is configured to strip away "gamer" or flashy aesthetics in favor of a **Professional Minimalist** workflow. 
+This system is configured to strip away flashy aesthetics in favor of a strictly professional, minimalist workflow. 
 * **Visuals:** High-contrast, pure black backgrounds, zero rounded corners, zero blur, and no UI clutter.
 * **Performance:** Unnecessary graphical effects are disabled to maximize responsiveness and battery life.
 * **Control:** Configuration is managed transparently via GNU Stow and Git, avoiding black-box install scripts.
 
 ## 2. Core Stack & Tools
-* **Base Template:** JaKooLit's Hyprland Starter Kit (Heavily modified/stripped down)
+* **Base Template:** JaKooLit's Hyprland Starter Kit (heavily modified and stripped down)
 * **Dotfile Management:** GNU Stow (`~/dotfiles` symlinked to `~/.config`)
 * **Terminal:** Kitty
 * **Status Bar:** Waybar
@@ -21,7 +23,20 @@ This system is configured to strip away "gamer" or flashy aesthetics in favor of
 * **Clipboard Manager:** Cliphist
 * **Screenshot Tool:** Grim + Slurp + Swappy
 
-## 3. UI & Theming Decisions
+## 3. Kernel, Filesystem & Hardware Tuning
+The underlying operating system has been optimized for this specific hardware configuration:
+
+* **Filesystem (Btrfs) Optimization:** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD write amplification and optimize read/write speeds.
+* **Shared Storage:** A dedicated `/mnt/data` partition is configured for read/write compatibility across dual-boot environments.
+* **Memory Management:** The system utilizes **8GB of ZRAM** (lzo-rle compression). The swap tendency (`vm.swappiness`) is hardcoded to `10` to prioritize the 64GB physical RAM pool, utilizing ZRAM only for compressed background overflow.
+* **Battery Longevity:** The battery charge threshold is hardware-locked to 80% via the ThinkPad Embedded Controller (EC). This persists across operating systems and prevents degradation from constant AC power.
+
+## 4. Disaster Recovery (Snapper)
+System backups are managed via **Snapper** and **Btrfs Assistant**, leveraging Fedora's native `root` and `home` subvolume layout.
+* **Automated Snapshots:** The `python3-dnf-plugin-snapper` package guarantees pre- and post-transaction snapshots for every `dnf` upgrade.
+* **Rollbacks:** System state can be instantly restored via the Btrfs Assistant GUI.
+
+## 5. UI & Theming Decisions
 
 ### Windows & Borders (Hyprland)
 * **Rounding:** `0` (Strictly square corners).
@@ -41,7 +56,7 @@ This system is configured to strip away "gamer" or flashy aesthetics in favor of
 * **Theme:** Nordzy (White). 
 * **Size:** 24.
 * **Why Nordzy?:** Chosen as a pre-compiled, drop-in alternative to Volantes. It provides a sharp, triangular, high-contrast, futuristic look.
-* **Management:** Installed locally to `~/.icons/` (Simple Method) rather than managed by Stow, to prevent bloating the Git repository with binary image files.
+* **Management:** Installed locally to `~/.icons/` to prevent bloating the Git repository with binary image files.
 
 ### Display Colors (The "Vibrancy" Fix)
 * **The Context:** The ThinkPad's Matte IPS panel and AMD's power-saving defaults ("Vari-Bright") occasionally result in flat/washed-out colors.
@@ -51,8 +66,8 @@ This system is configured to strip away "gamer" or flashy aesthetics in favor of
 ### Browser (Brave)
 * **UI Scaling Fix:** Brave's default UI renders too large. It is forced to render at 90% scale using the `--force-device-scale-factor=0.90` flag, which is hardcoded into the local desktop entry (`~/.local/share/applications/brave-browser.desktop`).
 
-## 4. Keybindings (The "Smart Hybrid" Layout)
-The default complex keybindings were abandoned for a hybrid layout that combines **Hyprland Official Navigation Defaults** with **Essential Utilities**.
+## 6. Keybindings (The "Smart Hybrid" Layout)
+The layout combines Hyprland Official Navigation Defaults with essential utilities. 
 
 **Modifier Key:** `SUPER` (Windows Key)
 
@@ -62,7 +77,7 @@ The default complex keybindings were abandoned for a hybrid layout that combines
 | **Terminal** | `Super + Q` | Kitty |
 | **Close Window** | `Super + C` | `killactive` |
 | **App Launcher** | `Super + Space` | Rofi |
-| **File Manager** | `Super + E` | Thunar |
+| **File Manager** |  `Super + E` | Thunar |
 | **Toggle Floating** | `Super + V` | `togglefloating` |
 | **Fullscreen** | `Super + F` | `fullscreen` |
 | **Focus Window** | `Super + Arrow Keys` | `movefocus` |
@@ -79,33 +94,8 @@ The default complex keybindings were abandoned for a hybrid layout that combines
 | **Power Menu** | `Super + M` | Wlogout |
 | **Reload Waybar** | `Super + Shift + B` | `killall waybar && waybar & disown` |
 
-## 5. Critical System Quirks & Maintenance
+## 7. Critical System Quirks & Maintenance
 
-1. **Audio Stability (WirePlumber Lock):** `wireplumber` is strictly locked to version `0.5.11` via DNF `versionlock`. Upgrading past this version on this specific hardware combination causes catastrophic Bluetooth audio crashes. **Do not unlock this package.**
-2. **System Updates:** Running `sudo dnf upgrade` is safe. The audio package is shielded by the version lock, and configuration files are insulated in the `~/dotfiles` vault.
-3. **Hyprland Syntax:** This configuration uses modern Hyprland syntax (e.g., the dedicated `shadow {}` block instead of the deprecated `drop_shadow` variable inside the `decoration {}` block). Keep this in mind when referencing older documentation online.
-
-**Management:** GNU Stow
-
-## 📂 Structure
-This repository uses **GNU Stow** to manage symlinks.
-- `hypr/`: Hyprland configuration (links to `~/.config/hypr`)
-
-## ⚠️ Critical Constraints
-1. **WirePlumber:** Locked to version `0.5.11` to prevent Bluetooth crash.
-2. **Scaling:** Optimized for mixed DPI (Internal 1200p/1800p + External 4K).
-
-## 🚀 Installation (How to Restore)
-If setting up on a fresh machine:
-
-```bash
-# 1. Install Stow
-sudo dnf install stow git
-
-# 2. Clone this repo
-git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/dotfiles
-
-# 3. Apply configurations
-cd ~/dotfiles
-stow hypr
-```
+1. **Audio Stability (WirePlumber Lock):** High-fidelity Bluetooth audio (LDAC/aptX) for the Bowers & Wilkins Px8 requires a specific audio stack state. `wireplumber` is strictly locked to version `0.5.11` via the DNF versionlock plugin (`sudo dnf versionlock add wireplumber`). Upgrading past this version causes catastrophic audio crashes. **Do not unlock this package.**
+2. **System Updates:** Running `sudo dnf upgrade` is safe. The audio package is shielded by the version lock, configuration files are insulated in the `~/dotfiles` vault, and Snapper guarantees a recovery point.
+3. **Hyprland Syntax:** This configuration uses modern Hyprland syntax (e.g., the dedicated `shadow {}` block instead of the deprecated `drop_shadow` variable inside the `decoration {}` block). Verify syntax against current documentation before modifying.
