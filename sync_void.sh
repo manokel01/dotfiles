@@ -2,18 +2,24 @@
 
 # --- CONFIGURATION ---
 DOTFILES_DIR="$HOME/dotfiles"
-read -p "Enter change description (or Enter for generic): " user_msg
-if [ -z "$user_msg" ]; then COMMIT_MSG="Void Hardening: $(date +"%Y-%m-%d %H:%M:%S")"; else COMMIT_MSG="Void: $user_msg"; fi
 
 # Ensure we are in the correct directory
 cd "$DOTFILES_DIR" || exit
 
+# --- INTERACTIVE COMMIT MESSAGE ---
+echo "Step 0: Context"
+read -p "Enter change description (or Enter for generic): " user_msg
+if [ -z "$user_msg" ]; then 
+    COMMIT_MSG="Void Hardening: $(date +'%Y-%m-%d %H:%M:%S') - Fedora 43 Stable"
+else 
+    COMMIT_MSG="Void: $user_msg"
+fi
+
 echo "--- [1/4] Creating Safety Snapshot (Snapper) ---"
-sudo snapper create --description "Pre-Void-Sync: Hardening UI"
+sudo snapper create --description "Pre-Sync: $COMMIT_MSG"
 
 echo "--- [2/4] Refreshing GNU Stow Symlinks ---"
 for dir in */; do
-    # Skip the .git directory and the script itself
     [[ "$dir" == ".git/" ]] && continue
     stow -R "${dir%/}"
 done
