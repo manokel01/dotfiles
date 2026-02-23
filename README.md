@@ -43,6 +43,7 @@ System backups are managed via **Snapper** and **Btrfs Assistant**, leveraging F
 * **Background:** Pure black (`0x000000`) enforced natively by Hyprland. Zero wallpaper engines running in the background.
 * **Rounding:** `0` (Strictly square, Euclidean corners).
 * **Shadows & Blur:** Disabled for maximum sharpness and performance.
+* **Window Interaction:** "Mac-style" edge resizing is enabled (`resize_on_border = true`) with a 15-pixel extended invisible grab area and dynamic hover cursors.
 * **Trackpad:** Natural scrolling enabled (`natural_scroll = true`), scroll factor optimized to `0.4`.
 
 ### The Terminal (Kitty) & App Launcher (Rofi)
@@ -86,6 +87,13 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 | **Workspaces** | `Super + [1-0]` | `workspace [1-10]` |
 | **Move to Workspace**| `Super + Shift + [1-0]`| `movetoworkspace [1-10]` |
 
+### Mouse Interactions
+| Action | Shortcut | Tool |
+| :--- | :--- | :--- |
+| **Edge Resize** | `Mouse Hover on Border` | Native grab area |
+| **Move Window** | `Super + Left Click & Drag` | `bindm movewindow` |
+| **Resize Window** | `Super + Right Click & Drag` | `bindm resizewindow` |
+
 ### Essential Utilities
 | Action | Shortcut | Command/Tool |
 | :--- | :--- | :--- |
@@ -104,7 +112,9 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 
 ## 8. Maintenance Workflow
 
-### Standard Sync
-When making changes to the UI or system config, use the custom alias to sync the dotfiles vault and push to the repository:
+### GNU Stow & The "Void" Sync
+The architecture relies entirely on **GNU Stow** symlinks. The files located in `~/.config/` are direct symbolic links into the `~/dotfiles/` vault. 
+
+When making changes to the UI or system config, simply save the file and use the custom alias to automatically commit and push to the repository:
 ```bash
 void
