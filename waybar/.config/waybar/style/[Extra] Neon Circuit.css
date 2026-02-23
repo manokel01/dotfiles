@@ -1,85 +1,27 @@
-/* -----------------------------------------------------
-   MANOKEL'S WAYBAR - PROFESSIONAL MINIMALIST
-   ----------------------------------------------------- */
-
 * {
     border: none;
     border-radius: 0;
-    font-family: "JetBrains Mono", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-family: "JetBrains Mono";
     font-size: 13px;
-    font-weight: bold;
     min-height: 0;
 }
 
 window#waybar {
-    background-color: #000000;
-    color: #ffffff;
-    border-bottom: 2px solid #333333; /* Subtle separator line */
-}
-
-/* --- WORKSPACES --- */
-#workspaces {
     background: #000000;
-    margin: 0px 5px;
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
 }
 
 #workspaces button {
     padding: 0 10px;
-    color: #666666; /* Dimmed for inactive */
-    background: transparent;
+    color: #ffffff;
 }
 
 #workspaces button.active {
-    color: #ffffff; /* Bright white for active */
-    border-top: 2px solid #ffffff; /* Top indicator line */
+    background: #ffffff;
+    color: #000000;
 }
 
-#workspaces button:hover {
-    background: #1a1a1a;
-    color: #ffffff;
-}
-
-/* --- MODULES (Right Side) --- */
-/* Remove all the bubbles and weird backgrounds */
-#clock, #battery, #cpu, #memory, #disk, #temperature, 
-#backlight, #network, #pulseaudio, #custom-media, #tray, 
-#mode, #idle_inhibitor, #mpd, #bluetooth, #custom-hyprbindings {
+#clock, #pulseaudio, #battery {
     padding: 0 15px;
-    color: #ffffff;
-    background: transparent;
-    margin: 0;
-}
-
-/* --- COLOR ACCENTS (Where Necessary) --- */
-#battery.charging, #battery.plugged {
-    color: #26A65B; /* Green */
-}
-
-#battery.critical:not(.charging) {
-    color: #f53c3c; /* Red */
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-#pulseaudio.muted {
-    color: #777777;
-}
-
-#temperature.critical {
-    color: #f53c3c;
-}
-
-/* --- TRAY --- */
-#tray {
-    background-color: #000000;
-}
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
 }

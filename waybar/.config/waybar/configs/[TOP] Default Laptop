@@ -2,13 +2,13 @@
     "layer": "top",
     "position": "top",
     "height": 26,
+    "spacing": 4,
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
     "modules-right": ["pulseaudio", "battery"],
 
     "hyprland/workspaces": {
-        "format": "{name}",
-        "on-click": "activate"
+        "format": "{name}"
     },
     "clock": {
         "format": "{:%H:%M:%S}",
