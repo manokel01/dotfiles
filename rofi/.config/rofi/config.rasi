@@ -1,37 +1,80 @@
 configuration {
-    modi: "drun";
-    show-icons: false;
-    terminal: "kitty";
+    font: "JetBrainsMono Nerd Font 11";
+    show-icons: true;
+    icon-theme: "Tokyonight-Moon";
+    display-drun: "❯";
     drun-display-format: "{name}";
-    location: 0;
-    disable-history: true;
 }
 
-@theme "/dev/null"
-
 * {
-    bg: #000000;
-    fg: #ffffff;
-    border-color: #ffffff;
+    bg: #24283b;
+    bg-sel: #364a82;
+    fg: #c0caf5;
+    blue: #7aa2f7;
     
+    /* Force transparent globally to kill default backgrounds */
+    background-color: transparent; 
+    text-color: @fg;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    spacing: 0;
+}
+
+window {
+    width: 30%;
+    border: 2px solid;
+    border-color: @blue;
+    background-color: @bg;
+    padding: 10px;
+}
+
+inputbar {
+    children: [prompt, entry];
+    padding: 10px;
+    background-color: @bg;
+}
+
+prompt {
+    padding: 0 10px 0 0;
+    text-color: @blue;
+}
+
+entry {
+    placeholder: "Search applications...";
+    placeholder-color: #565f89;
+    text-color: @fg;
+}
+
+listview {
+    lines: 8;
+    padding: 10px 0 0 0;
+    background-color: @bg;
+}
+
+/* Explicitly target all row states to stop the beige bleed */
+element,
+element normal.normal,
+element alternate.normal {
+    padding: 8px;
     background-color: @bg;
     text-color: @fg;
 }
 
-window {
-    anchor: center;
-    width: 30%;
-    border: 2px;
-    border-color: @border-color;
-    padding: 20px;
-}
-
-element selected {
-    background-color: @fg;
-    text-color: @bg;
+element selected.normal,
+element selected.active {
+    background-color: @bg-sel;
+    text-color: @fg;
 }
 
 element-text {
+    vertical-align: 0.5;
     background-color: inherit;
     text-color: inherit;
+}
+
+element-icon {
+    size: 24;
+    padding: 0 10px 0 0;
+    background-color: inherit;
 }

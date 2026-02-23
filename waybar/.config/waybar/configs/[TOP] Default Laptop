@@ -1,68 +1,50 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 26,
-    "spacing": 4,
+    "height": 32,
     "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["clock"],
-    "modules-right": ["network", "bluetooth", "pulseaudio", "battery", "custom/power"],
+    "modules-center": ["hyprland/window"],
+    "modules-right": ["pulseaudio", "bluetooth", "battery", "clock", "tray"],
 
     "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
         "format": "{name}"
     },
     "clock": {
-        "format": "{:%H:%M:%S}",
-        "interval": 1
-    },
-    "pulseaudio": {
-        "format": "VOL {volume}%",
-        "format-muted": "MUTED"
+        "format": " {:%H:%M}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>"
     },
     "battery": {
-        "format": "{capacity}%",
-        "interval": 20
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-icons": ["", "", "", "", ""]
     },
-
-    "hyprland/workspaces": {
-        "format": "{name}",
-        "on-click": "activate",
-        "disable-scroll": true,
-        "all-outputs": true
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " Muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
     },
-
-    "network": {
-        "interval": 5,
-        "format-wifi": "{essid} ({signalStrength}%)",
-        "format-ethernet": "ETH Connected",
-        "format-disconnected": "Offline",
-        "tooltip-format": "{ifname} via {gwaddr}"
-    },
-
     "bluetooth": {
-        "format": "BT: {status}",
-        "format-connected": "BT: {device_alias}",
-        "format-connected-battery": "BT: {device_alias} ({device_battery_percentage}%)",
-        "tooltip-format": "Controller: {controller_alias}\nConnections: {num_connections}",
-        "tooltip-format-connected": "Connections: {num_connections}\n\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}   {device_address}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}   {device_battery_percentage}%",
+        "format": " {status}",
+        "format-connected": " {num_connections}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
         "on-click": "blueman-manager"
     },
-
-    "pulseaudio": {
-        "format": "VOL: {volume}%",
-        "format-bluetooth": "VOL: {volume}% (BT)",
-        "format-muted": "MUTED",
-        "tooltip-format": "Output: {desc}",
-        "ignored-sinks": ["Radeon", "HDMI", "pro", "Pro"],
-        "on-click": "swayosd-client --output-volume mute-toggle",
-        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-    },
-
-    "custom/power": {
-        "format": " ⏻ ",
-        "tooltip": false,
-        "on-click": "wlogout -b 2",
-        "on-click-right": "killall wlogout"
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
     }
 }

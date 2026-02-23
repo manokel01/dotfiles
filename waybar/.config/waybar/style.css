@@ -1,1 +1,64 @@
-/home/manokel/.config/waybar/style/[Extra] Neon Circuit.css
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #24283b; /* Locked to exact terminal background */
+    color: #c0caf5;
+    border-bottom: 2px solid #364a82;
+}
+
+#workspaces button {
+    padding: 0 12px;
+    color: #565f89;
+    background: transparent;
+}
+
+#workspaces button.active {
+    color: #1a1b26;
+    background-color: #7aa2f7;
+}
+
+#workspaces button:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+    background: #364a82;
+    color: #c0caf5;
+}
+
+/* Added #bluetooth to the padding list */
+#window, #clock, #battery, #pulseaudio, #bluetooth, #tray {
+    padding: 0 12px;
+}
+
+#window {
+    color: #a9b1d6;
+}
+
+#clock {
+    color: #bb9af7;
+}
+
+#battery {
+    color: #9ece6a;
+}
+
+#battery.warning {
+    color: #e0af68;
+}
+
+#battery.critical {
+    color: #f7768e;
+}
+
+#pulseaudio {
+    color: #7dcfff;
+}
+
+#bluetooth {
+    color: #7aa2f7; /* Tokyo Night Blue for Bluetooth */
+}
