@@ -1,32 +1,42 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 24,
-    "margin-top": 0,
-    "margin-bottom": 0,
+    "height": 34,
+    "spacing": 15,
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "battery"],
+    "modules-right": ["network", "bluetooth", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
         "format": "{name}"
     },
     "clock": {
         "format": "{:%H:%M:%S}",
-        "interval": 1,
-        "tooltip": false
+        "interval": 1
+    },
+    "network": {
+        "format-wifi": " {essid}",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰖪",
+        "tooltip-format": "{ifname} via {gwaddr}",
+        "on-click": "nm-connection-editor"
+    },
+    "bluetooth": {
+        "format": " {status}",
+        "format-connected": " {device_alias}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "blueman-manager"
     },
     "pulseaudio": {
         "format": "VOL {volume}%",
-        "format-muted": "MUTED",
         "on-click": "pavucontrol"
     },
     "battery": {
         "states": { "warning": 30, "critical": 15 },
         "format": "BAT {capacity}%",
-        "format-charging": "CHG {capacity}%",
-        "interval": 20
+        "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center power"
     }
 }
