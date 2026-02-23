@@ -2,16 +2,13 @@
     "layer": "top",
     "position": "top",
     "height": 24,
-    "margin-top": 0,
-    "margin-bottom": 0,
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
     "modules-right": ["pulseaudio", "battery"],
 
     "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "format": "{name}"
+        "format": "{name}",
+        "on-click": "activate"
     },
     "clock": {
         "format": "{:%H:%M:%S}",
@@ -24,9 +21,12 @@
         "on-click": "pavucontrol"
     },
     "battery": {
-        "states": { "warning": 30, "critical": 15 },
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
         "format": "BAT {capacity}%",
         "format-charging": "CHG {capacity}%",
-        "interval": 20
+        "interval": 10
     }
 }
