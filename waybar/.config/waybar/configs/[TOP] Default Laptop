@@ -5,7 +5,7 @@
     "spacing": 4,
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "battery"],
+    "modules-right": ["network", "bluetooth", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{name}"
@@ -19,7 +19,43 @@
         "format-muted": "MUTED"
     },
     "battery": {
-        "format": "BAT {capacity}%",
+        "format": "{capacity}%",
         "interval": 20
+    },
+
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "on-click": "activate",
+        "disable-scroll": true,
+        "all-outputs": true
+    },
+
+    "network": {
+        "interval": 5,
+        "format-wifi": "{essid} ({signalStrength}%)",
+        "format-ethernet": "ETH Connected",
+        "format-disconnected": "Offline",
+        "tooltip-format": "{ifname} via {gwaddr}"
+    },
+
+    "bluetooth": {
+        "format": "BT: {status}",
+        "format-connected": "BT: {device_alias}",
+        "format-connected-battery": "BT: {device_alias} ({device_battery_percentage}%)",
+        "tooltip-format": "Controller: {controller_alias}\nConnections: {num_connections}",
+        "tooltip-format-connected": "Connections: {num_connections}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}   {device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}   {device_battery_percentage}%",
+        "on-click": "blueman-manager"
+    },
+
+"pulseaudio": {
+        "format": "VOL: {volume}%",
+        "format-bluetooth": "VOL: {volume}% (BT)",
+        "format-muted": "MUTED",
+        "tooltip-format": "Output: {desc}",
+        "ignored-sinks": ["Radeon", "HDMI", "pro", "Pro"],
+        "on-click": "swayosd-client --output-volume mute-toggle",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     }
 }
