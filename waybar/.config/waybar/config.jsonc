@@ -8,21 +8,18 @@
     "modules-right": ["network", "bluetooth", "pulseaudio", "battery", "custom/display"],
 
     "hyprland/workspaces": {
-        "all-outputs": true,
-        "active-only": false,
-        "persistent-workspaces": {
-            "*": 5 
-        },
-        "format": "{name}"
-    },
+    	"all-outputs": true,
+    	"active-only": false,
+    	"format": "{name}"
+     },
     "clock": {
         "format": " {:%H:%M:%S  󰃭 %Y-%m-%d}",
         "interval": 1,
-        "on-click": "gnome-control-center datetime"
+        "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center system datetime"
     },
     "custom/display": {
         "format": "󰍹",
-        "on-click": "gnome-control-center display",
+        "on-click": "nwg-displays",
         "tooltip": false
     },
     "pulseaudio": {
