@@ -32,7 +32,7 @@ done
 
 
 # Initialize swww if needed
-swww query || swww-daemon --format xrgb
+# swww query || swww-daemon --format argb
 
 # Set swww options
 swww="swww img"
@@ -140,7 +140,7 @@ else
 fi
 
 # Update wallpaper using swww command
-$swww "${next_wallpaper}" $effect
+# $swww "${next_wallpaper}" $effect
 
 
 # Set Kvantum Manager theme & QT5/QT6 settings
@@ -219,7 +219,7 @@ set_custom_gtk_theme "$next_mode"
 update_theme_mode
 
 
-${SCRIPTSDIR}/WallustSwww.sh &&
+# ${SCRIPTSDIR}/WallustSwww.sh &&
 
 sleep 2
 # kill process
