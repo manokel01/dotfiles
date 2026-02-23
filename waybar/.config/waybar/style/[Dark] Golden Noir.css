@@ -54,6 +54,31 @@ window#waybar {
     color: #1e1e2e; 
 }
 
+/* Add #custom-power to your existing group */
+#network, 
+#bluetooth, 
+#pulseaudio, 
+#battery, 
+#clock, 
+#custom-display,
+#custom-power {
+    background-color: #313244;
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 6px;
+}
+
+/* Make the power icon stand out */
+#custom-power {
+    color: #f38ba8; /* Red icon to match your critical battery color */
+    padding-right: 15px;
+}
+
+#custom-power:hover {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+}
+
 /* Optional: Subtle border for the screen settings icon to make it clickable */
 #custom-display {
     color: #89b4fa;
