@@ -5,38 +5,52 @@
     "spacing": 15,
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["network", "bluetooth", "pulseaudio", "battery"],
+    "modules-right": ["network", "bluetooth", "pulseaudio", "battery", "custom/display"],
 
     "hyprland/workspaces": {
+        "all-outputs": true,
+        "active-only": false,
+        "persistent-workspaces": {
+            "*": 5 
+        },
         "format": "{name}"
     },
     "clock": {
-        "format": "{:%H:%M:%S}",
-        "interval": 1
+        "format": " {:%H:%M:%S  󰃭 %Y-%m-%d}",
+        "interval": 1,
+        "on-click": "gnome-control-center datetime"
+    },
+    "custom/display": {
+        "format": "󰍹",
+        "on-click": "gnome-control-center display",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 {volume}%",
+        "format-icons": {
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol"
+    },
+    "battery": {
+        "states": { 
+            "warning": 30, 
+            "critical": 15 
+        },
+        "format": "{icon} {capacity}%",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center power"
     },
     "network": {
         "format-wifi": " {essid}",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
-        "tooltip-format": "{ifname} via {gwaddr}",
         "on-click": "nm-connection-editor"
     },
     "bluetooth": {
         "format": " {status}",
         "format-connected": " {device_alias}",
-        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
-        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
         "on-click": "blueman-manager"
-    },
-    "pulseaudio": {
-        "format": "VOL {volume}%",
-        "on-click": "pavucontrol"
-    },
-    "battery": {
-        "states": { "warning": 30, "critical": 15 },
-        "format": "BAT {capacity}%",
-        "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center power"
     }
 }
