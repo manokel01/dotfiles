@@ -13,12 +13,13 @@
     show_indicators = yes
     width = 300
     height = 100
-    offset = 10x10
+    origin = top-center
+    offset = 0x40
     shrink = no
     transparency = 0
     notification_limit = 5
     idle_threshold = 120
-    follow = mouse
+    follow = none
     sticky_history = yes
     history_length = 20
     show_tips = yes
