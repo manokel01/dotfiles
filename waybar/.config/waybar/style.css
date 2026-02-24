@@ -1,1 +1,85 @@
-/home/manokel/.config/waybar/style/[Dark] Golden Noir.css
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: #1e1e2e; /* Matches your terminal background */
+    color: #cdd6f4;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    color: #cdd6f4;
+    background: transparent;
+}
+
+#workspaces button.active {
+    color: #1e1e2e;
+    background: #89b4fa; /* JetBrains-style blue accent */
+    border-radius: 4px;
+}
+
+/* Grouping all modules into "pills" including the new display module */
+#network, 
+#bluetooth, 
+#pulseaudio, 
+#battery, 
+#clock, 
+#custom-display {
+    background-color: #313244; /* Slightly lighter for module "pills" */
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 6px;
+}
+
+/* Specific styling for the clock to accommodate the date */
+#clock {
+    padding: 0 15px;
+}
+
+/* Battery alert levels */
+#battery.warning { 
+    background-color: #fab387; 
+    color: #1e1e2e; 
+}
+
+/* Red alert: both icon and percentage will appear red against a dark background */
+#battery.critical { 
+    background-color: #f38ba8; 
+    color: #1e1e2e; 
+}
+
+/* Add #custom-power to your existing group */
+#network, 
+#bluetooth, 
+#pulseaudio, 
+#battery, 
+#clock, 
+#custom-display,
+#custom-power {
+    background-color: #313244;
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 6px;
+}
+
+/* Make the power icon stand out */
+#custom-power {
+    color: #f38ba8; /* Red icon to match your critical battery color */
+    padding-right: 15px;
+}
+
+#custom-power:hover {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+}
+
+/* Optional: Subtle border for the screen settings icon to make it clickable */
+#custom-display {
+    color: #89b4fa;
+}
