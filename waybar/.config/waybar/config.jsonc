@@ -5,7 +5,7 @@
     "spacing": 15,
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["network", "bluetooth", "pulseaudio", "custom/display", "battery", "custom/power"],
+    "modules-right": ["network", "bluetooth", "pulseaudio", "custom/display", "battery", "hyprland/language", "custom/power"],
 
     "hyprland/workspaces": {
     	"all-outputs": true,
@@ -49,6 +49,14 @@
         "format": " {status}",
         "format-connected": " {device_alias}",
         "on-click": "blueman-manager"
+    },
+    "hyprland/language": {
+        "format": "{}",
+        "format-en": "US",
+        "format-english (us)": "US",
+        "format-el": "GR",
+        "format-greek": "GR",
+        "on-click": "~/.config/waybar/toggle-layout.sh"
     },
     "custom/power": {
         "format": "",

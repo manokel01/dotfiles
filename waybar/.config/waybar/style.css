@@ -61,6 +61,7 @@ window#waybar {
 #battery, 
 #clock, 
 #custom-display,
+#language,
 #custom-power {
     background-color: #313244;
     padding: 0 12px;
@@ -81,5 +82,9 @@ window#waybar {
 
 /* Optional: Subtle border for the screen settings icon to make it clickable */
 #custom-display {
+    color: #89b4fa;
+}
+
+#language {
     color: #89b4fa;
 }
