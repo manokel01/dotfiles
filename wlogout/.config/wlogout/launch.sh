@@ -12,8 +12,8 @@ if [ -z "$height" ]; then
 fi
 
 # Crush the container into the center
-y_margin=$((height * 42 / 100))
-x_margin=$((width * 32 / 100))
+y_margin=$((height * 46 / 100))
+x_margin=$((width * 38 / 100))
 
 # Launch wlogout with calculated margins
 wlogout -b 5 -T $y_margin -B $y_margin -L $x_margin -R $x_margin

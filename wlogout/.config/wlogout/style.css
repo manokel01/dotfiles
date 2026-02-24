@@ -4,23 +4,21 @@
 }
 
 window {
-    background-color: rgba(30, 30, 46, 0.9); /* Dark JetBrains overlay */
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
 button {
     /* ... keep your colors, fonts, and borders the same ... */
     color: #cdd6f4;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-    background-color: transparent; 
-    border: 2px solid transparent; 
-    border-radius: 24px;
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 0;
     background-repeat: no-repeat;
-    
-    /* UPDATE THESE THREE LINES: */
-    background-position: center 20%; /* Pushes the icon down closer to the text */
-    background-size: 35%; /* Scales the icon up slightly to fill the new square */
-    margin: 15px; /* Adds a physical gap between each button */
+    background-position: center 35%;
+    background-size: 22%;
+    margin: 8px;
 }
 
 /* Clear the default focus outline */
@@ -29,17 +27,17 @@ button:focus, button:active {
 }
 
 /* Icons and JetBrains hover effects (Color text and border on hover) */
-#lock { background-image: url("/usr/share/wlogout/icons/lock.png"); }
-#lock:hover { border: 2px solid #89b4fa; color: #89b4fa; }
+#lock { background-image: url("/home/manokel/.config/wlogout/icons/lock.png"); }
+#lock:hover { border: 2px solid #a6e3a1; color: #a6e3a1; }
 
-#logout { background-image: url("/usr/share/wlogout/icons/logout.png"); }
+#logout { background-image: url("/home/manokel/.config/wlogout/icons/logout.png"); }
 #logout:hover { border: 2px solid #a6e3a1; color: #a6e3a1; }
 
-#suspend { background-image: url("/usr/share/wlogout/icons/suspend.png"); }
-#suspend:hover { border: 2px solid #f9e2af; color: #f9e2af; }
+#suspend { background-image: url("/home/manokel/.config/wlogout/icons/suspend.png"); }
+#suspend:hover { border: 2px solid #a6e3a1; color: #a6e3a1; }
 
-#reboot { background-image: url("/usr/share/wlogout/icons/reboot.png"); }
-#reboot:hover { border: 2px solid #fab387; color: #fab387; }
+#reboot { background-image: url("/home/manokel/.config/wlogout/icons/reboot.png"); }
+#reboot:hover { border: 2px solid #a6e3a1; color: #a6e3a1; }
 
-#shutdown { background-image: url("/usr/share/wlogout/icons/shutdown.png"); }
-#shutdown:hover { border: 2px solid #f38ba8; color: #f38ba8; }
+#shutdown { background-image: url("/home/manokel/.config/wlogout/icons/shutdown.png"); }
+#shutdown:hover { border: 2px solid #a6e3a1; color: #a6e3a1; }
