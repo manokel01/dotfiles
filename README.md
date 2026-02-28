@@ -14,11 +14,13 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 
 ## 2. Core Stack & Tools
 * **Base Template:** **"Native Void"** (100% custom, single-file Hyprland architecture. All pre-packaged JaKooLit bloat has been surgically purged).
+* **Session Manager:** UWSM (Universal Wayland Session Manager)
 * **Dotfile Management:** GNU Stow (`~/dotfiles` symlinked to `~/.config`)
 * **Terminal:** Kitty
-* **Status Bar:** Waybar (Minimalist "Core Four" layout)
-* **App Launcher:** Rofi (`rofi -show drun`)
-* **File Manager:** Thunar
+* **Status Bar:** Waybar (Minimalist "Pill-less" layout)
+* **App Launcher:** Walker
+* **File Management:** Thunar (GUI) & Yazi (TUI)
+* **System/Network TUIs:** btop, wiremix, NetworkManager-tui
 * **Browser:** Brave
 * **Clipboard Manager:** Cliphist
 * **Screenshot Tool:** Grim + Slurp + wl-copy / Swappy
@@ -51,17 +53,21 @@ System backups are managed via **Snapper** and **Btrfs Assistant**, leveraging F
 * **Background:** Pure black (`0x000000`) enforced natively by Hyprland. Zero wallpaper engines running in the background.
 * **Rounding:** `0` (Strictly square, Euclidean corners).
 * **Shadows & Blur:** Disabled for maximum sharpness and performance.
+* **Floating TUI Rules:** Dedicated `windowrule` blocks strictly enforce a `1000x600` centered geometry for floating Kitty terminals running interactive utilities (e.g., `wiremix`, `btop`).
 * **Window Interaction:** "Mac-style" edge resizing is enabled (`resize_on_border = true`) with a 15-pixel extended invisible grab area and dynamic hover cursors.
-* **Trackpad:** Natural scrolling enabled (`natural_scroll = true`), scroll factor optimized to `0.4`.
+* **Trackpad:** Natural scrolling enabled (`natural_scroll = true`), scroll factor optimized to `0.5` for the P14s glass trackpad.
 
-### The Terminal (Kitty) & App Launcher (Rofi)
+### The Terminal (Kitty) & App Launcher (Walker)
 * **Aesthetic:** "The Void" (High-contrast pure white text on pure #000000 background).
 * **Font:** JetBrains Mono (Size 11.0). 
 * **Window:** `window_padding_width 0`, no window decorations, sharp borders. 
 
 ### The Status Bar (Waybar)
-* **Aesthetic:** "The Void" (Solid black background, white text, zero rounded modules or gradients). 
-* **Design (The "Core Four"):** Purged of all CPU-waking scripts (weather, network polling, visualizers). Restricted strictly to: **Workspaces, Clock, Volume, and Battery**.
+* **Aesthetic:** "The Void" (Solid background, tight 6px padding, zero rounded modules or "pill" background boxes. Colors are applied strictly to icons and text for high-contrast visibility). 
+* **Design & TUI Integration:** Purged of all CPU-waking GUI scripts. Waybar modules are mapped to launch extremely lightweight terminal user interfaces (TUIs) in floating windows:
+  * Audio -> `wiremix`
+  * Network -> `nmtui`
+  * System/Mail -> `btop`
 
 ### The Cursor
 * **Theme:** Nordzy (White). 
@@ -86,7 +92,7 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 | :--- | :--- | :--- |
 | **Terminal** | `Super + Return` | Kitty |
 | **Close Window** | `Super + Q` | `killactive` |
-| **App Launcher** | `Super + Space` | Rofi |
+| **App Launcher** | `Super + Space` | Walker |
 | **File Manager** | `Super + E` | Thunar |
 | **Toggle Floating** | `Super + V` | `togglefloating` |
 | **Fullscreen** | `Super + F` | `fullscreen` |
@@ -113,11 +119,11 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 
 ## 7. Critical System Quirks & Maintenance
 
-1. **Audio Stability (WirePlumber Lock):** High-fidelity Bluetooth audio (LDAC/aptX) for the Bowers & Wilkins Px8 requires a specific audio stack state. `wireplumber` is strictly locked to version `0.5.11` via the DNF versionlock plugin. Upgrading past this version causes catastrophic audio crashes. **Do not unlock this package.**
-2. **Automated Watchdog:** A custom watchdog script (`~/dotfiles/scripts/check_locks.sh`) is integrated into `.bashrc`. If the `wireplumber` lock is missing, a high-visibility red warning is issued.
-3. **Hyprland Syntax & Encoding:** This configuration uses modern Hyprland syntax. Files must be saved in strict **UTF-8** without a Byte Order Mark (BOM); otherwise, Hyprland will throw ghost `Line 1` or `Line 53` config errors.
-4. **Waybar Launching:** Because the system was migrated from JaKooLit, Waybar must be explicitly pointed to its config or launched cleanly in the background to avoid loading legacy module includes (`nohup waybar > /dev/null 2>&1 &`).
-5. **The GTK Environment Trap:** Hyprland configurations commonly include `env = GTK_THEME, [ThemeName]` at the top of the file. **Do not use this.** Hardcoding the theme via the compositor's environment variables acts as a root-level override, causing the system to ignore local `nwg-look` settings and break fallback paths. GTK environment variables must be left empty in `hyprland.conf` to allow the desktop portals (`xdg-desktop-portal-gtk`) to broadcast the correct user-level configurations. 
+1. **UWSM Native Architecture:** Hyprland is no longer launched as a standalone script. The entire desktop is natively managed by **UWSM** (Universal Wayland Session Manager). Core apps (Waybar, Polkit, Idle daemons) are launched as proper systemd units (`uwsm app --`) to completely eliminate DBus race conditions, GUI launch delays, and orphaned processes.
+2. **Audio Stability (WirePlumber Lock):** High-fidelity Bluetooth audio (LDAC/aptX) for the Bowers & Wilkins Px8 requires a specific audio stack state. `wireplumber` is strictly locked to version `0.5.11` via the DNF versionlock plugin. Upgrading past this version causes catastrophic audio crashes. **Do not unlock this package.**
+3. **Automated Watchdog:** A custom watchdog script (`~/dotfiles/scripts/check_locks.sh`) is integrated into `.bashrc`. If the `wireplumber` lock is missing, a high-visibility red warning is issued.
+4. **Hyprland 0.53+ Strict Syntax:** This configuration enforces the modern Hyprland 0.53+ syntax. Deprecated `windowrulev2` inline commands have been purged in favor of strict block syntax (`windowrule { ... }`) with explicit `match:` prefixes and boolean values. Files must also be saved in strict **UTF-8** without a Byte Order Mark (BOM).
+5. **The GTK Environment Trap:** Hyprland configurations commonly include `env = GTK_THEME, [ThemeName]` at the top of the file. **Do not use this.** Hardcoding the theme via the compositor's environment variables acts as a root-level override, causing the system to ignore local `nwg-look` settings and break fallback paths. GTK environment variables are left empty in `hyprland.conf` to allow UWSM and the desktop portals to broadcast the correct user-level configurations. 
 
 ## 8. Maintenance Workflow
 

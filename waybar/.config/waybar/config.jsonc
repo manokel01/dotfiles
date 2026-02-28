@@ -56,7 +56,8 @@
         "format-icons": {
             "default": ["󰕿", "󰖀", "󰕾"]
         },
-        "on-click": "pavucontrol"
+        /* Use wiremix instead of pavucontrol */
+       "on-click": "kitty --class floating_terminal -e wiremix"
     },
 
     "battery": {
@@ -77,7 +78,9 @@
         "format-wifi": " {essid}",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
-        "on-click": "nm-connection-editor"
+        /* "on-click": "nm-connection-editor"
+	/* Use impala instead of nm-connection-editor */
+        "on-click": "kitty --class floating_terminal -e nmtui"
     },
 
     "bluetooth": {
