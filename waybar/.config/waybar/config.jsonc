@@ -5,7 +5,7 @@
     "spacing": 15,
     "reload_style_on_change": true,
     "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["custom/gmail","clock#date", "clock#time"],
+    "modules-center": ["custom/gmail","clock#time", "clock#date"],
     "modules-right": [
         "bluetooth", 
 	"network",
@@ -26,7 +26,7 @@
         "exec": "/home/manokel/.config/waybar/scripts/gmail.py",
         "interval": 60,
         "return-type": "json",
-        "format": "  {}",
+        "format": " {}",
         "on-click": "brave-browser 'https://mail.google.com/'"
     },
 
@@ -39,7 +39,7 @@
 
     "clock#date": {
         "interval": 60,
-        "format": "󰃭  {:%Y-%m-%d}",
+        "format": "󰃭 {:%Y-%m-%d}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "on-click": "brave-browser 'https://calendar.google.com/'"
     },

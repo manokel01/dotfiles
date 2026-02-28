@@ -9,19 +9,18 @@ window#waybar {
 }
 
 #workspaces button {
-    padding: 0 5px;
+    padding: 0 4px; /* Halved from 8px */
     color: #cdd6f4;
     background: transparent;
 }
 
 #workspaces button.active {
-    color: #1e1e2e;
-    background: #89b4fa; /* JetBrains-style blue accent */
-    border-radius: 4px;
+    color: #89b4fa; /* Blue accent for active workspace */
+    background: transparent;
+    border-radius: 0;
 }
 
-/* Grouping standard modules into static "pills" */
-/* Note: #custom-gmail removed from here to allow dynamic background */
+/* Unified styling for all modules: Minimalist spacing */
 #network, 
 #bluetooth, 
 #pulseaudio, 
@@ -30,59 +29,54 @@ window#waybar {
 #clock.date,
 #custom-display,
 #language,
+#custom-gmail,
 #custom-power {
-    background-color: #313244;
-    padding: 0 12px;
-    margin: 4px 2px;
-    border-radius: 6px;
+    background-color: transparent; 
+    padding: 0 6px; /* Halved from 12px for tighter grouping */
+    margin: 4px 0px;
 }
 
 /* Specific padding for the split clock instances */
 #clock.time {
-    padding: 0 15px;
+    padding: 0 8px; /* Halved from 15px */
 }
 
 #clock.date {
-    padding: 0 15px;
+    padding: 0 8px; /* Halved from 15px */
 }
 
-/* Battery alert levels */
+/* Battery alert levels (Text/Icon color only) */
 #battery.warning { 
-    background-color: #fab387; 
-    color: #1e1e2e; 
+    color: #fab387; 
 }
 
 #battery.critical { 
-    background-color: #f38ba8; 
-    color: #1e1e2e; 
+    color: #f38ba8; 
 }
 
 /* Power Button Styling */
 #custom-power {
     color: #f38ba8;
-    padding-right: 15px;
+    padding-right: 5px; /* Adjusted for consistency */
 }
 
 #custom-power:hover {
-    background-color: #f38ba8;
-    color: #1e1e2e;
+    color: #ff757f;
 }
 
-/* Gmail Custom Module - Dynamic Pill Logic */
+/* Gmail Custom Module - Icon and Text colors */
 #custom-gmail {
-    background-color: transparent; /* No pill background by default */
-    padding: 0 12px;
-    margin: 4px 2px;
-    border-radius: 6px;
-    color: #c0caf5; /* Muted color when read */
+    color: #c0caf5; 
+    /* This reduces the inner spacing between the icon and the number */
+    padding: 0 4px; 
+    /* Optional: subtle negative margin if you want it even tighter */
+    margin-left: -2px;
 }
 
 #custom-gmail.unread {
-    background-color: #313244; /* Pill appears when unread */
-    color: #7aa2f7;            /* Bright highlight color */
+    color: #7aa2f7; /* Highlighting unread mail */
 }
 
 #custom-gmail.error {
-    background-color: #f7768e; /* Red alert background */
-    color: #1e1e2e;
+    color: #f7768e;
 }
