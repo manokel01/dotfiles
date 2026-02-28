@@ -24,10 +24,10 @@
     },
 
     "custom/gmail": {
-        "exec": "~/.config/waybar/scripts/gmail.py",
+        "exec": "/home/manokel/.config/waybar/scripts/gmail.py",
         "interval": 60,
-        "format": "  {}",
         "return-type": "json",
+        "format": "  {}",
         "on-click": "brave-browser 'https://mail.google.com/'"
     },
 

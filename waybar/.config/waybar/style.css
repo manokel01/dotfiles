@@ -1,13 +1,9 @@
-* {
-    font-family: "JetBrainsMono Nerd Font";
-    font-size: 13px;
-    border: none;
-    border-radius: 0;
-}
-
 window#waybar {
-    background: #1e1e2e; /* Matches your terminal background */
+    background: #1e1e2e;
     color: #cdd6f4;
+    font-family: "JetBrains Mono", "Font Awesome 6 Free", "Symbols Nerd Font";
+    font-size: 13px;
+    font-weight: bold;
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -24,21 +20,28 @@ window#waybar {
     border-radius: 4px;
 }
 
-/* Grouping all modules into "pills" including the new display module */
+/* Grouping all modules into "pills" */
 #network, 
 #bluetooth, 
 #pulseaudio, 
 #battery, 
 #clock, 
-#custom-display {
-    background-color: #313244; /* Slightly lighter for module "pills" */
+#custom-display,
+#language,
+#custom-gmail,
+#custom-power {
+    background-color: #313244;
     padding: 0 12px;
     margin: 4px 2px;
     border-radius: 6px;
 }
 
-/* Specific styling for the clock to accommodate the date */
-#clock {
+/* Specific styling for the split clock */
+#clock.time {
+    padding: 0 15px;
+}
+
+#clock.date {
     padding: 0 15px;
 }
 
@@ -48,30 +51,14 @@ window#waybar {
     color: #1e1e2e; 
 }
 
-/* Red alert: both icon and percentage will appear red against a dark background */
 #battery.critical { 
     background-color: #f38ba8; 
     color: #1e1e2e; 
 }
 
-/* Add #custom-power to your existing group */
-#network, 
-#bluetooth, 
-#pulseaudio, 
-#battery, 
-#clock, 
-#custom-display,
-#language,
-#custom-power {
-    background-color: #313244;
-    padding: 0 12px;
-    margin: 4px 2px;
-    border-radius: 6px;
-}
-
 /* Make the power icon stand out */
 #custom-power {
-    color: #f38ba8; /* Red icon to match your critical battery color */
+    color: #f38ba8;
     padding-right: 15px;
 }
 
@@ -80,11 +67,24 @@ window#waybar {
     color: #1e1e2e;
 }
 
-/* Optional: Subtle border for the screen settings icon to make it clickable */
 #custom-display {
     color: #89b4fa;
 }
 
 #language {
     color: #89b4fa;
+}
+
+/* Gmail Custom Module */
+#custom-gmail.read {
+    color: #c0caf5; /* Standard muted color for empty inbox */
+}
+
+#custom-gmail.unread {
+    color: #7aa2f7; /* Bright highlight color for new mail */
+    font-weight: bold;
+}
+
+#custom-gmail.error {
+    color: #f7768e; /* Red alert if keyring or connection fails */
 }
