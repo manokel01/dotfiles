@@ -3,25 +3,54 @@
     "position": "top",
     "height": 34,
     "spacing": 15,
+    "reload_style_on_change": true,
     "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["clock"],
-    "modules-right": ["network", "bluetooth", "pulseaudio", "custom/display", "battery", "hyprland/language", "custom/power"],
+    "modules-center": ["custom/gmail","clock#date"],
+    "modules-right": [
+        "network", 
+        "bluetooth", 
+        "pulseaudio", 
+        "custom/display", 
+        "battery", 
+        "hyprland/language", 
+        "clock#time", 
+        "custom/power"
+    ],
 
     "hyprland/workspaces": {
-    	"all-outputs": true,
-    	"active-only": false,
-    	"format": "{name}"
-     },
-    "clock": {
-        "format": " {:%H:%M:%S  󰃭 %Y-%m-%d}",
+        "all-outputs": true,
+        "active-only": false,
+        "format": "{name}"
+    },
+
+    "custom/gmail": {
+        "exec": "~/.config/waybar/scripts/gmail.py",
+        "interval": 60,
+        "format": "  {}",
+        "return-type": "json",
+        "on-click": "brave-browser 'https://mail.google.com/'"
+    },
+
+    "clock#time": {
         "interval": 1,
+        "format": "  {:%H:%M:%S}",
+        "tooltip": false,
         "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center system datetime"
     },
+
+    "clock#date": {
+        "interval": 60,
+        "format": "󰃭  {:%Y-%m-%d}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "on-click": "brave-browser 'https://calendar.google.com/'"
+    },
+
     "custom/display": {
         "format": "󰍹",
         "on-click": "nwg-displays",
         "tooltip": false
     },
+
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-muted": "󰝟 {volume}%",
@@ -30,38 +59,39 @@
         },
         "on-click": "pavucontrol"
     },
-   "battery": {
+
+    "battery": {
         "interval": 2,
         "states": { 
             "warning": 30, 
             "critical": 15 
         },
         "format": "{icon} {capacity}% | {power:0.1f}W",
-        "format-charging": "󰂄 {capacity}% | +{power}W",
+        "format-charging": "󰂄 {capacity}% | +{power:0.1f}W",
         "format-plugged": "󰚥 {capacity}%",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "tooltip-format": "Time Left: {timeTo}\nPower Draw: {power} Watts\nBattery Health: {health}%",
         "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center power"
     },
+
     "network": {
         "format-wifi": " {essid}",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
         "on-click": "nm-connection-editor"
     },
+
     "bluetooth": {
         "format": " {status}",
         "format-connected": " {device_alias}",
         "on-click": "blueman-manager"
     },
+
     "hyprland/language": {
         "format": "{}",
-        "format-en": "US",
-        "format-english (us)": "US",
-        "format-el": "GR",
-        "format-greek": "GR",
         "on-click": "~/.config/waybar/toggle-layout.sh"
     },
+
     "custom/power": {
         "format": "",
         "on-click": "~/.config/wlogout/launch.sh", 

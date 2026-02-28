@@ -16,3 +16,4 @@ __pycache__/
 .bash_history
 .zsh_history
 ssh_keys/
+waybar/.config/waybar/scripts/gmail.py
