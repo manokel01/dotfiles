@@ -20,15 +20,16 @@ window#waybar {
     border-radius: 4px;
 }
 
-/* Grouping all modules into "pills" */
+/* Grouping standard modules into static "pills" */
+/* Note: #custom-gmail removed from here to allow dynamic background */
 #network, 
 #bluetooth, 
 #pulseaudio, 
 #battery, 
-#clock, 
+#clock.time,
+#clock.date,
 #custom-display,
 #language,
-#custom-gmail,
 #custom-power {
     background-color: #313244;
     padding: 0 12px;
@@ -36,7 +37,7 @@ window#waybar {
     border-radius: 6px;
 }
 
-/* Specific styling for the split clock */
+/* Specific padding for the split clock instances */
 #clock.time {
     padding: 0 15px;
 }
@@ -56,7 +57,7 @@ window#waybar {
     color: #1e1e2e; 
 }
 
-/* Make the power icon stand out */
+/* Power Button Styling */
 #custom-power {
     color: #f38ba8;
     padding-right: 15px;
@@ -67,24 +68,21 @@ window#waybar {
     color: #1e1e2e;
 }
 
-#custom-display {
-    color: #89b4fa;
-}
-
-#language {
-    color: #89b4fa;
-}
-
-/* Gmail Custom Module */
-#custom-gmail.read {
-    color: #c0caf5; /* Standard muted color for empty inbox */
+/* Gmail Custom Module - Dynamic Pill Logic */
+#custom-gmail {
+    background-color: transparent; /* No pill background by default */
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 6px;
+    color: #c0caf5; /* Muted color when read */
 }
 
 #custom-gmail.unread {
-    color: #7aa2f7; /* Bright highlight color for new mail */
-    font-weight: bold;
+    background-color: #313244; /* Pill appears when unread */
+    color: #7aa2f7;            /* Bright highlight color */
 }
 
 #custom-gmail.error {
-    color: #f7768e; /* Red alert if keyring or connection fails */
+    background-color: #f7768e; /* Red alert background */
+    color: #1e1e2e;
 }

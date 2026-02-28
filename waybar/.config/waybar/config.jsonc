@@ -5,15 +5,14 @@
     "spacing": 15,
     "reload_style_on_change": true,
     "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["custom/gmail","clock#date"],
+    "modules-center": ["custom/gmail","clock#date", "clock#time"],
     "modules-right": [
-        "network", 
         "bluetooth", 
-        "pulseaudio", 
-        "custom/display", 
-        "battery", 
-        "hyprland/language", 
-        "clock#time", 
+	"network",
+        "custom/display",
+	"pulseaudio", 
+        "hyprland/language",
+	"battery",
         "custom/power"
     ],
 
@@ -33,7 +32,7 @@
 
     "clock#time": {
         "interval": 1,
-        "format": "  {:%H:%M:%S}",
+        "format": "{:%H:%M:%S}",
         "tooltip": false,
         "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center system datetime"
     },
@@ -89,6 +88,8 @@
 
     "hyprland/language": {
         "format": "{}",
+	"format-en": "US",
+        "format-el": "GR",
         "on-click": "~/.config/waybar/toggle-layout.sh"
     },
 
