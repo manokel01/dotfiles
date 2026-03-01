@@ -80,3 +80,24 @@ window#waybar {
 #custom-gmail.error {
     color: #f7768e;
 }
+
+/* --- Webcam Module --- */
+#custom-webcam {
+    color: #a6adc8; /* Default inactive color (Muted gray/blue) */
+    padding: 0 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
+/* When OBSBOT is actively pumping */
+#custom-webcam.active-obsbot {
+    color: #f38ba8; /* 'Power' Red */
+    background-color: rgba(243, 139, 168, 0.1);
+    font-weight: bold;
+}
+
+/* When the Internal camera is hijacked by a browser */
+#custom-webcam.active-internal {
+    color: #f9e2af; /* Warning Yellow */
+    font-weight: bold;
+}
