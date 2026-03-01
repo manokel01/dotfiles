@@ -21,7 +21,7 @@ CHOICE=$(echo -e "$OPTIONS" | rofi -dmenu -i -p "Webcam:" -lines 2 -hover-select
 
 case "$CHOICE" in
     *"Start OBSBOT"*)
-        hyprctl dispatch exec "kitty --title \"OBSBOT-Meeting-Terminal\" $HOME/start_obsbot_meeting.sh"
+        hyprctl dispatch exec "kitty --hold --title \"OBSBOT-Meeting-Terminal\" $HOME/start_obsbot_meeting.sh"
         ;;
     *)
         exit 0

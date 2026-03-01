@@ -85,7 +85,7 @@ window#waybar {
 #custom-webcam {
     color: #a6adc8; /* Default inactive color (Muted gray/blue) */
     padding: 0 10px;
-    margin: 0 5px;
+    margin: 0 0px;
     border-radius: 5px;
 }
 
