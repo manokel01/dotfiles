@@ -17,9 +17,7 @@
     ],
 
     "hyprland/workspaces": {
-        "all-outputs": true,
-        "active-only": false,
-        "format": "{name}"
+         "all-outputs": true
     },
 
     "custom/gmail": {
@@ -39,7 +37,7 @@
 
     "clock#date": {
         "interval": 60,
-        "format": "󰃭 {:%Y-%m-%d}",
+        "format": "󰃭 {:%d-%m-%Y}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "on-click": "brave-browser 'https://calendar.google.com/'"
     },
@@ -78,8 +76,6 @@
         "format-wifi": " {essid}",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
-        /* "on-click": "nm-connection-editor"
-	/* Use impala instead of nm-connection-editor */
         "on-click": "kitty --class floating_terminal -e nmtui"
     },
 
