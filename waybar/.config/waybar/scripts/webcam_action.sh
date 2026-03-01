@@ -3,6 +3,10 @@
 # 1. If OBSBOT pump is running: acts as a KILL SWITCH
 if pgrep -f "ffmpeg.*video9" > /dev/null; then
     notify-send "Webcam Control" "Killing OBSBOT Pro Feed..."
+    
+    # The physical hardware sleep command
+    /usr/local/bin/t4l camera sleep
+    
     pkill -f "ffmpeg.*video9"
     pkill -f "OBSBOT-Meeting-Terminal"
     exit 0
