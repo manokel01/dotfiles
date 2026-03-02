@@ -29,7 +29,6 @@ window#waybar {
 #clock.date,
 #custom-display,
 #language,
-#custom-gmail,
 #custom-power {
     background-color: transparent; 
     padding: 0 6px; /* Halved from 12px for tighter grouping */
@@ -62,23 +61,6 @@ window#waybar {
 
 #custom-power:hover {
     color: #ff757f;
-}
-
-/* Gmail Custom Module - Icon and Text colors */
-#custom-gmail {
-    color: #c0caf5; 
-    /* This reduces the inner spacing between the icon and the number */
-    padding: 0 4px; 
-    /* Optional: subtle negative margin if you want it even tighter */
-    margin-left: -2px;
-}
-
-#custom-gmail.unread {
-    color: #7aa2f7; /* Highlighting unread mail */
-}
-
-#custom-gmail.error {
-    color: #f7768e;
 }
 
 /* --- Webcam Module --- */

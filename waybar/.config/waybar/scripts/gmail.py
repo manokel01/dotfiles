@@ -1,1 +1,0 @@
-/home/manokel/dotfiles/waybar/.config/waybar/scripts/gmail.py

@@ -5,15 +5,16 @@
     "spacing": 15,
     "reload_style_on_change": true,
     "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["custom/gmail","clock#time", "clock#date"],
+    "modules-center": ["clock#time", "clock#date"],
     "modules-right": [
- 	"custom/webcam",
+        "custom/webcam",
         "bluetooth", 
-	"network",
+        "network",
         "custom/display",
-	"pulseaudio", 
+        "pulseaudio", 
         "hyprland/language",
-	"battery",
+        "custom/power_profile",
+        "battery",
         "custom/power"
     ],
 
@@ -21,12 +22,11 @@
          "all-outputs": true
     },
 
-    "custom/gmail": {
-        "exec": "/home/manokel/.config/waybar/scripts/gmail.py",
-        "interval": 60,
-        "return-type": "json",
-        "format": " {}",
-        "on-click": "brave-browser 'https://mail.google.com/'"
+    "custom/power_profile": {
+    	"exec": "powerprofilesctl get",
+    	"interval": 10,
+    	"on-click": "/home/manokel/.config/waybar/scripts/power_profile.sh",
+    	"format": "󰓅 {}"
     },
 
     "clock#time": {
@@ -55,7 +55,6 @@
         "format-icons": {
             "default": ["󰕿", "󰖀", "󰕾"]
         },
-        /* Use wiremix instead of pavucontrol */
        "on-click": "kitty --class floating_terminal -e wiremix"
     },
 
@@ -88,7 +87,7 @@
 
     "hyprland/language": {
         "format": "{}",
-	"format-en": "US",
+        "format-en": "US",
         "format-el": "GR",
         "on-click": "~/.config/waybar/toggle-layout.sh"
     },
@@ -98,12 +97,13 @@
         "on-click": "~/.config/wlogout/launch.sh", 
         "tooltip": false
     },
+
     "custom/webcam": {
-    	"exec": "~/.config/waybar/scripts/webcam_sensor.sh",
-    	"return-type": "json",
-    	"interval": 2,
-    	"format": "  {}",
-    	"on-click": "~/.config/waybar/scripts/webcam_action.sh",
-    	"tooltip": true
-},
+        "exec": "~/.config/waybar/scripts/webcam_sensor.sh",
+        "return-type": "json",
+        "interval": 2,
+        "format": "  {}",
+        "on-click": "~/.config/waybar/scripts/webcam_action.sh",
+        "tooltip": true
+    }
 }
