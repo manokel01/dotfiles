@@ -83,21 +83,20 @@ window#waybar {
 
 /* --- Webcam Module --- */
 #custom-webcam {
-    color: #a6adc8; /* Default inactive color (Muted gray/blue) */
-    padding: 0 10px;
-    margin: 0 0px;
-    border-radius: 5px;
-}
+    color: #a6adc8; /* Default inactive color */
+    padding: 0 6px; 
+    margin: 4px 0px;
+}v
 
 /* When OBSBOT is actively pumping */
-#custom-webcam.active-obsbot {
-    color: #f38ba8; /* 'Power' Red */
-    background-color: rgba(243, 139, 168, 0.1);
+#custom-webcam.active {
+    color: #f7768e; /* Tokyo Night Red */
+    background-color: rgba(247, 118, 142, 0.1); /* Subtle red glow */
     font-weight: bold;
 }
 
 /* When the Internal camera is hijacked by a browser */
 #custom-webcam.active-internal {
-    color: #f9e2af; /* Warning Yellow */
+    color: #e0af68; /* Tokyo Night Yellow/Orange */
     font-weight: bold;
 }
