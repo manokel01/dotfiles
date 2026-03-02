@@ -11,6 +11,7 @@
         "bluetooth", 
         "network",
         "custom/display",
+        "custom/night_light",
         "pulseaudio", 
         "hyprland/language",
         "custom/power_profile",
@@ -23,10 +24,10 @@
     },
 
     "custom/power_profile": {
-    	"exec": "powerprofilesctl get",
-    	"interval": 10,
-    	"on-click": "/home/manokel/.config/waybar/scripts/power_profile.sh",
-    	"format": "󰓅 {}"
+        "exec": "powerprofilesctl get",
+        "interval": 10,
+        "on-click": "/home/manokel/.config/waybar/scripts/power_profile.sh",
+        "format": "󰓅 {}"
     },
 
     "clock#time": {
@@ -55,7 +56,7 @@
         "format-icons": {
             "default": ["󰕿", "󰖀", "󰕾"]
         },
-       "on-click": "kitty --class floating_terminal -e wiremix"
+        "on-click": "kitty --class floating_terminal -e wiremix"
     },
 
     "battery": {
@@ -105,5 +106,13 @@
         "format": "  {}",
         "on-click": "~/.config/waybar/scripts/webcam_action.sh",
         "tooltip": true
+    },
+    
+    "custom/night_light": {
+        "format": " {} ",
+        "exec": "pgrep gammastep > /dev/null && echo '󰛩' || echo '󰛨'",
+        "on-click": "pgrep gammastep && pkill gammastep || gammastep -O 3500 > /dev/null 2>&1 &",
+        "interval": 1,
+        "tooltip": false
     }
 }

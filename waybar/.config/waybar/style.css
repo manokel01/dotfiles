@@ -82,3 +82,21 @@ window#waybar {
     color: #e0af68; /* Tokyo Night Yellow/Orange */
     font-weight: bold;
 }
+
+/* Base style for the Night Light icon */
+#custom-night_light {
+    padding-left: 0px;
+    padding-right: 0px;
+    transition: all 0.3s ease; /* Smooth color fade */
+}
+
+/* Glow effect when active (The Moon icon) */
+#custom-night_light:active,
+#custom-night_light:hover {
+    background-color: rgba(255, 165, 0, 0.2); /* Subtle orange glow */
+    border-radius: 8px;
+}
+
+/* Optional: If you want the icon itself to turn orange when active */
+/* Note: This requires the JSON module to pass a 'class' which pgrep doesn't do easily, 
+   but we can style the hover state for now. */
