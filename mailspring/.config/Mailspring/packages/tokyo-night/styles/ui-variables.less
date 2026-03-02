@@ -1,0 +1,47 @@
+@import "base/ui-variables";
+
+// Tokyo Night Color Palette
+@bg-base: #1a1b26;
+@bg-darker: #16161e;
+@fg-base: #c0caf5;
+@fg-muted: #565f89;
+@accent-blue: #7aa2f7;
+@border-color: #292e42;
+
+// Mailspring Variable Mapping
+@background-primary: @bg-base;
+@background-off-primary: @bg-base;
+@background-secondary: @bg-darker;
+@background-tertiary: @bg-darker;
+
+@text-color: @fg-base;
+@text-color-subtle: @fg-muted;
+@text-color-heading: #ffffff;
+
+@component-active-color: @accent-blue;
+@component-active-text-color: #ffffff;
+
+@toolbar-background-color: @bg-darker;
+@panel-background-color: @bg-base;
+
+@border-color-primary: @border-color;
+@border-color-secondary: @border-color;
+@border-color-divider: @border-color;
+
+@btn-default-bg-color: @bg-darker;
+@btn-default-text-color: @fg-base;
+
+@input-bg-color: @bg-darker;
+@input-border-color: @border-color;
+
+@list-bg: @bg-base;
+@list-selected-bg: #292e42;
+@list-selected-color: @fg-base;
+
+/* --- Custom Font Sizes for the Inbox List (Second Column) --- */
+.thread-list .list-item {
+  .participants { font-size: 15px !important; } /* Sender Name */
+  .subject      { font-size: 15px !important; } /* Email Subject */
+  .snippet      { font-size: 14px !important; } /* Preview Text */
+  .timestamp    { font-size: 13px !important; } /* Time */
+}

@@ -1,0 +1,11 @@
+{
+  "name": "tokyo-night",
+  "title": "Tokyo Night",
+  "displayName": "Tokyo Night",
+  "theme": "ui-dark",
+  "version": "1.0.0",
+  "description": "A custom Tokyo Night theme for Mailspring.",
+  "engines": {
+    "mailspring": "*"
+  }
+}
