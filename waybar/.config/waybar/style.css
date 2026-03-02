@@ -29,10 +29,12 @@ window#waybar {
 #clock.date,
 #custom-display,
 #language,
-#custom-power {
+#custom-power,
+#custom-night_light {
     background-color: transparent; 
-    padding: 0 6px; /* Halved from 12px for tighter grouping */
+    padding: 0 6px; 
     margin: 4px 0px;
+    transition: all 0.3s ease;
 }
 
 /* Specific padding for the split clock instances */
@@ -49,8 +51,21 @@ window#waybar {
     color: #fab387; 
 }
 
-#battery.critical { 
+/* Critical State (Red + Blinking Animation) */
+#battery.critical:not(.charging) { 
     color: #f38ba8; 
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: rgba(243, 139, 168, 0.4);
+        color: #11111b;
+    }
 }
 
 /* Power Button Styling */
@@ -68,7 +83,7 @@ window#waybar {
     color: #a6adc8; /* Default inactive color */
     padding: 0 6px; 
     margin: 4px 0px;
-}v
+}
 
 /* When OBSBOT is actively pumping */
 #custom-webcam.active {
@@ -83,10 +98,8 @@ window#waybar {
     font-weight: bold;
 }
 
-/* Base style for the Night Light icon */
+/* Base style for the Night Light icon (Cleaned up Conflict) */
 #custom-night_light {
-    padding-left: 0px;
-    padding-right: 0px;
     transition: all 0.3s ease; /* Smooth color fade */
 }
 
@@ -96,7 +109,3 @@ window#waybar {
     background-color: rgba(255, 165, 0, 0.2); /* Subtle orange glow */
     border-radius: 8px;
 }
-
-/* Optional: If you want the icon itself to turn orange when active */
-/* Note: This requires the JSON module to pass a 'class' which pgrep doesn't do easily, 
-   but we can style the hover state for now. */

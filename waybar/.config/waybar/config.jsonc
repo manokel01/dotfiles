@@ -24,8 +24,9 @@
     },
 
     "custom/power_profile": {
-        "exec": "powerprofilesctl get",
+        "exec": "powerprofilesctl get | sed 's/power-saver/Saver/' | sed 's/.*/\\u&/'",
         "interval": 10,
+        "signal": 1,
         "on-click": "/home/manokel/.config/waybar/scripts/power_profile.sh",
         "format": "󰓅 {}"
     },
@@ -60,16 +61,18 @@
     },
 
     "battery": {
-        "interval": 2,
-        "states": { 
-            "warning": 30, 
-            "critical": 15 
+        "interval": 5,
+        "states": {
+            "warning": 30,
+            "critical": 15
         },
         "format": "{icon} {capacity}% | {power:0.1f}W",
         "format-charging": "󰂄 {capacity}% | +{power:0.1f}W",
         "format-plugged": "󰚥 {capacity}%",
+        "format-critical": "󱃍 {capacity}%!!", 
+        "format-warning": "󰂃 {capacity}%",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip-format": "Time Left: {timeTo}\nPower Draw: {power} Watts\nBattery Health: {health}%",
+        "tooltip-format": "Time Left: {timeTo}\nHealth: {health}%\nPower: {power}W",
         "on-click": "XDG_CURRENT_DESKTOP=GNOME gnome-control-center power"
     },
 
@@ -106,10 +109,10 @@
         "format": "  {}",
         "on-click": "~/.config/waybar/scripts/webcam_action.sh",
         "tooltip": true
-    },
+    }, 
     
     "custom/night_light": {
-        "format": " {} ",
+        "format": "{}",
         "exec": "pgrep gammastep > /dev/null && echo '󰛩' || echo '󰛨'",
         "on-click": "pgrep gammastep && pkill gammastep || gammastep -O 3500 > /dev/null 2>&1 &",
         "interval": 1,
