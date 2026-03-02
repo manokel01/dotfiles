@@ -113,8 +113,8 @@
     
     "custom/night_light": {
         "format": "{}",
-        "exec": "pgrep gammastep > /dev/null && echo '󰛩' || echo '󰛨'",
-        "on-click": "pgrep gammastep && pkill gammastep || gammastep -O 3500 > /dev/null 2>&1 &",
+        "exec": "pgrep -x gammastep > /dev/null && echo '󰛩' || echo '󰛨'",
+        "on-click": "/home/manokel/.config/waybar/scripts/nl_toggle.sh", // Absolute path
         "interval": 1,
         "tooltip": false
     }
