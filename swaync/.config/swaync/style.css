@@ -1,0 +1,98 @@
+/* --- TOKYO NIGHT ARCHITECT REVISION --- */
+@define-color bg #1a1b26;
+@define-color bg-alt #1f2335;
+@define-color bg-hover #292e42;
+@define-color fg #c0caf5;
+@define-color fg-muted #a9b1d6;
+@define-color border #414868;
+@define-color accent #7aa2f7;
+@define-color red #f7768e;
+
+/* --- GLOBAL RESET --- */
+* {
+    font-family: "Inter", "Roboto", "Cantarell", sans-serif;
+    border-radius: 0;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-image: none !important;
+    outline: none !important;
+    border-image: none !important;
+}
+
+/* Use Monospace for tech/time data only */
+.time, .widget-title, .widget-mpris-subtitle {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+}
+
+/* KILL ALL GHOST BOXES AND STACKING CONTAINERS */
+list, row, flowbox, flowboxchild, .notification-row, .notification-group, .notification-group-stack, .notification-group > box {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Specifically target the 'tiered' layers underneath grouped notifications */
+.notification-group-stack > box {
+    background: transparent !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/* --- MAIN PANEL --- */
+.control-center {
+    background-color: @bg;
+    border-left: 2px solid @border;
+    color: @fg;
+}
+
+/* --- WIDGETS --- */
+.widget-title { color: @accent; font-size: 14px; margin: 24px 16px 8px 16px; font-weight: bold; }
+.widget-title > button { background: @bg-alt; color: @fg; border: 1px solid @border; padding: 4px 12px; }
+.widget-title > button:hover { background: @red; color: @bg; }
+
+.widget-dnd { margin: 16px 16px 0 16px; }
+
+/* THE ROUNDED TOGGLE (SwayNC handles this specifically) */
+switch {
+    background-color: #111217;
+    border: 1px solid @border;
+    border-radius: 12px;
+    min-width: 44px;
+    min-height: 24px;
+}
+switch slider {
+    background-color: @fg-muted;
+    border-radius: 10px;
+    min-width: 16px;
+    min-height: 16px;
+    margin: 3px;
+}
+switch:checked { background-color: @accent; border: 1px solid @accent; }
+
+/* MPRIS MEDIA PLAYER */
+.widget-mpris { background: @bg-alt; border: 1px solid @border; margin: 16px; padding: 16px; }
+.widget-mpris-title { color: @fg; font-weight: bold; font-size: 14px; }
+.widget-mpris-subtitle { color: @fg-muted; font-size: 11px; }
+.widget-mpris-player > box > button {
+    min-width: 40px; min-height: 40px; margin: 4px;
+    background: @bg; border: 1px solid @border; color: @fg;
+}
+.widget-mpris-player > box > button:hover { background: @bg-hover; color: @accent; border: 1px solid @accent; }
+
+/* --- NOTIFICATIONS --- */
+.notification {
+    background: @bg-alt;
+    border: 1px solid @border;
+    margin: 0 16px 12px 16px;
+    padding: 16px;
+}
+
+.summary { font-weight: 800; font-size: 14px; color: @accent; }
+.body { color: @fg; font-size: 13px; margin-top: 6px; line-height: 1.4; }
+.time { color: @fg-muted; font-size: 11px; }
+.app-icon { margin-right: 12px; }
+
+/* FLAT ACTION BUTTONS */
+.notification-action { margin-top: 12px; border-top: 1px solid @
