@@ -135,6 +135,20 @@ window#waybar {
     font-weight: bold;
 }
 
+/* GitHub Sync Module */
+#custom-git_sync {
+    padding: 0 10px;
+    font-size: 16px;
+}
+
 #custom-git_sync.clean {
-    color: #50fa7b; /* Green */
+    color: #9ece6a; /* Tokyo Night Green */
+}
+
+#custom-git_sync.dirty {
+    color: #f7768e; /* Tokyo Night Red */
+}
+
+#custom-git_sync.unpushed {
+    color: #7aa2f7; /* Tokyo Night Blue */
 }
