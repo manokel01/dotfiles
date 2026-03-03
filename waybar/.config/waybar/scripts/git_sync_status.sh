@@ -1,12 +1,14 @@
 #!/bin/bash
 cd "$HOME/dotfiles" || exit
+
+# Force git to update its view of the filesystem
 git update-index -q --refresh
 
-UPSTREAM=${1:-'@ {u}'}
+# Corrected: no space in @{u}
+UPSTREAM=${1:-'@{u}'}
 LOCAL=$(git rev-parse @)
 REMOTE=$(git rev-parse "$UPSTREAM")
 
-# Use the GitHub icon ()
 ICON=""
 
 if [[ -n $(git status -s) ]]; then
