@@ -7,14 +7,14 @@
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
     "modules-right": [
+        "custom/language",
         "custom/rclone",
         "custom/webcam",
-        "bluetooth", 
-        "network",
         "custom/display",
         "custom/night_light",
         "pulseaudio", 
-        "custom/language",
+	"bluetooth", 
+        "network",
         "custom/power_profile",
         "battery",
         "custom/power"
