@@ -1,24 +1,21 @@
 #!/bin/bash
 cd "$HOME/dotfiles" || exit
-
-# Force git to update its view of the filesystem
 git update-index -q --refresh
 
-# Corrected: no space in @{u}
 UPSTREAM=${1:-'@{u}'}
 LOCAL=$(git rev-parse @)
 REMOTE=$(git rev-parse "$UPSTREAM")
 
+# Get the last 3 commit messages for the tooltip
+HISTORY=$(git log -3 --format="- %s (%ar)" | sed ':a;N;$!ba;s/\n/\\n/g')
 ICON=""
 
 if [[ -n $(git status -s) ]]; then
-    # Uncommitted changes
-    echo "{\"text\": \"$ICON\", \"tooltip\": \"Uncommitted changes\", \"class\": \"dirty\"}"
+    # Show which files are actually dirty in the tooltip
+    DIRTY_FILES=$(git status -s | sed ':a;N;$!ba;s/\n/\\n/g')
+    echo "{\"text\": \"$ICON\", \"tooltip\": \"󱈸 UNCOMMITTED CHANGES:\\n$DIRTY_FILES\", \"class\": \"dirty\"}"
 elif [ "$LOCAL" != "$REMOTE" ]; then
-    # Commits waiting to be pushed
-    echo "{\"text\": \"$ICON\", \"tooltip\": \"Unpushed commits\", \"class\": \"unpushed\"}"
+    echo "{\"text\": \"$ICON\", \"tooltip\": \"󰇚 UNPUSHED COMMITS:\\n$HISTORY\", \"class\": \"unpushed\"}"
 else
-    # Everything is synced
-    LAST_SYNC=$(git log -1 --format="%ar")
-    echo "{\"text\": \"$ICON\", \"tooltip\": \"Last synced: $LAST_SYNC\", \"class\": \"clean\"}"
+    echo "{\"text\": \"$ICON\", \"tooltip\": \"✅ SYNCED\\n$HISTORY\", \"class\": \"clean\"}"
 fi

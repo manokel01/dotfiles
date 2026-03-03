@@ -16,7 +16,8 @@ else
 fi
 
 echo "--- [1/4] Creating Safety Snapshot (Snapper) ---"
-sudo snapper create --description "Pre-Sync: $COMMIT_MSG"
+# Corrected line for ~/.local/bin/void
+sudo snapper create --type single --cleanup number --description "Pre-Sync: Void: $user_msg"
 
 echo "--- [2/4] Refreshing GNU Stow Symlinks ---"
 for dir in */; do
