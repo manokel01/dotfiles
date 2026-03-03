@@ -1,0 +1,11 @@
+[Unit]
+Description=Rclone Bisync Google Drive
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rclone bisync gdrive_manokel: %h/GoogleDrive --verbose --fix-case --drive-acknowledge-abuse --exclude ".stfolder/**"
+# This line creates the flag if the sync fails, and deletes it if it succeeds
+ExecStopPost=/usr/bin/bash -c 'if [ "$EXIT_STATUS" != "0" ]; then touch %h/.rclone_error; else rm -f %h/.rclone_error; fi'
+
+[Install]
+WantedBy=default.target

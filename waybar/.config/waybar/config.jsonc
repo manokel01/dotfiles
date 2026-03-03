@@ -5,15 +5,16 @@
     "spacing": 15,
     "reload_style_on_change": true,
     "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["clock#time", "clock#date"],
+    "modules-center": ["clock#time", "clock#date", "custom/keybinds"],
     "modules-right": [
+        "custom/rclone",
         "custom/webcam",
         "bluetooth", 
         "network",
         "custom/display",
         "custom/night_light",
         "pulseaudio", 
-        "hyprland/language",
+        "custom/language",
         "custom/power_profile",
         "battery",
         "custom/power"
@@ -21,6 +22,16 @@
 
     "hyprland/workspaces": {
          "all-outputs": true
+    },
+
+    "custom/rclone": {
+	"format": "{}",
+	"return-type": "json",
+	"exec": "/home/manokel/.config/waybar/scripts/rclone_status.sh",
+	"interval": 60, // Checks once per minute to update the tooltip countdown
+	"on-click": "/home/manokel/.config/waybar/scripts/rclone_action.sh",
+	"signal": 10,
+	"tooltip": true
     },
 
     "custom/power_profile": {
@@ -89,33 +100,40 @@
         "on-click": "blueman-manager"
     },
 
-    "hyprland/language": {
+    "custom/language": {
+        "exec": "/home/manokel/.config/waybar/scripts/toggle-layout.sh",
+        "interval": 1,
+        "on-click": "/home/manokel/.config/waybar/scripts/toggle-layout.sh next",
+        "signal": 1,
         "format": "{}",
-        "format-en": "US",
-        "format-el": "GR",
-        "on-click": "~/.config/waybar/toggle-layout.sh"
+        "tooltip": false
     },
 
     "custom/power": {
         "format": "",
-        "on-click": "~/.config/wlogout/launch.sh", 
+        "on-click": "/home/manokel/.config/wlogout/launch.sh", 
         "tooltip": false
     },
 
     "custom/webcam": {
-        "exec": "~/.config/waybar/scripts/webcam_sensor.sh",
+        "exec": "/home/manokel/.config/waybar/scripts/webcam_sensor.sh",
         "return-type": "json",
         "interval": 2,
         "format": "  {}",
-        "on-click": "~/.config/waybar/scripts/webcam_action.sh",
+        "on-click": "/home/manokel/.config/waybar/scripts/webcam_action.sh",
         "tooltip": true
     }, 
     
     "custom/night_light": {
         "format": "{}",
         "exec": "pgrep -x gammastep > /dev/null && echo '󰛩' || echo '󰛨'",
-        "on-click": "/home/manokel/.config/waybar/scripts/nl_toggle.sh", // Absolute path
+        "on-click": "/home/manokel/.config/waybar/scripts/nl_toggle.sh",
         "interval": 1,
         "tooltip": false
+    },
+    "custom/keybinds": {
+	"format": "󰌌",
+	"on-click": "/home/manokel/.config/waybar/scripts/keybinds.sh",
+	"tooltip": false
     }
 }

@@ -30,7 +30,8 @@ window#waybar {
 #custom-display,
 #language,
 #custom-power,
-#custom-night_light {
+#custom-night_light,
+#custom-keybinds { 
     background-color: transparent; 
     padding: 0 6px; 
     margin: 4px 0px;
@@ -98,14 +99,33 @@ window#waybar {
     font-weight: bold;
 }
 
-/* Base style for the Night Light icon (Cleaned up Conflict) */
-#custom-night_light {
-    transition: all 0.3s ease; /* Smooth color fade */
-}
-
-/* Glow effect when active (The Moon icon) */
+/* Glow effect for Night Light when active or hovered */
 #custom-night_light:active,
 #custom-night_light:hover {
     background-color: rgba(255, 165, 0, 0.2); /* Subtle orange glow */
     border-radius: 8px;
+}
+
+/* --- Google Drive Module --- */
+#custom-rclone {
+    color: #a9b1d6; 
+    padding: 0 10px; 
+    margin: 4px 2px;
+    text-shadow: 0 0 1px #a9b1d6; /* Simulates boldness */
+    transition: all 0.3s ease;
+}
+
+/* Tokyo Night Red Pulse when actively syncing */
+#custom-rclone.syncing {
+    color: #F7768E;
+    text-shadow: 0 0 1px #F7768E;
+    animation: pulse 2s infinite;
+}
+
+/* Tokyo Night Yellow when an error/lock exists */
+#custom-rclone.error {
+    color: #e0af68; 
+    text-shadow: 0 0 1px #e0af68;
+    background-color: rgba(224, 175, 104, 0.1); 
+    border-radius: 5px;
 }
