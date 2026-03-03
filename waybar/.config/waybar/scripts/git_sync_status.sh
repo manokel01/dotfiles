@@ -1,16 +1,20 @@
 #!/bin/bash
-
-# Navigate to dotfiles
 cd "$HOME/dotfiles" || exit
 
-# Get the last commit time in a short format
+# Force git to update its view of the filesystem
+git update-index -q --refresh
+
 LAST_SYNC=$(git log -1 --format="%ar")
 
-# Check if there are uncommitted changes
+# Check if there are changes compared to the remote
+UPSTREAM=${1:-'@{u}'}
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse "$UPSTREAM")
+
 if [[ -n $(git status -s) ]]; then
-    # Dirty state: Show warning icon
-    echo "{\"text\": \" Dirty\", \"tooltip\": \"Uncommitted changes in dotfiles\", \"class\": \"dirty\"}"
+    echo "{\"text\": \" Dirty\", \"tooltip\": \"Uncommitted changes\", \"class\": \"dirty\"}"
+elif [ "$LOCAL" != "$REMOTE" ]; then
+    echo "{\"text\": \"󰇚 Unpushed\", \"tooltip\": \"Local commits not on GitHub\", \"class\": \"dirty\"}"
 else
-    # Clean state: Show sync time
-    echo "{\"text\": \"󰊢 $LAST_SYNC\", \"tooltip\": \"Last pushed to GitHub\", \"class\": \"clean\"}"
+    echo "{\"text\": \"󰊢 $LAST_SYNC\", \"tooltip\": \"Synced with GitHub\", \"class\": \"clean\"}"
 fi

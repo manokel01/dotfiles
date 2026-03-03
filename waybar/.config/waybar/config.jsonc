@@ -139,7 +139,7 @@
 "custom/git_sync": {
 	"format": "{}",
 	"return-type": "json",
-	"interval": 300, // Checks every 5 minutes
+	"interval": 30, // Checks every 5 minutes
 	"exec": "~/.config/waybar/scripts/git_sync_status.sh",
 	"on-click": "void" // Runs your sync script when clicked!
     }
