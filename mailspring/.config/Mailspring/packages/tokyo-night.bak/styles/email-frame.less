@@ -1,0 +1,22 @@
+.ignore-in-parent-frame {
+  body {
+    /* Force a clean white background and solid black text */
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    
+    /* Kill the Tokyo Night inversion trick entirely */
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+  
+  /* Ensure images and media render normally */
+  img, video, picture {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+  
+  /* Make sure links are visible against the white background */
+  a {
+    color: #0052cc !important;
+  }
+}

@@ -3,7 +3,15 @@ Description=Rclone Bisync Google Drive
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/rclone bisync gdrive_manokel: %h/GoogleDrive --verbose --fix-case --drive-acknowledge-abuse --exclude ".stfolder/**"
+# We use backslashes to break the long command into readable lines
+ExecStart=/usr/bin/rclone bisync gdrive_manokel: %h/GoogleDrive \
+    --verbose \
+    --fix-case \
+    --drive-acknowledge-abuse \
+    --exclude ".stfolder/**" \
+    --exclude ".stignore" \
+    --exclude "sms-*.xml" \
+    --exclude "calls-*.xml"
 # This line creates the flag if the sync fails, and deletes it if it succeeds
 ExecStopPost=/usr/bin/bash -c 'if [ "$EXIT_STATUS" != "0" ]; then touch %h/.rclone_error; else rm -f %h/.rclone_error; fi'
 
