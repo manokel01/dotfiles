@@ -129,3 +129,12 @@ window#waybar {
     background-color: rgba(224, 175, 104, 0.1); 
     border-radius: 5px;
 }
+
+#custom-git_sync.dirty {
+    color: #ff5555; /* Red */
+    font-weight: bold;
+}
+
+#custom-git_sync.clean {
+    color: #50fa7b; /* Green */
+}
