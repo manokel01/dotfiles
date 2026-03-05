@@ -88,16 +88,18 @@
     },
 
     "network": {
-        "format-wifi": " {essid} ({frequency}GHz)",
+        "format-wifi": " {essid}",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
-	"tooltip-format-wifi": "{essid} ({signalStrength}%)",
+	"tooltip-format-wifi": "{essid} {frequency}GHz ({signalStrength}%)",
         "on-click": "kitty --class floating_terminal -e nmtui"
     },
 
     "bluetooth": {
         "format": " {status}",
-        "format-connected": " {device_alias}",
+        "format-connected": "",
+	"tooltip-format-connected": "{device_enumerate}",
+	"tooltip-format-enumerate-connected": " {device_alias} 󰥉 {device_battery_percentage}%",
         "on-click": "blueman-manager"
     },
 
