@@ -88,9 +88,10 @@
     },
 
     "network": {
-        "format-wifi": " {essid}",
+        "format-wifi": " {essid} ({frequency}GHz)",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
+	"tooltip-format-wifi": "{essid} ({signalStrength}%)",
         "on-click": "kitty --class floating_terminal -e nmtui"
     },
 
