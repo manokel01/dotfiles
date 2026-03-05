@@ -88,7 +88,7 @@
     },
 
     "network": {
-        "format-wifi": " {essid}",
+        "format-wifi": "",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
 	"tooltip-format-wifi": "{essid} {frequency}GHz ({signalStrength}%)",
