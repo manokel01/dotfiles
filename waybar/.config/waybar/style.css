@@ -152,3 +152,10 @@ window#waybar {
 #custom-git_sync.unpushed {
     color: #7aa2f7; /* Tokyo Night Blue */
 }
+
+#tray {
+    color: #cdd6f4;
+    padding: 0 6px; 
+    margin: 4px 0px;
+    margin-left: 8px;
+}

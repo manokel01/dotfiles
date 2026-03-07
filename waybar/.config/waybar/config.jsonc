@@ -8,7 +8,7 @@
     "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
     "modules-right": [
         "custom/language",
-	"custom/usb-manager",
+	"tray",
         "custom/rclone",
         "custom/webcam",
         "custom/display",
@@ -144,7 +144,7 @@
 	"format": "{}",
 	"return-type": "json",
 	"interval": 60, // Checks every 5 minutes
-	"exec": "~/.config/waybar/scripts/git_sync_status.sh",
+	"exec": "/home/manokel/.config/waybar/scripts/git_sync_status.sh",
 	"on-click": "kitty --class float-term -e void"
     },
     "custom/notification": {
@@ -167,10 +167,8 @@
         "on-click-right": "swaync-client -d -sw",
         "escape": true
     },
-    "custom/usb-manager": {
-    	"format": "󰋊",
-    	"tooltip-format": "Left-Click: Mount USBs\nRight-Click: Safely Eject USBs",
-    	"on-click": "~/.config/waybar/scripts/mount-usb.sh",
-    	"on-click-right": "~/.config/waybar/scripts/eject-usb.sh"
-	}
+    "tray": {
+	"icon-size": 18,
+	"spacing": 4  /* Small internal spacing between tray icons (e.g., if you have multiple) */
+    }
 }
