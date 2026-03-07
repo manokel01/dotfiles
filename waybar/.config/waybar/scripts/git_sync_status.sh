@@ -1,10 +1,14 @@
 #!/bin/bash
 cd "$HOME/dotfiles" || exit
 
-# Force git to update its view of the filesystem
+# 1. Fetch from the remote in the background so it doesn't lag your bar
+git fetch -q origin main &
+
+# 2. Force git to refresh the index (clears out the [✘!] if files were just touched)
 git update-index -q --refresh
 
-UPSTREAM=${1:-'@{u}'}
+# 3. Use 'origin/main' specifically for REMOTE to see what the server has
+UPSTREAM='origin/main'
 LOCAL=$(git rev-parse @)
 REMOTE=$(git rev-parse "$UPSTREAM")
 
