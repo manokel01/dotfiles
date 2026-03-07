@@ -8,6 +8,7 @@
     "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
     "modules-right": [
         "custom/language",
+	"custom/usb-manager",
         "custom/rclone",
         "custom/webcam",
         "custom/display",
@@ -165,5 +166,11 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
-    }
+    },
+    "custom/usb-manager": {
+    	"format": "󰋊",
+    	"tooltip-format": "Left-Click: Mount USBs\nRight-Click: Safely Eject USBs",
+    	"on-click": "~/.config/waybar/scripts/mount-usb.sh",
+    	"on-click-right": "~/.config/waybar/scripts/eject-usb.sh"
+	}
 }
