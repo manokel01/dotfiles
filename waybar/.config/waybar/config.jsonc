@@ -143,7 +143,7 @@
     "custom/git_sync": {
         "format": "{}",
         "return-type": "json",
-        "interval": 60, // Checks every minute (Note: comment says 5 min, but interval 60 is 1 min)
+        "interval": 60, // Checks every minute
         "exec": "/home/manokel/.config/waybar/scripts/git_sync_status.sh",
         "on-click": "kitty --class float-term --hold -e void"
     },
