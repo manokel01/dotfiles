@@ -4,7 +4,7 @@
     "height": 34,
     "spacing": 15,
     "reload_style_on_change": true,
-    "modules-left": ["hyprland/workspaces", "custom/git_sync"],
+    "modules-left": ["hyprland/workspaces", "custom/updates", "custom/git_sync"],
     "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
     "modules-right": [
         "custom/language",
@@ -170,5 +170,13 @@
     "tray": {
 	"icon-size": 18,
 	"spacing": 4  /* Small internal spacing between tray icons (e.g., if you have multiple) */
+    },
+    "custom/updates": {
+    "format": "{}",
+    "return-type": "json",
+    "interval": 3600, // Checks once every hour
+    "exec": "/home/manokel/.config/waybar/scripts/dnf_updates.sh",
+    "on-click": "kitty --class float-term -e sudo dnf upgrade",
+    "signal": 8
     }
 }
