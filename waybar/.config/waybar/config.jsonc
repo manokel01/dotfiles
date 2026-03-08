@@ -169,6 +169,7 @@
         "escape": true
     },
     "tray": {
+	"output": "eDP-1", // Restricts the tray to the external monitor
 	"icon-size": 18,
 	"spacing": 4  /* Small internal spacing between tray icons (e.g., if you have multiple) */
     },
