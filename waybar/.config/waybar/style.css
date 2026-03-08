@@ -143,6 +143,12 @@ window#waybar {
     color: transparent;
 }
 
+#custom-updates.reboot {
+    color: #f7768e; /* Tokyo Night Red */
+    font-weight: bold;
+    animation: blink 2s infinite; /* Uses the blink animation you already defined for battery */
+}
+
 /* --- TRAY --- */
 #tray {
     color: #cdd6f4;
