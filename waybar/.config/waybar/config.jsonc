@@ -145,7 +145,8 @@
         "return-type": "json",
         "interval": 60, // Checks every minute
         "exec": "/home/manokel/.config/waybar/scripts/git_sync_status.sh",
-        "on-click": "kitty --class float-term --hold -e void"
+	"signal": 2, // Must be exactly 2 for RTMIN+2
+        "on-click": "kitty --class float-term --hold -e /home/manokel/.local/bin/void",
     },
     "custom/notification": {
         "tooltip": false,

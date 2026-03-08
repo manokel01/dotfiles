@@ -9,18 +9,19 @@ window#waybar {
 }
 
 #workspaces button {
-    padding: 0 4px; /* Halved from 8px */
+    padding: 0 4px; 
     color: #cdd6f4;
     background: transparent;
 }
 
 #workspaces button.active {
-    color: #89b4fa; /* Blue accent for active workspace */
+    color: #89b4fa; 
     background: transparent;
     border-radius: 0;
 }
 
-/* Unified styling for all modules: Minimalist spacing */
+/* --- UNIFIED MODULE STYLING --- */
+/* Added #custom-git_sync and #custom-updates to the master spacing list */
 #network, 
 #bluetooth, 
 #pulseaudio, 
@@ -31,28 +32,21 @@ window#waybar {
 #language,
 #custom-power,
 #custom-night_light,
-#custom-keybinds { 
+#custom-keybinds,
+#custom-git_sync,
+#custom-updates { 
     background-color: transparent; 
     padding: 0 6px; 
     margin: 4px 0px;
     transition: all 0.3s ease;
 }
 
-/* Specific padding for the split clock instances */
-#clock.time {
-    padding: 0 8px; /* Halved from 15px */
-}
+#clock.time { padding: 0 8px; }
+#clock.date { padding: 0 8px; }
 
-#clock.date {
-    padding: 0 8px; /* Halved from 15px */
-}
+/* --- BATTERY --- */
+#battery.warning { color: #fab387; }
 
-/* Battery alert levels (Text/Icon color only) */
-#battery.warning { 
-    color: #fab387; 
-}
-
-/* Critical State (Red + Blinking Animation) */
 #battery.critical:not(.charging) { 
     color: #f38ba8; 
     animation-name: blink;
@@ -69,73 +63,59 @@ window#waybar {
     }
 }
 
-/* Power Button Styling */
+/* --- POWER --- */
 #custom-power {
     color: #f38ba8;
-    padding-right: 5px; /* Adjusted for consistency */
+    padding-right: 5px;
 }
 
-#custom-power:hover {
-    color: #ff757f;
-}
+#custom-power:hover { color: #ff757f; }
 
-/* --- Webcam Module --- */
+/* --- WEBCAM --- */
 #custom-webcam {
-    color: #a6adc8; /* Default inactive color */
+    color: #a6adc8;
     padding: 0 6px; 
     margin: 4px 0px;
 }
 
-/* When OBSBOT is actively pumping */
 #custom-webcam.active {
-    color: #f7768e; /* Tokyo Night Red */
-    background-color: rgba(247, 118, 142, 0.1); /* Subtle red glow */
+    color: #f7768e;
+    background-color: rgba(247, 118, 142, 0.1);
     font-weight: bold;
 }
 
-/* When the Internal camera is hijacked by a browser */
 #custom-webcam.active-internal {
-    color: #e0af68; /* Tokyo Night Yellow/Orange */
+    color: #e0af68;
     font-weight: bold;
 }
 
-/* Glow effect for Night Light when active or hovered */
+/* --- NIGHT LIGHT --- */
 #custom-night_light:active,
 #custom-night_light:hover {
-    background-color: rgba(255, 165, 0, 0.2); /* Subtle orange glow */
+    background-color: rgba(255, 165, 0, 0.2);
     border-radius: 8px;
 }
 
-/* --- Google Drive Module --- */
+/* --- RCLONE (GOOGLE DRIVE) --- */
 #custom-rclone {
     color: #a9b1d6; 
     padding: 0 10px; 
     margin: 4px 2px;
-    text-shadow: 0 0 1px #a9b1d6; /* Simulates boldness */
-    transition: all 0.3s ease;
+    text-shadow: 0 0 1px #a9b1d6;
 }
 
-/* Tokyo Night Red Pulse when actively syncing */
 #custom-rclone.syncing {
     color: #F7768E;
-    text-shadow: 0 0 1px #F7768E;
     animation: pulse 2s infinite;
 }
 
-/* Tokyo Night Yellow when an error/lock exists */
 #custom-rclone.error {
     color: #e0af68; 
-    text-shadow: 0 0 1px #e0af68;
     background-color: rgba(224, 175, 104, 0.1); 
     border-radius: 5px;
 }
 
-#custom-git_sync.dirty {
-    color: #ff5555; /* Red */
-    font-weight: bold;
-}
-
-/* GitHub Sync Module */
+/* --- GITHUB SYNC (Consolidated) --- */
 #custom-git_sync {
     padding: 0 10px;
     font-size: 16px;
@@ -147,24 +127,26 @@ window#waybar {
 
 #custom-git_sync.dirty {
     color: #f7768e; /* Tokyo Night Red */
+    font-weight: bold;
 }
 
 #custom-git_sync.unpushed {
     color: #7aa2f7; /* Tokyo Night Blue */
 }
 
+/* --- MAINTENANCE (UPDATES) --- */
+#custom-updates {
+    color: #e0af68; /* Tokyo Night Yellow */
+}
+
+#custom-updates.clean {
+    color: transparent;
+}
+
+/* --- TRAY --- */
 #tray {
     color: #cdd6f4;
     padding: 0 6px; 
     margin: 4px 0px;
     margin-left: 8px;
-}
-
-#custom-updates {
-    color: #e0af68; /* Yellow warning color */
-    margin-right: 10px;
-}
-
-#custom-updates.clean {
-    color: transparent; /* Hides the icon when 0 updates */
 }
