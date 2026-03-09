@@ -3,27 +3,25 @@
 # --- CONFIGURATION ---
 DOTFILES_DIR="$HOME/dotfiles"
 
-# Ensure we are in the correct directory
-cd "$DOTFILES_DIR" || exit
+# Ensure we are in the absolute root of the repository
+cd "$DOTFILES_DIR" || exit 1
 
 # --- INTERACTIVE COMMIT MESSAGE ---
 echo "Step 0: Context"
 read -p "Enter change description (or Enter for generic): " user_msg
 if [ -z "$user_msg" ]; then 
-    COMMIT_MSG="Void Hardening: $(date +'%Y-%m-%d %H:%M:%S') - Fedora 43 Stable"
+    COMMIT_MSG="Void Hardening: $(date +'%Y-%m-%d %H:%M:%S')"
 else 
     COMMIT_MSG="Void: $user_msg"
 fi
 
 echo "--- [1/4] Creating Safety Snapshot (Snapper) ---"
-# Corrected line for ~/.local/bin/void
-sudo snapper create --type single --cleanup number --description "Pre-Sync: Void: $user_msg"
+sudo snapper create --type single --cleanup number --description "Pre-Sync: $COMMIT_MSG"
 
 echo "--- [2/4] Refreshing GNU Stow Symlinks ---"
-for dir in */; do
-    [[ "$dir" == ".git/" ]] && continue
-    stow -R "${dir%/}"
-done
+# Explicitly stow scripts and hyprland to ensure symlinks are intact
+stow -R scripts
+stow -R hyprland
 
 echo "--- [3/4] Validating Scaling & Audio Locks ---"
 if grep -q "exclude=wireplumber" /etc/dnf/dnf.conf; then
@@ -34,19 +32,15 @@ else
 fi
 
 echo "--- [4/4] Pushing to GitHub ---"
-# Stage everything in the current directory (the dotfiles root)
-git add .
-
-# The '|| true' ensures the script doesn't panic if there's nothing to commit
-git commit -m "$COMMIT_MSG" || echo "No changes to commit."
-
-# Push changes
+# -A stages EVERYTHING (tracked, untracked, deleted, hidden)
+git add -A
+git commit -m "$COMMIT_MSG" || echo "Nothing new to commit."
 git push origin main
 
 # --- INSTANT WAYBAR REFRESH ---
 echo "Refreshing Waybar icon..."
-# We use the specific signal number (36 = RTMIN+2) and target all waybar instances
-killall -36 waybar
+# Signal 36 = RTMIN+2. We use -q to suppress 'no process found' errors.
+killall -q -36 waybar
 
 echo "--- VOID SYNC COMPLETE ---"
 sleep 2
