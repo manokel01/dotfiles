@@ -40,7 +40,7 @@ git push origin main
 # --- INSTANT WAYBAR REFRESH ---
 echo "Refreshing Waybar icon..."
 # Signal 36 = RTMIN+2. We use -q to suppress 'no process found' errors.
-killall -q -36 waybar
+killall -u $USER -s SIGRTMIN+2 waybar
 
 echo "--- VOID SYNC COMPLETE ---"
 sleep 2
