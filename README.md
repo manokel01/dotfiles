@@ -26,6 +26,7 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Screenshot Tool:** Grim + Slurp + wl-copy / Swappy
 * **GTK Management:** `nwg-look` (Acts as the local file writer, overriding global `/etc/` theme defaults).
 * **System Information:** Fastfetch (Custom pure-C JSONC configuration; strictly Wayland/hardware metrics, replacing legacy Neofetch).
+* **Custom Scripts:** All maintenance and UI scripts are stored in `~/dotfiles/scripts/.local/bin/` and symlinked to `~/.local/bin/`, ensuring they are natively in the system `$PATH` and executable without absolute directory references.
 
 ## 3. Kernel, Filesystem & Hardware Tuning
 The underlying operating system has been optimized for this specific hardware configuration:
@@ -39,6 +40,7 @@ The underlying operating system has been optimized for this specific hardware co
 ## 4. Disaster Recovery (Snapper)
 System backups are managed via **Snapper** and **Btrfs Assistant**, leveraging Fedora's native `root` and `home` subvolume layout.
 * **Automated Snapshots:** The `python3-dnf-plugin-snapper` package guarantees pre- and post-transaction snapshots for every `dnf` upgrade.
+* **Pre-Sync Snapshots:** The custom `void` sync script automatically triggers a `sudo snapper create` command to capture the system state *before* pushing any dotfile changes or executing symlink rebuilds.
 * **Rollbacks:** System state can be instantly restored via the Btrfs Assistant GUI.
 
 ## 5. UI & Theming Decisions
@@ -68,6 +70,10 @@ System backups are managed via **Snapper** and **Btrfs Assistant**, leveraging F
   * Audio -> `wiremix`
   * Network -> `nmtui`
   * System/Mail -> `btop`
+* **Real-Time Signal Architecture:** Polling is minimized. Modules are updated instantly via `RTMIN` signals triggered by background events or direct clicks:
+  * **Git Sync (`RTMIN+2`):** Updates the repo status instantly after a `void` push.
+  * **System Updates (`RTMIN+8`):** Bypasses CSS cloaking (`.updated` class) and refreshes instantly after a Kitty `dnf upgrade` execution.
+  * **Cloud Storage (`RTMIN+10`):** Instantly reflects the sync status of `gdrive_manokel`.
 
 ### The Cursor
 * **Theme:** Nordzy (White). 
@@ -124,12 +130,16 @@ The layout combines Hyprland Official Navigation Defaults with essential utiliti
 3. **Automated Watchdog:** A custom watchdog script (`~/.local/bin/check_locks.sh`) is integrated into `.bashrc`. If the `wireplumber` lock is missing, a high-visibility red warning is issued.
 4. **Hyprland 0.53+ Strict Syntax:** This configuration enforces the modern Hyprland 0.53+ syntax. Deprecated `windowrulev2` inline commands have been purged in favor of strict block syntax (`windowrule { ... }`) with explicit `match:` prefixes and boolean values. Files must also be saved in strict **UTF-8** without a Byte Order Mark (BOM).
 5. **The GTK Environment Trap:** Hyprland configurations commonly include `env = GTK_THEME, [ThemeName]` at the top of the file. **Do not use this.** Hardcoding the theme via the compositor's environment variables acts as a root-level override, causing the system to ignore local `nwg-look` settings and break fallback paths. GTK environment variables are left empty in `hyprland.conf` to allow UWSM and the desktop portals to broadcast the correct user-level configurations. 
+6. **The GNU Stow Symlink Trap:** Never directly edit script files located in `~/.local/bin/` (or other live `~/.config/` directories). Text editors (like Mousepad) often replace symlinks with physical files upon saving, which causes `stow -R` to panic and abort to prevent data loss. **Always edit the source files directly inside the `~/dotfiles/` vault.**
 
 ## 8. Maintenance Workflow
 
 ### GNU Stow & The "Void" Sync
-The architecture relies entirely on **GNU Stow** symlinks. The files located in `~/.config/` are direct symbolic links into the `~/dotfiles/` vault. 
+The architecture relies entirely on **GNU Stow** symlinks. The files located in `~/.config/` and `~/.local/bin/` are direct symbolic links into the `~/dotfiles/` vault. 
 
-When making changes to the UI or system config, simply save the file and use the custom alias to automatically commit and push to the repository:
-```bash
-void
+When making changes to the UI or system config, modifications are saved in the `~/dotfiles/` directory and synchronized using the custom `void` script. This is not a simple alias, but a comprehensive 4-step maintenance pipeline:
+
+1. **Safety Snapshot:** Prompts for a commit context and creates a tagged Snapper rollback point.
+2. **Symlink Refresh:** Executes `stow -R` across all directories to instantly apply new files or path changes.
+3. **Lock Validation:** Audits `/etc/dnf/dnf.conf` to ensure the `wireplumber` (0.5.11) version lock is intact, reapplying it if necessary.
+4. **Synchronization:** Stages, commits, and pushes to GitHub, finally sending an instant `RTMIN+2` signal to Waybar to turn the Git status icon Green.
