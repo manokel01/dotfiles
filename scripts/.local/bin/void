@@ -34,17 +34,20 @@ else
 fi
 
 echo "--- [4/4] Pushing to GitHub ---"
-git add -A -- .
-git commit -m "$COMMIT_MSG"
+# Stage everything in the current directory (the dotfiles root)
+git add .
+
+# The '|| true' ensures the script doesn't panic if there's nothing to commit
+git commit -m "$COMMIT_MSG" || echo "No changes to commit."
+
+# Push changes
 git push origin main
 
 # --- INSTANT WAYBAR REFRESH ---
-# We fire the signal IMMEDIATELY. No backgrounding, no sleeping.
-# This ensures Waybar updates while the script is still 'alive'.
 echo "Refreshing Waybar icon..."
+# We use the specific signal number (36 = RTMIN+2) and target all waybar instances
 killall -36 waybar
 
 echo "--- VOID SYNC COMPLETE ---"
-# Give the user 2 seconds to see the success message before the window closes
 sleep 2
-# test_sync
+exit 0
