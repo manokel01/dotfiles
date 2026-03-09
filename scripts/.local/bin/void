@@ -39,7 +39,11 @@ git commit -m "$COMMIT_MSG"
 git push origin main
 
 # --- INSTANT WAYBAR REFRESH ---
-# Kicks the Git icon (Signal 2) back to Green immediately
-(sleep 1 && pkill -RTMIN+2 waybar) &
+# We fire the signal IMMEDIATELY. No backgrounding, no sleeping.
+# This ensures Waybar updates while the script is still 'alive'.
+echo "Refreshing Waybar icon..."
+pkill -RTMIN+2 waybar
 
 echo "--- VOID SYNC COMPLETE ---"
+# Give the user 2 seconds to see the success message before the window closes
+sleep 2
