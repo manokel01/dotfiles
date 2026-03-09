@@ -25,7 +25,7 @@ fi
 unset rc
 
 # Security check for critical system locks
-~/dotfiles/scripts/check_locks.sh
+check_locks.sh
 
 alias maintain='sudo dnf upgrade --refresh -y && flatpak update -y && sudo fwupdmgr get-updates && sudo fwupdmgr update && sudo dnf autoremove -y && [ -f /var/run/reboot-required ] && echo ">>> REBOOT RECOMMENDED <<<" || echo ">>> System up to date, no reboot needed. <<<"'
 
