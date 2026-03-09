@@ -38,4 +38,8 @@ git add -A -- .
 git commit -m "$COMMIT_MSG"
 git push origin main
 
+# --- INSTANT WAYBAR REFRESH ---
+# Kicks the Git icon (Signal 2) back to Green immediately
+(sleep 1 && pkill -RTMIN+2 waybar) &
+
 echo "--- VOID SYNC COMPLETE ---"

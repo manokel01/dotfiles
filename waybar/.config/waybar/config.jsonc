@@ -8,13 +8,13 @@
     "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
     "modules-right": [
         "custom/language",
-	"tray",
+        "tray",
         "custom/rclone",
         "custom/webcam",
         "custom/display",
         "custom/night_light",
         "pulseaudio", 
-	"bluetooth", 
+        "bluetooth", 
         "network",
         "custom/power_profile",
         "battery",
@@ -26,20 +26,20 @@
     },
 
     "custom/rclone": {
-	"format": "{}",
-	"return-type": "json",
-	"exec": "/home/manokel/.config/waybar/scripts/rclone_status.sh",
-	"interval": 60, // Checks once per minute to update the tooltip countdown
-	"on-click": "/home/manokel/.config/waybar/scripts/rclone_action.sh",
-	"signal": 10,
-	"tooltip": true
+        "format": "{}",
+        "return-type": "json",
+        "exec": "/home/manokel/.local/bin/rclone_status.sh",
+        "interval": 60,
+        "on-click": "/home/manokel/.local/bin/rclone_action.sh",
+        "signal": 10,
+        "tooltip": true
     },
 
     "custom/power_profile": {
         "exec": "powerprofilesctl get | sed 's/power-saver/Saver/' | sed 's/.*/\\u&/'",
         "interval": 10,
         "signal": 1,
-        "on-click": "/home/manokel/.config/waybar/scripts/power_profile.sh",
+        "on-click": "/home/manokel/.local/bin/power_profile.sh",
         "format": "󰓅 {}"
     },
 
@@ -92,22 +92,22 @@
         "format-wifi": "",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
-	"tooltip-format-wifi": "{essid} {frequency}GHz ({signalStrength}%)",
+        "tooltip-format-wifi": "{essid} {frequency}GHz ({signalStrength}%)",
         "on-click": "kitty --class floating_terminal -e nmtui"
     },
 
     "bluetooth": {
         "format": " {status}",
         "format-connected": "",
-	"tooltip-format-connected": "{device_enumerate}",
-	"tooltip-format-enumerate-connected": " {device_alias} 󰥉 {device_battery_percentage}%",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": " {device_alias} 󰥉 {device_battery_percentage}%",
         "on-click": "blueman-manager"
     },
 
     "custom/language": {
-        "exec": "/home/manokel/.config/waybar/scripts/toggle-layout.sh",
+        "exec": "/home/manokel/.local/bin/toggle-layout.sh",
         "interval": 1,
-        "on-click": "/home/manokel/.config/waybar/scripts/toggle-layout.sh next",
+        "on-click": "/home/manokel/.local/bin/toggle-layout.sh next",
         "signal": 1,
         "format": "{}",
         "tooltip": false
@@ -120,33 +120,33 @@
     },
 
     "custom/webcam": {
-        "exec": "/home/manokel/.config/waybar/scripts/webcam_sensor.sh",
+        "exec": "/home/manokel/.local/bin/webcam_sensor.sh",
         "return-type": "json",
         "interval": 2,
         "format": "  {}",
-        "on-click": "/home/manokel/.config/waybar/scripts/webcam_action.sh",
+        "on-click": "/home/manokel/.local/bin/webcam_action.sh",
         "tooltip": true
     }, 
     
     "custom/night_light": {
         "format": "{}",
         "exec": "pgrep -x gammastep > /dev/null && echo '󰛩' || echo '󰛨'",
-        "on-click": "/home/manokel/.config/waybar/scripts/nl_toggle.sh",
+        "on-click": "/home/manokel/.local/bin/nl_toggle.sh",
         "interval": 1,
         "tooltip": false
     },
     "custom/keybinds": {
-	"format": "󰌌",
-	"on-click": "/home/manokel/.config/waybar/scripts/keybinds.sh",
-	"tooltip": false
+        "format": "󰌌",
+        "on-click": "/home/manokel/.local/bin/keybinds.sh",
+        "tooltip": false
     },
     "custom/git_sync": {
         "format": "{}",
         "return-type": "json",
-        "interval": 60, // Checks every minute
-        "exec": "/home/manokel/.config/waybar/scripts/git_sync_status.sh",
-	"signal": 2, // Must be exactly 2 for RTMIN+2
-        "on-click": "kitty --class float-term --hold -e /home/manokel/.local/bin/void",
+        "interval": 60,
+        "exec": "/home/manokel/.local/bin/git_sync_status.sh",
+        "signal": 2,
+        "on-click": "kitty --class float-term --hold -e /home/manokel/.local/bin/void"
     },
     "custom/notification": {
         "tooltip": false,
@@ -155,7 +155,7 @@
             "notification": " <span foreground='red'><sup></sup></span>",
             "none": "",
             "dnd-notification": " <span foreground='red'><sup></sup></span>",
-            "dnd-none": "",
+            "none": "",
             "inhibited-notification": " <span foreground='red'><sup></sup></span>",
             "inhibited-none": "",
             "dnd-inhibited-notification": " <span foreground='red'><sup></sup></span>",
@@ -169,16 +169,16 @@
         "escape": true
     },
     "tray": {
-	"output": "eDP-1", // Restricts the tray to the external monitor
-	"icon-size": 18,
-	"spacing": 4  /* Small internal spacing between tray icons (e.g., if you have multiple) */
+        "output": "eDP-1",
+        "icon-size": 18,
+        "spacing": 4
     },
     "custom/updates": {
-    "format": "{}",
-    "return-type": "json",
-    "interval": 3600, // Checks once every hour
-    "exec": "/home/manokel/.config/waybar/scripts/dnf_updates.sh",
-    "on-click": "kitty --class float-term -e sudo dnf upgrade",
-    "signal": 8
+        "format": "{}",
+        "return-type": "json",
+        "interval": 3600,
+        "exec": "/home/manokel/.local/bin/dnf_updates.sh",
+        "on-click": "kitty --class float-term -e sudo dnf upgrade",
+        "signal": 8
     }
 }
