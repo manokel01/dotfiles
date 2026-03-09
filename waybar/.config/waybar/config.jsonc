@@ -155,7 +155,7 @@
             "notification": " <span foreground='red'><sup></sup></span>",
             "none": "",
             "dnd-notification": " <span foreground='red'><sup></sup></span>",
-            "none": "",
+            "dnd-none": "",
             "inhibited-notification": " <span foreground='red'><sup></sup></span>",
             "inhibited-none": "",
             "dnd-inhibited-notification": " <span foreground='red'><sup></sup></span>",
@@ -178,7 +178,7 @@
         "return-type": "json",
         "interval": 3600,
         "exec": "/home/manokel/.local/bin/dnf_updates.sh",
-        "on-click": "kitty --class float-term -e sudo dnf upgrade",
+        "on-click": "kitty --class float-term -e bash -c 'sudo dnf upgrade && pkill -RTMIN+8 waybar'",
         "signal": 8
     }
 }

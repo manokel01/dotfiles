@@ -139,8 +139,8 @@ window#waybar {
     color: #e0af68; /* Tokyo Night Yellow */
 }
 
-#custom-updates.clean {
-    color: transparent;
+#custom-updates.updated {
+    color: #9ece6a;
 }
 
 #custom-updates.reboot {
