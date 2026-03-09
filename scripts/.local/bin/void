@@ -1,47 +1,22 @@
 #!/bin/bash
-
-# --- CONFIGURATION ---
 DOTFILES_DIR="$HOME/dotfiles"
 
-# Ensure we are in the absolute root of the repository
+# 1. Grab current changes FROM the system TO the repo (Backup)
+cp ~/.config/hypr/hyprland.conf "$DOTFILES_DIR/hypr/.config/hypr/hyprland.conf"
+cp ~/.config/waybar/config.jsonc "$DOTFILES_DIR/waybar/.config/waybar/config.jsonc"
+cp ~/.config/waybar/style.css "$DOTFILES_DIR/waybar/.config/waybar/style.css"
+
+# 2. Context & Commit
 cd "$DOTFILES_DIR" || exit 1
+read -p "Enter change description: " user_msg
+COMMIT_MSG="Void: ${user_msg:-Auto-sync $(date +'%H:%M')}"
 
-# --- INTERACTIVE COMMIT MESSAGE ---
-echo "Step 0: Context"
-read -p "Enter change description (or Enter for generic): " user_msg
-if [ -z "$user_msg" ]; then 
-    COMMIT_MSG="Void Hardening: $(date +'%Y-%m-%d %H:%M:%S')"
-else 
-    COMMIT_MSG="Void: $user_msg"
-fi
-
-echo "--- [1/4] Creating Safety Snapshot (Snapper) ---"
-sudo snapper create --type single --cleanup number --description "Pre-Sync: $COMMIT_MSG"
-
-echo "--- [2/4] Refreshing GNU Stow Symlinks ---"
-# Explicitly stow scripts and hyprland to ensure symlinks are intact
-stow -R scripts
-stow -R hyprland
-
-echo "--- [3/4] Validating Scaling & Audio Locks ---"
-if grep -q "exclude=wireplumber" /etc/dnf/dnf.conf; then
-    echo "Audio Lock: VERIFIED (0.5.11 protected)"
-else
-    echo "WARNING: Audio Lock missing. Re-applying..."
-    sudo sed -i '/\[main\]/a exclude=wireplumber' /etc/dnf/dnf.conf
-fi
-
-echo "--- [4/4] Pushing to GitHub ---"
-# -A stages EVERYTHING (tracked, untracked, deleted, hidden)
+# 3. Push to GitHub
 git add -A
-git commit -m "$COMMIT_MSG" || echo "Nothing new to commit."
+git commit -m "$COMMIT_MSG"
 git push origin main
 
-# --- INSTANT WAYBAR REFRESH ---
-echo "Refreshing Waybar icon..."
-# Signal 36 = RTMIN+2. We use -q to suppress 'no process found' errors.
-killall -u $USER -s SIGRTMIN+2 waybar
-
+# 4. Refresh Waybar (The Atomic Kick)
+killall -SIGUSR2 waybar
 echo "--- VOID SYNC COMPLETE ---"
 sleep 2
-exit 0
