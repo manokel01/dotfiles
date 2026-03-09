@@ -42,7 +42,7 @@ git push origin main
 # We fire the signal IMMEDIATELY. No backgrounding, no sleeping.
 # This ensures Waybar updates while the script is still 'alive'.
 echo "Refreshing Waybar icon..."
-killall -SIGRTMIN+2 waybar
+killall -36 waybar
 
 echo "--- VOID SYNC COMPLETE ---"
 # Give the user 2 seconds to see the success message before the window closes
