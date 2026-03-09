@@ -16,6 +16,6 @@ elif [ "$UPDATES" -gt 0 ]; then
     # Priority 2: Updates are available
     echo "{\"text\": \"󰚰 $UPDATES\", \"tooltip\": \"$UPDATES updates available. Click to upgrade.\", \"class\": \"updates\"}"
 else
-    # Priority 3: System is clean
-    echo "{\"text\": \"\", \"tooltip\": \"System up to date\", \"class\": \"clean\"}"
+    # Priority 3: System is clean (Class changed to bypass CSS invisibility trap)
+    echo "{\"text\": \"󰚰\", \"tooltip\": \"System up to date\", \"class\": \"updated\"}"
 fi
