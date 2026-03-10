@@ -1,22 +1,27 @@
 #!/bin/bash
 DOTFILES_DIR="$HOME/dotfiles"
 
-# 1. Grab current changes FROM the system TO the repo (Backup)
+# 1. Physical Backup (Local Mirroring)
 cp ~/.config/hypr/hyprland.conf "$DOTFILES_DIR/hypr/.config/hypr/hyprland.conf"
 cp ~/.config/waybar/config.jsonc "$DOTFILES_DIR/waybar/.config/waybar/config.jsonc"
 cp ~/.config/waybar/style.css "$DOTFILES_DIR/waybar/.config/waybar/style.css"
 
-# 2. Context & Commit
+# 2. Preparation for GitHub
 cd "$DOTFILES_DIR" || exit 1
 read -p "Enter change description: " user_msg
 COMMIT_MSG="Void: ${user_msg:-Auto-sync $(date +'%H:%M')}"
 
-# 3. Push to GitHub
 git add -A
 git commit -m "$COMMIT_MSG"
-git push origin main
 
-# 4. Refresh Waybar (The Atomic Kick)
-killall -SIGUSR2 waybar
-echo "--- VOID SYNC COMPLETE ---"
+# 3. The Truth Check (Cloud Sync)
+if git push origin main; then
+    # SUCCESS: Signal Waybar to turn Green
+    killall -SIGUSR2 waybar
+    echo "--- VOID: CLOUD SYNC SUCCESSFUL ---"
+else
+    # FAILURE: Don't signal Green. The icon stays alert.
+    echo "!!! VOID: GITHUB PUSH FAILED - CHECK CONNECTION !!!"
+    notify-send -u critical "Void Sync" "Local vault updated, but GitHub Push FAILED"
+fi
 sleep 2
