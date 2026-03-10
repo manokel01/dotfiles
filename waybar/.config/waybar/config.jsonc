@@ -29,7 +29,7 @@
         "format": "{}",
         "return-type": "json",
         "exec": "/home/manokel/.local/bin/rclone_status.sh",
-        "interval": 60,
+        "interval": 20,
         "on-click": "/home/manokel/.local/bin/rclone_action.sh",
         "signal": 10,
         "tooltip": true
@@ -51,7 +51,7 @@
     },
 
     "clock#date": {
-        "interval": 60,
+        "interval": 20,
         "format": "󰃭 {:%d-%m-%Y}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "on-click": "brave-browser 'https://calendar.google.com/'"
@@ -143,7 +143,7 @@
     "custom/git_sync": {
         "format": "{}",
         "return-type": "json",
-        "interval": 60,
+        "interval": 20,
         "exec": "/home/manokel/.local/bin/git_sync_status.sh",
         "signal": 2,
 	"on-click": "kitty --class float-term -e /home/manokel/.local/bin/void"
