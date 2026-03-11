@@ -10,12 +10,12 @@
 This system is configured to strip away flashy aesthetics in favor of a strictly professional, minimalist workflow. 
 * **Visuals:** High-contrast, pure black backgrounds, zero rounded corners, zero blur, and no UI clutter.
 * **Performance:** Unnecessary graphical effects and background polling scripts are aggressively disabled to maximize responsiveness and battery life.
-* **Control:** Configuration is managed via **flash-git** (Native Git Home), treating the entire `$HOME` directory as a managed Git tree. This avoids the fragility of symlinks and black-box install scripts.
+* **Control:** Configuration is a hybrid architecture utilizing a central Git vault (`~/dotfiles`). It uses **GNU Stow** for stable binaries/apps and **Decoupled Physical Files** for dynamic UI components. This allows for live testing and granular file-diffing without corrupting the version-controlled vault.
 
 ## 2. Core Stack & Tools
 * **Base Template:** **"Native Void"** (100% custom, single-file Hyprland architecture).
 * **Session Manager:** UWSM (Universal Wayland Session Manager)
-* **Dotfile Management:** **flash-git** (Direct Git management of home directory config files).
+* **Dotfile Management:** Git repository at `~/dotfiles` synced to GitHub, deployed via **GNU Stow** and custom `void` sync logic.
 * **Terminal:** Kitty
 * **Status Bar:** Waybar (Minimalist "Pill-less" layout)
 * **App Launcher:** Walker
@@ -25,7 +25,7 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Clipboard Manager:** Cliphist
 * **Screenshot Tool:** Grim + Slurp + wl-copy
 * **GTK Management:** `nwg-look` (Overrides global `/etc/` defaults).
-* **Custom Scripts:** Located in `~/.local/bin/`. These are tracked directly by Git and are natively in the system `$PATH`.
+* **Custom Scripts:** Located in `~/.local/bin/`. These are tracked by Git and deployed to the live system via GNU Stow.
 
 ## 3. Kernel, Filesystem & Hardware Tuning
 * **Filesystem (Btrfs):** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD wear.
@@ -76,12 +76,16 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 2. **Audio Stability:** `wireplumber` is locked to **v0.5.11**. Upgrading past this version crashes Bluetooth high-fidelity audio.
 3. **NuPhy Firmware Master:** Keyboard layout (Super/Alt swap, Alt Gr mapping) is handled at the **hardware firmware level** via NuPhyIO. This ensures identical physical layouts between the ThinkPad and Air75 without software-level "double-swaps."
 4. **Absolute Path Binding:** Hyprland keybinds for local scripts MUST use absolute paths (e.g., `/home/manokel/.local/bin/screenshot.sh`) to bypass the restricted environment `$PATH`.
+5. **Decoupled UI Testing:** `~/.config/waybar/` and `~/.config/hypr/` MUST remain physical directories in the live OS, NOT Stow symlinks. This physical separation is required for `git_sync_status.sh` to execute `diff` checks against the `~/dotfiles` vault.
 
 ## 8. Maintenance Workflow (The "Void" Sync)
-Dotfiles are managed via **flash-git**. Configuration files reside physically in their intended system paths and are tracked directly by a Git bare repository.
+Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to GitHub (`origin main`). The system relies on a hybrid deployment strategy:
+
+* **Stable Apps & Scripts:** Managed by GNU Stow (e.g., `kitty`, `scripts` deployed to `~/.local/bin/`).
+* **Dynamic UI (Waybar/Hyprland):** Kept as decoupled, physical files in `~/.config/` for live editing.
 
 Changes are synchronized using the custom `void` script:
-1. **Safety Snapshot:** Creates a tagged Snapper rollback point.
-2. **Lock Validation:** Ensures the `wireplumber` version lock is intact.
-3. **Atomic Tracking:** `git add`, `git commit`, and `git push` managed from the home directory tree.
-4. **Waybar Signal:** Sends `RTMIN+2` to the status bar to turn the Git icon **Green** upon successful sync.
+1. **Live Audit:** `git_sync_status.sh` constantly runs `diff` to compare live physical UI files against the Git vault. If unsaved changes exist, the Waybar Git icon alerts the user.
+2. **Physical Copy:** The `void` script physically copies (`cp`) the live UI files into `~/dotfiles/` to prepare for atomic tracking.
+3. **Cloud Sync:** `git add`, `git commit`, and `git push` are executed against the GitHub remote.
+4. **Waybar Signal:** Sends a `SIGUSR2` signal to Waybar to turn the Git icon **Green** upon successful sync.
