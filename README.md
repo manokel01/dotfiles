@@ -19,7 +19,7 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Terminal:** Kitty
 * **Text Editing:** micro (Primary terminal editor with CUA keybinds)
 * **Status Bar:** Waybar (Minimalist "Pill-less" layout)
-* **App Launcher:** Walker
+* **App:** Rofi
 * **File Management:** Nautilus (GUI)
 * **System/Network TUIs:** btop, wiremix, nmtui
 * **Browser:** Brave
@@ -57,7 +57,7 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 | :--- | :--- | :--- |
 | **Terminal** | `Super + Return` | Kitty |
 | **Close Window** | `Super + Q` | `killactive` |
-| **App Launcher** | `Super + Space` | Walker |
+| **App Launcher** | `Super + D` | Rofi |
 | **File Manager** | `Super + E` | Nautilus |
 | **Toggle Floating** | `Super + V` | `togglefloating` |
 | **Workspaces** | `Super + [1-4]` | `workspace [1-4]` |
@@ -69,8 +69,9 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 | **ThinkPad Screenshot** | `Print` | `/home/manokel/.local/bin/screenshot.sh` |
 | **NuPhy Screenshot** | `XF86Tools` (F13) | `/home/manokel/.local/bin/screenshot.sh` |
 | **Area Snipping** | `Super + Shift + S` | Grim + Slurp -> wl-copy |
-| **Clipboard History**| `Super + Shift + V` | Cliphist -> Rofi |
+| **Clipboard History**| `Super + V` | Cliphist -> Rofi |
 | **Lock Screen** | `Super + L` | Hyprlock |
+| **Reload Waybar** | `Super + Shift + W` | killall waybar \|\| uwsm app -- waybar |
 
 ## 7. Critical System Quirks
 1. **UWSM Integration:** All core apps (Waybar, Polkit, Idle) are launched as systemd units (`uwsm app --`) to eliminate race conditions.
@@ -80,13 +81,15 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 5. **Decoupled UI Testing:** `~/.config/waybar/` and `~/.config/hypr/` MUST remain physical directories in the live OS, NOT Stow symlinks. This physical separation is required for `git_sync_status.sh` to execute `diff` checks against the `~/dotfiles` vault.
 
 ## 8. Maintenance Workflow (The "Void" Sync)
-Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to GitHub (`origin main`). The system relies on a hybrid deployment strategy:
+Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to GitHub (`origin main`). The system uses a **Hybrid Deployment Strategy** to balance stability with live UI experimentation.
 
-* **Stable Apps & Scripts:** Managed by GNU Stow (e.g., `kitty`, `scripts` deployed to `~/.local/bin/`).
-* **Dynamic UI (Waybar/Hyprland):** Kept as decoupled, physical files in `~/.config/` for live editing.
+### The Hybrid Logic
+* **Stow-Managed (Stable):** Apps like `micro` and `kitty` are symlinked. Edits to these files happen directly inside the vault.
+* **Decoupled (Experimental):** UI files for `hypr` and `waybar` are physical files in `~/.config/`. This allows for live testing and manual auditing before committing to the vault.
 
-Changes are synchronized using the custom `void` script:
-1. **Live Audit:** `git_sync_status.sh` constantly runs `diff` to compare live physical UI files against the Git vault. If unsaved changes exist, the Waybar Git icon alerts the user.
-2. **Physical Copy:** The `void` script physically copies (`cp`) the live UI files into `~/dotfiles/` to prepare for atomic tracking.
-3. **Cloud Sync:** `git add`, `git commit`, and `git push` are executed against the GitHub remote.
-4. **Waybar Signal:** Sends a `SIGUSR2` signal to Waybar to turn the Git icon **Green** upon successful sync.
+### The Sync Process (`void` script)
+1. **Live Audit:** A background script (`git_sync_status.sh`) runs a `diff` between physical UI files and the vault. If they differ, the Waybar Git icon alerts the user.
+2. **Vault Ingestion:** The `void` script executes `cp` to pull physical UI changes into `~/dotfiles/`.
+3. **Unified Staging:** `git add -A` stages both the newly copied UI files and any changes made to stowed configurations.
+4. **Atomic Commit:** The script opens `micro` for a manual commit message.
+5. **Push & Signal:** Upon a successful `git push`, the script sends a `SIGUSR2` signal to Waybar, turning the Git icon **Green** to confirm the local and remote vaults are in sync.
