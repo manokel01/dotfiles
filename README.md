@@ -20,7 +20,7 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Text Editing:** micro (Primary terminal editor with CUA keybinds)
 * **Status Bar:** Waybar (Minimalist "Pill-less" layout)
 * **App Launcher:** Walker
-* **File Management:** Nautilus (GUI) & Yazi (TUI)
+* **File Management:** Nautilus (GUI)
 * **System/Network TUIs:** btop, wiremix, nmtui
 * **Browser:** Brave
 * **Clipboard Manager:** Cliphist

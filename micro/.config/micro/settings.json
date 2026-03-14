@@ -1,1 +1,4 @@
-{}
+{
+    "filemanager.openonstart": true,
+    "tabfocus": true
+}
