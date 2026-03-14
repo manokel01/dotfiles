@@ -170,8 +170,8 @@
     },
     "tray": {
         "output": "eDP-1",
-        "icon-size": 18,
-        "spacing": 20,
+        "icon-size": 14,
+        "spacing": 25,
     },
     "custom/updates": {
         "format": "{}",

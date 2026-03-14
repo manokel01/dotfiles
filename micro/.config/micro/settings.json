@@ -1,4 +1,5 @@
 {
-    "filemanager.openonstart": true,
+    "filemanager.openonstart": false,
+    "mkparents": true,
     "tabfocus": true
 }
