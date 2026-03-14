@@ -180,5 +180,13 @@
         "exec": "/home/manokel/.local/bin/dnf_updates.sh",
         "on-click": "kitty --class float-term -e bash -c 'sudo dnf upgrade && pkill -RTMIN+8 waybar'",
         "signal": 8
+    },
+    "custom/nordvpn": {
+    "exec": "nordvpn status | grep Status | awk '{print $2}'",
+    "interval": 5,
+    "format": "󰖂 {}",
+    "on-click": "vpn-menu.sh",
+    "tooltip": false,
+    "signal": 8
     }
 }
