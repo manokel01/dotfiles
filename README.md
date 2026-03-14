@@ -17,6 +17,7 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Session Manager:** UWSM (Universal Wayland Session Manager)
 * **Dotfile Management:** Git repository at `~/dotfiles` synced to GitHub, deployed via **GNU Stow** and custom `void` sync logic.
 * **Terminal:** Kitty
+* **Text Editing:** micro (Primary terminal editor with CUA keybinds)
 * **Status Bar:** Waybar (Minimalist "Pill-less" layout)
 * **App Launcher:** Walker
 * **File Management:** Nautilus (GUI) & Yazi (TUI)
