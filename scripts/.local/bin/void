@@ -21,10 +21,13 @@ git commit
 if git push origin main; then
     # SUCCESS: Signal Waybar to turn Green
     killall -SIGUSR2 waybar
-    echo "--- VOID: GITHUB SYNC SUCCESSFUL ---"
+    echo -e "\n--- VOID: GITHUB SYNC SUCCESSFUL ---"
 else
     # FAILURE: The Waybar icon will stay in its 'alert' state
-    echo "!!! VOID: GITHUB PUSH FAILED - CHECK CONNECTION !!!"
+    echo -e "\n!!! VOID: GITHUB PUSH FAILED - CHECK CONNECTION !!!"
     notify-send -u critical "Void Sync" "Local vault updated, but GitHub Push FAILED"
 fi
-sleep 2
+
+# 4. The Audit Freeze (Forces the window to stay open)
+echo ""
+read -n 1 -s -r -p "Audit complete. Press any key to close this window..."
