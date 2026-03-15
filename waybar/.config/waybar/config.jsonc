@@ -30,7 +30,7 @@
         "return-type": "json",
         "exec": "/home/manokel/.local/bin/rclone_status.sh",
         "interval": 20,
-        "on-click": "/home/manokel/.local/bin/rclone_action.sh",
+        "on-click": "kitty --class sync_floats -e /home/manokel/.local/bin/rclone_sync.sh",
         "signal": 10,
         "tooltip": true
     },

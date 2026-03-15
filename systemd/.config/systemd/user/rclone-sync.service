@@ -7,15 +7,8 @@ Type=oneshot
 # Wait 15 seconds to ensure Wi-Fi connects after waking from sleep
 ExecStartPre=/bin/sleep 15
 
-# We use backslashes to break the long command into readable lines
-ExecStart=/usr/bin/rclone bisync gdrive_manokel: %h/GoogleDrive \
-    --verbose \
-    --fix-case \
-    --drive-acknowledge-abuse \
-    --exclude ".stfolder/**" \
-    --exclude ".stignore" \
-    --exclude "sms-*.xml" \
-    --exclude "calls-*.xml"
+# Point to the new auto-recovery script
+ExecStart=/home/manokel/.local/bin/rclone_sync.sh
 
 # This line creates the flag if the sync fails, and deletes it if it succeeds
 ExecStopPost=/usr/bin/bash -c 'if [ "$EXIT_STATUS" != "0" ]; then touch %h/.rclone_error; else rm -f %h/.rclone_error; fi'

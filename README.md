@@ -27,6 +27,7 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Screenshot Tool:** Grim + Slurp + wl-copy
 * **GTK Management:** `nwg-look` (Overrides global `/etc/` defaults).
 * **Custom Scripts:** Located in `~/.local/bin/`. These are tracked by Git and deployed to the live system via GNU Stow.
+* **Cloud/Hardware Sync:** Rclone (Guarded Two-Way Bisync)
 
 ## 3. Kernel, Filesystem & Hardware Tuning
 * **Filesystem (Btrfs):** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD wear.
@@ -93,3 +94,11 @@ Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to
 3. **Unified Staging:** `git add -A` stages both the newly copied UI files and any changes made to stowed configurations.
 4. **Atomic Commit:** The script opens `micro` for a manual commit message.
 5. **Push & Signal:** Upon a successful `git push`, the script sends a `SIGUSR2` signal to Waybar, turning the Git icon **Green** to confirm the local and remote vaults are in sync.
+
+## 9. Data Integrity & Cloud Sync
+The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncing bidirectionally with Google Drive and mirroring to a physical T7 drive.
+- **Trigger:** Waybar custom module (`custom/rclone`) launches an interactive Kitty instance (`sync_floats`).
+- **Safety Gate:** Powered by `rclone bisync --dry-run`. Requires explicit `y/n` confirmation to prevent blind mass-deletions. Auto-aborts after 60 seconds of inactivity.
+- **Format Handling:** Google proprietary formats are dynamically exported/imported as `.docx`, `.xlsx`, and `.pptx` for native offline editing.
+- **Hardware Mirror:** One-way `rclone sync` to `/run/media/manokel/t7_ext4/gdrive-manokel`, executing only if the mountpoint is detected.
+- **Telemetry:** `rclone_status.sh` parses local log modification times (`~/.logs/`) to provide accurate UI feedback, completely decoupled from `systemd`.

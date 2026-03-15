@@ -1,11 +1,8 @@
 #!/bin/bash
+# Native Void: Interactive Sync Trigger
 
-# 1. Start the log terminal FIRST in the background (&)
-# This ensures you see the terminal the millisecond you click.
-kitty --class floating_terminal -e journalctl --user -u rclone-sync.service -f &
+# Run the sync script inside a floating kitty window
+kitty --class sync_floats -e /home/manokel/.local/bin/rclone_sync.sh
 
-# 2. Start the sync service
-systemctl --user start rclone-sync.service &
-
-# 3. Force Waybar to update the icon to Red immediately
+# Force Waybar refresh after terminal closes
 pkill -RTMIN+10 waybar
