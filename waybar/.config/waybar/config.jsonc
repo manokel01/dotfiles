@@ -93,15 +93,19 @@
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
         "tooltip-format-wifi": "{essid} {frequency}GHz ({signalStrength}%)",
-        "on-click": "kitty --class floating_terminal -e nmtui"
+        "on-click": "/home/manokel/.local/bin/rofi-network-manager.sh",
+        "on-click-right": "kitty --class floating_terminal sh -c 'ls /etc/NetworkManager/system-connections/; echo \"----------------\"; echo \"Type file name to edit:\"; read file; [ -n \"$file\" ] && sudo micro /etc/NetworkManager/system-connections/\"$file\"'"
     },
 
     "bluetooth": {
-        "format": " {status}",
-        "format-connected": "",
-        "tooltip-format-connected": "{device_enumerate}",
-        "tooltip-format-enumerate-connected": " {device_alias} 󰥉 {device_battery_percentage}%",
-        "on-click": "blueman-manager"
+        "format": "󰂯",
+        "format-connected": "󰂱",
+        "format-disabled": "󰂲",
+        "on-click": "/home/manokel/.local/bin/rofi-bluetooth.sh",
+        "on-click-right": "/home/manokel/.local/bin/bt-codec-picker.sh",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
     },
 
     "custom/language": {
@@ -140,6 +144,7 @@
         "on-click": "/home/manokel/.local/bin/keybinds.sh",
         "tooltip": false
     },
+    
     "custom/git_sync": {
         "format": "{}",
         "return-type": "json",
@@ -148,6 +153,7 @@
         "signal": 2,
 	"on-click": "kitty --class float-term -e /home/manokel/.local/bin/void"
     },
+    
     "custom/notification": {
         "tooltip": false,
         "format": "{icon}",
@@ -168,11 +174,13 @@
         "on-click-right": "swaync-client -d -sw",
         "escape": true
     },
+    
     "tray": {
         "output": "eDP-1",
         "icon-size": 14,
-        "spacing": 25,
+        "spacing": 20,
     },
+    
     "custom/updates": {
         "format": "{}",
         "return-type": "json",
@@ -181,6 +189,7 @@
         "on-click": "kitty --class float-term -e bash -c 'sudo dnf upgrade && pkill -RTMIN+8 waybar'",
         "signal": 8
     },
+    
     "custom/nordvpn": {
     "exec": "nordvpn status | grep Status | awk '{print $2}'",
     "interval": 5,
