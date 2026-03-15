@@ -36,11 +36,12 @@
     },
 
     "custom/power_profile": {
-        "exec": "powerprofilesctl get | sed 's/power-saver/Saver/' | sed 's/.*/\\u&/'",
+        "exec": "/home/manokel/.local/bin/power_status.sh",
+        "return-type": "json",
         "interval": 10,
         "signal": 1,
         "on-click": "/home/manokel/.local/bin/power_profile.sh",
-        "format": "󰓅 {}"
+        "format": "{}"
     },
 
     "clock#time": {

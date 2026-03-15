@@ -15,13 +15,16 @@ window#waybar {
 }
 
 #workspaces button.active {
-    color: #89b4fa; 
+    color: #e0af68;
     background: transparent;
     border-radius: 0;
 }
 
+/* ... [Top sections: Waybar window & Workspaces remain the same] ... */
+
 /* --- UNIFIED MODULE STYLING --- */
-/* Added #custom-git_sync and #custom-updates to the master spacing list */
+/* This is your single source of truth for spacing */
+#custom-power_profile,
 #network, 
 #bluetooth, 
 #pulseaudio, 
@@ -34,60 +37,40 @@ window#waybar {
 #custom-night_light,
 #custom-keybinds,
 #custom-git_sync,
-#custom-updates { 
+#custom-updates,
+#custom-webcam,
+#custom-rclone { 
     background-color: transparent; 
-    padding: 0 6px; 
-    margin: 4px 0px;
-    transition: all 0.3s ease;
+    padding: 0 5px;
+    margin: 0;
 }
 
-#clock.time { padding: 0 8px; }
-#clock.date { padding: 0 8px; }
+/* --- CLOCK --- */
+/* Only keep these if you want the time/date to have more space than the icons */
+#clock.time { padding: 0 12px; }
+#clock.date { padding: 0 12px; }
 
 /* --- BATTERY --- */
 #battery.warning { color: #fab387; }
-
 #battery.critical:not(.charging) { 
     color: #f38ba8; 
-    animation-name: blink;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-@keyframes blink {
-    to {
-        background-color: rgba(243, 139, 168, 0.4);
-        color: #11111b;
-    }
+    animation: blink 1s linear infinite alternate;
 }
 
 /* --- POWER --- */
 #custom-power {
     color: #f38ba8;
-    padding-right: 25px;
+    padding-right: 20px; /* Kept to prevent the icon from hugging the screen edge */
 }
-
 #custom-power:hover { color: #ff757f; }
 
 /* --- WEBCAM --- */
-#custom-webcam {
-    color: #a6adc8;
-    padding: 0 6px; 
-    margin: 4px 0px;
-}
-
+#custom-webcam { color: #a6adc8; }
 #custom-webcam.active {
     color: #f7768e;
     background-color: rgba(247, 118, 142, 0.1);
-    font-weight: bold;
 }
-
-#custom-webcam.active-internal {
-    color: #e0af68;
-    font-weight: bold;
-}
+#custom-webcam.active-internal { color: #e0af68; }
 
 /* --- NIGHT LIGHT --- */
 #custom-night_light:active,
@@ -96,63 +79,33 @@ window#waybar {
     border-radius: 8px;
 }
 
-/* --- RCLONE (GOOGLE DRIVE) --- */
-#custom-rclone {
-    color: #a9b1d6; 
-    padding: 0 10px; 
-    margin: 4px 2px;
-    text-shadow: 0 0 1px #a9b1d6;
-}
-
-#custom-rclone.syncing {
-    color: #F7768E;
-    animation: pulse 2s infinite;
-}
-
+/* --- RCLONE --- */
+#custom-rclone { color: #a9b1d6; }
+#custom-rclone.syncing { color: #F7768E; }
 #custom-rclone.error {
     color: #e0af68; 
     background-color: rgba(224, 175, 104, 0.1); 
-    border-radius: 5px;
 }
 
-/* --- GITHUB SYNC (Consolidated) --- */
-#custom-git_sync {
-    padding: 0 10px;
-    font-size: 16px;
-}
+/* --- GITHUB SYNC --- */
+#custom-git_sync.clean { color: #9ece6a; }
+#custom-git_sync.dirty { color: #f7768e; font-weight: bold; }
+#custom-git_sync.unpushed { color: #7aa2f7; }
 
-#custom-git_sync.clean {
-    color: #9ece6a; /* Tokyo Night Green */
-}
-
-#custom-git_sync.dirty {
-    color: #f7768e; /* Tokyo Night Red */
-    font-weight: bold;
-}
-
-#custom-git_sync.unpushed {
-    color: #7aa2f7; /* Tokyo Night Blue */
-}
-
-/* --- MAINTENANCE (UPDATES) --- */
-#custom-updates {
-    color: #e0af68; /* Tokyo Night Yellow */
-}
-
-#custom-updates.updated {
-    color: #9ece6a;
-}
-
+/* --- MAINTENANCE --- */
+#custom-updates { color: #e0af68; }
+#custom-updates.updated { color: #9ece6a; }
 #custom-updates.reboot {
-    color: #f7768e; /* Tokyo Night Red */
-    font-weight: bold;
-    animation: blink 2s infinite; /* Uses the blink animation you already defined for battery */
+    color: #f7768e; 
+    animation: blink 2s infinite; 
 }
 
 /* --- TRAY --- */
 #tray {
     color: #cdd6f4;
-    padding: 0 6px; 
-    margin: 4px 0px;
-    margin-left: 8px;
+    padding-left: 8px;
+}
+
+@keyframes blink {
+    to { background-color: rgba(243, 139, 168, 0.4); color: #11111b; }
 }
