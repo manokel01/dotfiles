@@ -13,7 +13,9 @@ git add -A
 # Bail out if there is nothing to commit
 if git diff --staged --quiet; then
     echo -e "\n--- VOID: NOTHING TO COMMIT ---"
-    exec bash
+    echo ""
+    read -n 1 -s -r -p "Press any key to close..."
+    exit 0
 fi
 
 # 3. The Interactive Prompt
@@ -27,7 +29,9 @@ read -r COMMIT_MSG
 
 if [ -z "$COMMIT_MSG" ]; then
     echo -e "\nAborted: Commit message cannot be empty."
-    exec bash
+    echo ""
+    read -n 1 -s -r -p "Press any key to close..."
+    exit 1
 fi
 
 # 4. The Truth Check (GitHub Sync)
@@ -43,6 +47,6 @@ else
     notify-send -u critical "Void Sync" "Local vault updated, but GitHub Push FAILED"
 fi
 
-# 5. The Audit Freeze (Hands over to a live shell to keep window open)
-echo -e "\n[Sync complete. You are now in a live shell. Close the window when ready.]"
-exec bash
+# 5. The Audit Freeze
+echo -e "\n========================================"
+read -n 1 -s -r -p "Audit complete. Press any key to close this window..."
