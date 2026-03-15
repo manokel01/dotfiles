@@ -95,10 +95,12 @@ Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to
 4. **Atomic Commit:** The script opens `micro` for a manual commit message.
 5. **Push & Signal:** Upon a successful `git push`, the script sends a `SIGUSR2` signal to Waybar, turning the Git icon **Green** to confirm the local and remote vaults are in sync.
 
-## 9. Data Integrity & Cloud Sync
-The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncing bidirectionally with Google Drive and mirroring to a physical T7 drive.
-- **Trigger:** Waybar custom module (`custom/rclone`) launches an interactive Kitty instance (`sync_floats`).
-- **Safety Gate:** Powered by `rclone bisync --dry-run`. Requires explicit `y/n` confirmation to prevent blind mass-deletions. Auto-aborts after 60 seconds of inactivity.
-- **Format Handling:** Google proprietary formats are dynamically exported/imported as `.docx`, `.xlsx`, and `.pptx` for native offline editing.
-- **Hardware Mirror:** One-way `rclone sync` to `/run/media/manokel/t7_ext4/gdrive-manokel`, executing only if the mountpoint is detected.
-- **Telemetry:** `rclone_status.sh` parses local log modification times (`~/.logs/`) to provide accurate UI feedback, completely decoupled from `systemd`.
+## 9. Data Integrity & "Split-Brain" Cloud Sync
+The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncing bidirectionally with Google Drive and mirroring to a physical T7 drive. The architecture is split into an invisible auditor and a manual execution gate.
+
+* **The Silent Auditor:** A systemd timer (`void-auditor.timer`) triggers `rclone_auditor.sh` hourly. It runs a `bisync --dry-run`.
+    * **Safe Auto-Commit:** If only additions/copies are detected, it syncs invisibly in the background.
+    * **The Guarded Interrupt:** If any destructive action (delete/update) is detected, it aborts, drops a `~/.rclone_pending_review` flag, and turns the Waybar icon Blue.
+* **Manual Execution Gate:** Clicking the Waybar module (`custom/rclone`) opens an interactive Kitty window (`sync_floats`) running `rclone_sync.sh` to review the destructive changes. Requires `y/n` confirmation.
+* **Format Handling:** Google proprietary formats are dynamically exported/imported as `.docx`, `.xlsx`, and `.pptx` for native offline editing.
+* **Hardware Mirror:** One-way `rclone sync` to `/run/media/manokel/t7_ext4/gdrive-manokel`, executing only if the mountpoint is detected.

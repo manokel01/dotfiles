@@ -82,6 +82,7 @@ window#waybar {
 /* --- RCLONE --- */
 #custom-rclone { color: #a9b1d6; }
 #custom-rclone.syncing { color: #F7768E; }
+#custom-rclone.pending { color: #7aa2f7; }
 #custom-rclone.error {
     color: #e0af68; 
     background-color: rgba(224, 175, 104, 0.1); 
