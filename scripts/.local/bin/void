@@ -2,22 +2,37 @@
 DOTFILES_DIR="$HOME/dotfiles"
 
 # 1. Physical Backup (Decoupled Sync)
-# Manually pull experimental files into the vault before the push
 cp ~/.config/hypr/hyprland.conf "$DOTFILES_DIR/hypr/.config/hypr/hyprland.conf"
 cp ~/.config/waybar/config.jsonc "$DOTFILES_DIR/waybar/.config/waybar/config.jsonc"
 cp ~/.config/waybar/style.css "$DOTFILES_DIR/waybar/.config/waybar/style.css"
 
 # 2. Preparation for GitHub
 cd "$DOTFILES_DIR" || exit 1
-
-# Stage everything (The cp files + any changes in symlinked folders)
 git add -A
 
-# Opens 'micro' for your commit message
-echo "--- Opening Micro for Commit Message ---"
-git commit
+# Bail out if there is nothing to commit
+if git diff --staged --quiet; then
+    echo -e "\n--- VOID: NOTHING TO COMMIT ---"
+    exec bash
+fi
 
-# 3. The Truth Check (GitHub Sync)
+# 3. The Interactive Prompt
+echo "========================================"
+echo "          NATIVE VOID SYNC              "
+echo "========================================"
+git status -s
+echo "----------------------------------------"
+echo "Enter commit description (or press Ctrl+C to abort):"
+read -r COMMIT_MSG
+
+if [ -z "$COMMIT_MSG" ]; then
+    echo -e "\nAborted: Commit message cannot be empty."
+    exec bash
+fi
+
+# 4. The Truth Check (GitHub Sync)
+git commit -m "$COMMIT_MSG"
+
 if git push origin main; then
     # SUCCESS: Signal Waybar to turn Green
     killall -SIGUSR2 waybar
@@ -28,6 +43,6 @@ else
     notify-send -u critical "Void Sync" "Local vault updated, but GitHub Push FAILED"
 fi
 
-# 4. The Audit Freeze (Forces the window to stay open)
-echo ""
-read -n 1 -s -r -p "Audit complete. Press any key to close this window..."
+# 5. The Audit Freeze (Hands over to a live shell to keep window open)
+echo -e "\n[Sync complete. You are now in a live shell. Close the window when ready.]"
+exec bash
