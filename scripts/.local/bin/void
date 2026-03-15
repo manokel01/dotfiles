@@ -12,6 +12,8 @@ git add -A
 
 if git diff --staged --quiet; then
     echo -e "\n--- VOID: NOTHING TO COMMIT ---"
+    echo ""
+    read -n 1 -s -r -p "Press any key to close..."
     exit 0
 fi
 
@@ -24,15 +26,25 @@ echo "----------------------------------------"
 echo "Enter commit description (or press Ctrl+C to abort):"
 read -r COMMIT_MSG
 
-[ -z "$COMMIT_MSG" ] && { echo "Aborted: Empty message."; exit 1; }
+if [ -z "$COMMIT_MSG" ]; then
+    echo -e "\nAborted: Commit message cannot be empty."
+    echo ""
+    read -n 1 -s -r -p "Press any key to close..."
+    exit 1
+fi
 
 # 4. The Truth Check
 git commit -m "$COMMIT_MSG"
 
 if git push origin main; then
-    killall -SIGUSR2 waybar
+    # THE FIX: Safely update the module without reloading Waybar
+    pkill -RTMIN+2 waybar
     echo -e "\n--- VOID: GITHUB SYNC SUCCESSFUL ---"
 else
     echo -e "\n!!! VOID: GITHUB PUSH FAILED !!!"
     notify-send -u critical "Void Sync" "GitHub Push FAILED"
 fi
+
+# 5. The Audit Freeze
+echo -e "\n========================================"
+read -n 1 -s -r -p "Audit complete. Press any key to close this window..."
