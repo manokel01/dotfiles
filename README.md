@@ -35,6 +35,8 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Memory Management:** **8GB ZRAM** (lzo-rle). `vm.swappiness` is set to `10` to prioritize the 64GB RAM pool.
 * **Battery Longevity:** Hardware-locked to **80% charge threshold** via the ThinkPad EC. 
 * **Power Efficiency:** `powertop --auto-tune` runs at boot. Idle discharge is optimized to **<6W**.
+* **GPU Media Engine (AMD Radeon 780M):** * **Drivers:** Swapped to `mesa-va-drivers-freeworld` via RPM Fusion to unlock H.264/H.265 hardware decoding (disabled in stock Fedora).
+* **Browser Acceleration:** Forced via `~/.config/brave-flags.conf` using Vulkan and VA-API. achieved **0 RPM fan curves** and **~45°C thermals** during 1080p live streams.
 
 ## 4. Disaster Recovery (Snapper)
 System backups are managed via **Snapper** leveraging Fedora's native Btrfs subvolume layout.

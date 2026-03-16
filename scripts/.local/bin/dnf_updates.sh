@@ -5,7 +5,7 @@ UPDATES=$(dnf check-update -q | grep -c '^\S' | xargs)
 
 # 2. Check if a reboot is required
 # 'needs-restarting -r' returns exit code 1 if a reboot is needed, 0 if not.
-dnf needs-restarting -r > /dev/null 2>&1
+dnf needs-restarting -r > /tmp/waybar_reboot.log 2>&1
 REBOOT_NEEDED=$?
 
 # 3. Output the JSON state
