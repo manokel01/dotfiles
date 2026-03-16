@@ -96,11 +96,11 @@ Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to
 5. **Push & Signal:** Upon a successful `git push`, the script sends a `SIGUSR2` signal to Waybar, turning the Git icon **Green** to confirm the local and remote vaults are in sync.
 
 ## 9. Data Integrity & "Split-Brain" Cloud Sync
-The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncing bidirectionally with Google Drive and mirroring to a physical T7 drive. The architecture is split into an invisible auditor and a manual execution gate.
+The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncing bidirectionally with Google Drive and mirroring to a physical T7 drive. 
 
-* **The Silent Auditor:** A systemd timer (`void-auditor.timer`) triggers `rclone_auditor.sh` hourly. It runs a `bisync --dry-run`.
-    * **Safe Auto-Commit:** If only additions/copies are detected, it syncs invisibly in the background.
-    * **The Guarded Interrupt:** If any destructive action (delete/update) is detected, it aborts, drops a `~/.rclone_pending_review` flag, and turns the Waybar icon Blue.
-* **Manual Execution Gate:** Clicking the Waybar module (`custom/rclone`) opens an interactive Kitty window (`sync_floats`) running `rclone_sync.sh` to review the destructive changes. Requires `y/n` confirmation.
-* **Format Handling:** Google proprietary formats are dynamically exported/imported as `.docx`, `.xlsx`, and `.pptx` for native offline editing.
-* **Hardware Mirror:** One-way `rclone sync` to `/run/media/manokel/t7_ext4/gdrive-manokel`, executing only if the mountpoint is detected.
+* **The Silent Auditor:** A systemd user-timer triggers `rclone_auditor.sh` hourly. 
+    * **Safe Auto-Commit:** If only additions ("Queue copy") are detected, it syncs invisibly.
+    * **Guarded Interrupt:** If "Queue delete" or "Queue update" is detected, it aborts and drops `~/.rclone_pending_review`.
+* **UI Feedback:** Waybar module (`custom/rclone`) uses `rclone_status.sh` to change colors based on state: Green (Idle), Red (Active), Blue (Pending Review), Yellow (Error).
+* **Manual Approval:** Clicking the Blue icon launches `rclone_sync.sh` in a floating Kitty window for line-item review and `y/n` confirmation.
+* **Vault Integration:** All sync scripts are managed via GNU Stow under the `scripts` package.

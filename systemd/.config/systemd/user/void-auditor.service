@@ -1,0 +1,6 @@
+[Unit]
+Description=Native Void: Rclone Silent Auditor
+
+[Service]
+Type=oneshot
+ExecStart=/home/manokel/.local/bin/rclone_auditor.sh
