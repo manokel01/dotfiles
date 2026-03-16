@@ -1,88 +1,54 @@
 #!/bin/bash
-# Native Void: Guarded Two-Way Sync (Bisync)
-# Logic: Audit -> User Review -> Two-Way Sync -> T7 Mirror
+# Native Void: Interactive Sync UI + Fast-List (Human Readable V2)
 
 REMOTE="gdrive_manokel:"
 LOCAL="$HOME/gdrive-manokel"
-T7_PATH="/run/media/manokel/t7_ext4/gdrive-manokel"
-LOG_DIR="$LOCAL/.logs"
-LOG_FILE="$LOG_DIR/sync_$(date +%Y%m%d_%H%M%S).log"
-DRY_RUN_LOG="/tmp/rclone_dry_run.log"
-FLAG_FILE="$HOME/.rclone_error"
-
-mkdir -p "$LOG_DIR"
-rm -f "$FLAG_FILE" # Clear error flag at start
+DRY_LOG="/tmp/rclone_sync_dry.log"
+FLAG_PENDING="$HOME/.rclone_pending_review"
+FLAG_ERROR="$HOME/.rclone_error"
+LOG_FILE="$LOCAL/.logs/sync_$(date +%Y%m%d_%H%M%S).log"
 
 echo "VOID: Performing dry-run audit..."
+echo "------------------------------------------------"
 
-# --- 1. THE DRY RUN ---
-rclone bisync "$REMOTE" "$LOCAL" \
-    --dry-run \
-    --resilient \
-    --drive-acknowledge-abuse \
-    --drive-export-formats docx,xlsx,pptx \
-    --drive-import-formats docx,xlsx,pptx \
-    --fix-case \
-    --compare size,modtime,checksum \
-    --exclude ".logs/**" \
-    --verbose > "$DRY_RUN_LOG" 2>&1
+# 1. Run the Dry-Run and save to temp log
+/usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
+    --dry-run --resilient --fast-list --drive-acknowledge-abuse \
+    --exclude ".logs/**" --verbose > "$DRY_LOG" 2>&1
 
-# --- 2. THE REVIEW ---
-echo -e "------------------------------------------"
-echo -e "🔴 TO DELETE:"
-grep -E -i 'Not deleting|would delete' "$DRY_RUN_LOG" || echo "None"
-echo -e "\n🟢 TO ADD/COPY:"
-grep -E -i 'Not copying|would copy' "$DRY_RUN_LOG" || echo "None"
-echo -e "\n🟡 TO UPDATE:"
-grep -E -i 'Not updating|would update' "$DRY_RUN_LOG" || echo "None"
-echo -e "------------------------------------------"
+# 2. Parse paths using bulletproof regex (ignores spaces/hyphens)
+echo -e "\e[31m🔴 DELETIONS PENDING:\e[0m"
+grep -a -i "Queue delete" "$DRY_LOG" | sed -E 's/.*(gdrive_manokel.*)/  [Laptop -> Cloud] Queued to delete: \1/; s/.*(\/home\/.*)/  [Cloud -> Laptop] Queued to delete: \1/' || echo "  None"
+echo ""
 
-# --- 3. HARDWARE PRE-CHECK ---
+echo -e "\e[32m🟢 COPIES/ADDITIONS PENDING:\e[0m"
+grep -a -i "Queue copy" "$DRY_LOG" | sed -E 's/.*(gdrive_manokel.*)/  [Laptop -> Cloud] Queued to copy: \1/; s/.*(\/home\/.*)/  [Cloud -> Laptop] Queued to copy: \1/' || echo "  None"
+echo ""
+
+echo -e "\e[33m🟡 UPDATES PENDING:\e[0m"
+grep -a -i "Queue update" "$DRY_LOG" | sed -E 's/.*(gdrive_manokel.*)/  [Laptop -> Cloud] Queued to update: \1/; s/.*(\/home\/.*)/  [Cloud -> Laptop] Queued to update: \1/' || echo "  None"
+echo "------------------------------------------------"
+
 if mountpoint -q /run/media/manokel/t7_ext4; then
-    T7_STATUS="✅ T7_EXT4 CONNECTED"
+    echo -e "STATUS: \e[32m✓ T7_EXT4 CONNECTED\e[0m"
 else
-    T7_STATUS="⚠️  T7_EXT4 DISCONNECTED (Mirror will be skipped)"
+    echo -e "STATUS: \e[33m⚠️ T7_EXT4 DISCONNECTED\e[0m (Mirror will be skipped)"
 fi
 
-# --- 4. THE CONFIRMATION (60s Timeout) ---
-echo -e "\nSTATUS: $T7_STATUS"
-echo -n "VOID: Approve these changes? (y/N) [60s timeout]: "
-if read -r -t 60 user_input; then
-    if [[ ! "$user_input" =~ ^[Yy]$ ]]; then
-        echo "VOID: Sync aborted by user."
-        exit 1
-    fi
-else
-    echo -e "\nVOID: Timeout. Sync aborted."
-    exit 1
-fi
+read -t 60 -p "VOID: Approve these changes? (y/N) [60s timeout]: " confirm
 
-# --- 5. THE ACTUAL SYNC ---
-rm -f "$HOME/.rclone_pending_review"
-
-echo "VOID: Executing Two-Way Sync..."
-if rclone bisync "$REMOTE" "$LOCAL" \
-    --resilient \
-    --drive-acknowledge-abuse \
-    --drive-export-formats docx,xlsx,pptx \
-    --drive-import-formats docx,xlsx,pptx \
-    --fix-case \
-    --compare size,modtime,checksum \
-    --exclude ".logs/**" \
-    --verbose >> "$LOG_FILE" 2>&1; then
-    
-    # --- 6. THE HARDWARE MIRROR ---
-    if mountpoint -q /run/media/manokel/t7_ext4; then
-        echo "VOID: Mirroring to T7..."
-        rclone sync "$LOCAL" "$T7_PATH" --exclude ".logs/**" --verbose >> "$LOG_FILE" 2>&1
-        notify-send "Void Sync" "Cloud and T7 updated successfully."
+if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    echo "VOID: Executing Two-Way Sync..."
+    if /usr/bin/rclone bisync "$REMOTE" "$LOCAL" --resilient --fast-list --exclude ".logs/**" --verbose >> "$LOG_FILE" 2>&1; then
+        rm -f "$FLAG_PENDING" "$FLAG_ERROR"
+        pkill -RTMIN+10 waybar
     else
-        notify-send "Void Sync" "Cloud updated. T7 missing."
+        touch "$FLAG_ERROR"
+        pkill -RTMIN+10 waybar
+        echo "Error: Sync failed. Check logs."
+        sleep 3
     fi
 else
-    echo "ERROR" > "$FLAG_FILE"
-    notify-send "Void Sync" "FAILED. Check logs."
-    exit 1
+    echo "Aborted."
+    sleep 1
 fi
-
-pkill -RTMIN+10 waybar # Refresh icon
