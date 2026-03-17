@@ -1,0 +1,47 @@
+#!/bin/bash
+# Native Void: Hardened Focus Mode (No Manual Stop)
+
+BLOCKLIST_FILE="$HOME/dotfiles/config/focus/blocklist.txt"
+HOSTS_FILE="/etc/hosts"
+MARKER_START="# --- FOCUS BLOCK START ---"
+MARKER_END="# --- FOCUS BLOCK END ---"
+
+if [[ "$1" == "edit" ]]; then
+    micro "$BLOCKLIST_FILE"
+    exit 0
+fi
+
+if [[ $1 =~ ^[0-9]+$ ]]; then
+    MINUTES=$1
+    echo "VOID: Engaging Hardened Focus Mode for $MINUTES minutes..."
+
+    # Purge old block if it exists (prevents double-entry)
+    sudo sed -i "/$MARKER_START/,/$MARKER_END/d" "$HOSTS_FILE"
+
+    # Write the block
+    TEMP_CONTENT=$(mktemp)
+    echo "$MARKER_START" >> "$TEMP_CONTENT"
+    while IFS= read -r domain || [[ -n "$domain" ]]; do
+        [[ -z "$domain" || "$domain" =~ ^# ]] && continue
+        echo "0.0.0.0 $domain" >> "$TEMP_CONTENT"
+        echo "0.0.0.0 www.$domain" >> "$TEMP_CONTENT"
+    done < "$BLOCKLIST_FILE"
+    echo "$MARKER_END" >> "$TEMP_CONTENT"
+
+    cat "$TEMP_CONTENT" | sudo tee -a "$HOSTS_FILE" > /dev/null
+    rm "$TEMP_CONTENT"
+
+    sudo resolvectl flush-caches
+    pkill -HUP brave
+
+    # Schedule the surgical removal
+    echo "sudo sed -i '/$MARKER_START/,/$MARKER_END/d' $HOSTS_FILE && sudo resolvectl flush-caches" | at now + "$MINUTES" minutes 2>/dev/null
+
+    echo "------------------------------------------------"
+    echo "STATUS: Focused. No manual stop argument exists."
+    echo "TIMER: System will auto-restore in $MINUTES min."
+    echo "------------------------------------------------"
+else
+    echo "Usage: focus [min] | focus edit"
+    echo "Note: The 'stop' command has been removed to enforce discipline."
+fi
