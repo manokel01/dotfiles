@@ -14,7 +14,8 @@ echo "------------------------------------------------"
 # 1. Run the Dry-Run and save to temp log
 /usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
     --dry-run --resilient --fast-list --drive-acknowledge-abuse \
-    --exclude ".logs/**" --verbose > "$DRY_LOG" 2>&1
+    --exclude ".logs/**" --exclude ".venv/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
+    --verbose > "$DRY_LOG" 2>&1
 
 # 2. Parse paths using bulletproof regex (ignores spaces/hyphens)
 echo -e "\e[31m🔴 DELETIONS PENDING:\e[0m"
@@ -39,7 +40,10 @@ read -t 60 -p "VOID: Approve these changes? (y/N) [60s timeout]: " confirm
 
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
     echo "VOID: Executing Two-Way Sync..."
-    if /usr/bin/rclone bisync "$REMOTE" "$LOCAL" --resilient --fast-list --exclude ".logs/**" --verbose >> "$LOG_FILE" 2>&1; then
+    if /usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
+        --resilient --fast-list \
+        --exclude ".logs/**" --exclude ".venv/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
+        --verbose >> "$LOG_FILE" 2>&1; then
         rm -f "$FLAG_PENDING" "$FLAG_ERROR"
         pkill -RTMIN+10 waybar
     else

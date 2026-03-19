@@ -1,1 +1,3 @@
 buffers/history echo backups/
+.config/micro/buffers/
+.config/micro/backups/

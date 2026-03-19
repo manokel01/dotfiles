@@ -7,7 +7,8 @@ FLAG_ERROR="$HOME/.rclone_error"
 FLAG_PENDING="$HOME/.rclone_pending_review"
 
 # 1. READ THE OUTPUT, IGNORE EXIT CODES
-CHECK_OUTPUT=$(/usr/bin/rclone check "$LOCAL" "$REMOTE" --one-way --fast-list --exclude ".logs/**" 2>&1)
+CHECK_OUTPUT=$(/usr/bin/rclone check "$LOCAL" "$REMOTE" --one-way --fast-list \
+    --exclude ".logs/**" --exclude ".venv/**" --exclude "*/__pycache__/**" --exclude "*.pyc" 2>&1)
 
 # 2. TEXT-PARSING DECISION ENGINE
 if echo "$CHECK_OUTPUT" | grep -q "0 differences found"; then

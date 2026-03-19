@@ -103,6 +103,7 @@ The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncin
 * **The Silent Auditor:** A systemd user-timer triggers `rclone_auditor.sh` hourly. 
     * **Safe Auto-Commit:** If only additions ("Queue copy") are detected, it syncs invisibly.
     * **Guarded Interrupt:** If "Queue delete" or "Queue update" is detected, it aborts and drops `~/.rclone_pending_review`.
+* **Strict Exclusions:** Python virtual environments (`.venv`), cache directories (`__pycache__`), and logs are hard-filtered from all sync and audit operations to prevent massive file-count API throttling on Google Drive.
 * **UI Feedback:** Waybar module (`custom/rclone`) uses `rclone_status.sh` to change colors based on state: Green (Idle), Red (Active), Blue (Pending Review), Yellow (Error).
 * **Manual Approval:** Clicking the Blue icon launches `rclone_sync.sh` in a floating Kitty window for line-item review and `y/n` confirmation.
 * **Vault Integration:** All sync scripts are managed via GNU Stow under the `scripts` package.
