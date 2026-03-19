@@ -126,13 +126,13 @@
     },
 
     "custom/webcam": {
-        "exec": "/home/manokel/.local/bin/webcam_sensor.sh",
-        "return-type": "json",
-        "interval": 2,
-        "format": "  {}",
-        "on-click": "/home/manokel/.local/bin/webcam_action.sh",
-        "tooltip": true
-    }, 
+            "exec": "/home/manokel/.local/bin/webcam_sensor.sh",
+            "return-type": "json",
+            "interval": 2,
+            "format": "{}",
+            "on-click": "/home/manokel/.local/bin/webcam_action.sh",
+            "tooltip": true
+        },
     
     "custom/night_light": {
         "format": "{icon}",

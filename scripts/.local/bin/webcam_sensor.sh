@@ -18,9 +18,9 @@ if [ -n "$FUSER_OUT" ]; then
 fi
 
 if $IS_STREAMING; then
-    echo '{"class": "active", "tooltip": "OBSBOT Streaming"}'
+    echo '{"text": " LIVE", "class": "active", "tooltip": "OBSBOT Streaming"}'
 elif [ -n "$FFMPEG_PID" ]; then
-    echo '{"class": "active-internal", "tooltip": "OBSBOT Idle (Process Running)"}'
+    echo '{"text": " IDLE", "class": "active-internal", "tooltip": "OBSBOT Idle (Process Running)"}'
 else
-    echo '{"class": "inactive", "tooltip": "Camera Off"}'
+    echo '{"text": "", "class": "inactive", "tooltip": "Camera Off"}'
 fi
