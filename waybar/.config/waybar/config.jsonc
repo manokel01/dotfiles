@@ -190,13 +190,13 @@
     },
     
     "custom/updates": {
-        "format": "{}",
-        "return-type": "json",
-        "interval": 3600,
-        "exec": "/home/manokel/.local/bin/dnf_updates.sh",
-        "on-click": "kitty --class float-term -e bash -c 'sudo dnf upgrade && pkill -RTMIN+8 waybar'",
-        "signal": 8
-    },
+            "format": "{}",
+            "return-type": "json",
+            "interval": 3600,
+            "exec": "/home/manokel/.local/bin/dnf_updates.sh",
+            "on-click": "kitty --class float-term bash -c 'sudo dnf upgrade; pkill -RTMIN+8 waybar; exec bash'",
+            "signal": 8
+        },
     
     "custom/nordvpn": {
     "exec": "nordvpn status | grep Status | awk '{print $2}'",
