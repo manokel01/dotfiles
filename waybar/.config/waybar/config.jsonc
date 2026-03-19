@@ -135,12 +135,18 @@
     }, 
     
     "custom/night_light": {
-        "format": "{}",
-        "exec": "pgrep -x gammastep > /dev/null && echo '󰛩' || echo '󰛨'",
+        "format": "{icon}",
+        "format-icons": {
+            "on": "󰹐",  // ON (Shader active) -> Empty bulb with cross
+            "off": "󰛨"  // OFF (Inactive) -> Solid bulb no cross
+        },
+        "return-type": "json",
+        "exec": "/home/manokel/.local/bin/nl_state.sh",
         "on-click": "/home/manokel/.local/bin/nl_toggle.sh",
-        "interval": 1,
-        "tooltip": false
+        "interval": "once",
+        "signal": 8
     },
+
     "custom/keybinds": {
         "format": "󰌌",
         "on-click": "/home/manokel/.local/bin/keybinds.sh",
@@ -200,6 +206,7 @@
     "tooltip": false,
     "signal": 8
     },
+    
     "custom/bitwarden": {
             "format": "󰟵", 
             "on-click": "kitty --class vault_tui -e /home/manokel/.local/bin/pass-picker.sh",
