@@ -8,6 +8,7 @@
     "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
     "modules-right": [
         "custom/language",
+        "custom/bitwarden",
         "tray",
         "custom/rclone",
         "custom/webcam",
@@ -198,5 +199,10 @@
     "on-click": "vpn-menu.sh",
     "tooltip": false,
     "signal": 8
+    },
+    "custom/bitwarden": {
+        "format": "󰟵", 
+        "on-click": "/home/manokel/.local/bin/pass-picker.sh",
+        "tooltip": false
     }
 }

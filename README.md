@@ -107,3 +107,11 @@ The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncin
 * **UI Feedback:** Waybar module (`custom/rclone`) uses `rclone_status.sh` to change colors based on state: Green (Idle), Red (Active), Blue (Pending Review), Yellow (Error).
 * **Manual Approval:** Clicking the Blue icon launches `rclone_sync.sh` in a floating Kitty window for line-item review and `y/n` confirmation.
 * **Vault Integration:** All sync scripts are managed via GNU Stow under the `scripts` package.
+
+## 10. Secrets & Biometrics (Bitwarden Native)
+The system uses a strictly non-GUI password architecture to minimize memory overhead.
+
+* **Stack:** `rbw` (Rust CLI) + `rofi-rbw` + `pinentry-gnome3`.
+* **Biometrics:** Integrated via `fprintd` and `authselect`. Master password decryption is bridged to the ThinkPad P14s fingerprint sensor via PAM.
+* **Workflow:** `Super + P` launches a Rofi-based search. Fingerprint auth unlocks the `rbw-agent` (8hr timeout), and the selected secret is piped to `wl-copy`.
+* **Sync:** Manual sync via `rbw sync`; fully functional offline for read-access.

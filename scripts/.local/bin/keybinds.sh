@@ -16,6 +16,7 @@ echo -e "SUPER + SHIFT + V                󰁔  Clipboard History (Cliphist)"
 echo -e "SUPER + N                󰁔  Toggle Notification Center"
 echo -e "SUPER + SHIFT + W        󰁔  Reload Waybar (Void Sync)"
 echo -e "SUPER + M                󰁔  Exit Hyprland (Logout)\n"
+echo -e "SUPER + P                󰁔 Bitwarden Picker\n"
 
 echo -e "󰹑  SCREENSHOTS"
 echo -e "--------------"
