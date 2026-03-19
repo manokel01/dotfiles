@@ -201,8 +201,9 @@
     "signal": 8
     },
     "custom/bitwarden": {
-        "format": "󰟵", 
-        "on-click": "/home/manokel/.local/bin/pass-picker.sh",
-        "tooltip": false
+            "format": "󰟵", 
+            "on-click": "kitty --class vault_tui -e /home/manokel/.local/bin/pass-picker.sh",
+            "on-click-right": "rbw sync && notify-send 'Bitwarden' 'Vault Synced Successfully' -i security-high",
+            "tooltip": false
     }
 }
