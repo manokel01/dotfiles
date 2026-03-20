@@ -18,8 +18,8 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Dotfile Management:** Git repository at `~/dotfiles` synced to GitHub, deployed via **GNU Stow** and custom `void` sync logic.
 * **Terminal:** Kitty
 * **Text Editing:** micro (Primary terminal editor with CUA keybinds)
-* **Status Bar:** Waybar (Minimalist "Pill-less" layout)
-* **App:** Rofi
+* **Status Bar:** Waybar (Minimalist "Pill-less" layout with Git/Sync auditors)
+* **App Launcher:** Walker (Rust-based, native Wayland)
 * **File Management:** Nautilus (GUI)
 * **System/Network TUIs:** btop, wiremix, nmtui
 * **Browser:** Brave
@@ -28,6 +28,8 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **GTK Management:** `nwg-look` (Overrides global `/etc/` defaults).
 * **Custom Scripts:** Located in `~/.local/bin/`. These are tracked by Git and deployed to the live system via GNU Stow.
 * **Cloud/Hardware Sync:** Rclone (Guarded Two-Way Bisync)
+* **Secret Management:** Bitwarden (via `walker` plugin and `rbw` CLI)
+* **Quick Notes:** `note.sh` (Custom Walker dmenu frontend -> `~/notes.txt`)
 
 ## 3. Kernel, Filesystem & Hardware Tuning
 * **Filesystem (Btrfs):** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD wear.
@@ -59,12 +61,11 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 | Action | Shortcut | Command/Tool |
 | :--- | :--- | :--- |
 | **Terminal** | `Super + Return` | Kitty |
-| **Close Window** | `Super + Q` | `killactive` |
-| **App Launcher** | `Super + D` | Rofi |
+| **Close Window** | `Super + Q` | `killactive` (Smart Viber kill logic) |
+| **App Launcher** | `Super + D` | Walker |
 | **File Manager** | `Super + E` | Nautilus |
 | **Toggle Floating** | `Super + V` | `togglefloating` |
-| **Workspaces** | `Super + [1-4]` | `workspace [1-4]` |
-| **Move to Workspace**| `Super + Shift + [1-4]`| `movetoworkspace [1-4]` |
+| **Quick Note** | `Super + Alt + N` | `note.sh` (Append to `~/notes.txt`) |
 
 ### Essential Utilities & Screenshots
 | Action | Shortcut | Command/Tool |
@@ -72,7 +73,9 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 | **ThinkPad Screenshot** | `Print` | `/home/manokel/.local/bin/screenshot.sh` |
 | **NuPhy Screenshot** | `XF86Tools` (F13) | `/home/manokel/.local/bin/screenshot.sh` |
 | **Area Snipping** | `Super + Shift + S` | Grim + Slurp -> wl-copy |
-| **Clipboard History**| `Super + V` | Cliphist -> Rofi |
+**Bitwarden Vault** | `Super + P` | Walker (Bitwarden plugin) |
+| **Clipboard History**| `Super + Shift + V` | Walker (Clipboard plugin) |
+| **Sync Vault** | `Waybar Click` | `void` script (launched in `floating_terminal`) |
 | **Lock Screen** | `Super + L` | Hyprlock |
 | **Reload Waybar** | `Super + Shift + W` | killall waybar \|\| uwsm app -- waybar |
 
@@ -87,8 +90,12 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to GitHub (`origin main`). The system uses a **Hybrid Deployment Strategy** to balance stability with live UI experimentation.
 
 ### The Hybrid Logic
-* **Stow-Managed (Stable):** Apps like `micro` and `kitty` are symlinked. Edits to these files happen directly inside the vault.
-* **Decoupled (Experimental):** UI files for `hypr` and `waybar` are physical files in `~/.config/`. This allows for live testing and manual auditing before committing to the vault.
+* **Stow-Managed (Stable):** Apps like `micro`, `kitty`, and `scripts/bin/` (including `note.sh`).
+* **Decoupled (Experimental):** UI files for `hypr`, `waybar`, and `walker`. These are physical files in `~/.config/` for live testing; the `void` script copies them into the vault during sync.
+
+### The Sync Process (`void` script)
+1. **Live Audit:** A background script (`git_sync_status.sh`) runs a `diff` between physical UI files (`hypr`, `waybar`, `walker`), core scripts (`note.sh`), and the vault. If they differ, the Waybar Git icon alerts the user.
+2. **Vault Ingestion:** The `void` script executes `cp` to pull physical UI and script changes into `~/dotfiles/`. testing and manual auditing before committing to the vault.
 
 ### The Sync Process (`void` script)
 1. **Live Audit:** A background script (`git_sync_status.sh`) runs a `diff` between physical UI files and the vault. If they differ, the Waybar Git icon alerts the user.
@@ -111,7 +118,7 @@ The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncin
 ## 10. Secrets & Biometrics (Bitwarden Native)
 The system uses a strictly non-GUI password architecture to minimize memory overhead.
 
-* **Stack:** `rbw` (Rust CLI) + `rofi-rbw` + `pinentry-gnome3`.
+* **Stack:** `rbw` (Rust CLI) + `walker` (Bitwarden plugin) + `pinentry-gnome3`.
 * **Biometrics:** Integrated via `fprintd` and `authselect`. Master password decryption is bridged to the ThinkPad P14s fingerprint sensor via PAM.
-* **Workflow:** `Super + P` launches a Rofi-based search. Fingerprint auth unlocks the `rbw-agent` (8hr timeout), and the selected secret is piped to `wl-copy`.
+* **Workflow:** `Super + P` launches the Walker Bitwarden provider. Fingerprint auth unlocks the `rbw-agent`, and the selected secret is piped to `wl-copy`.
 * **Sync:** Manual sync via `rbw sync`; fully functional offline for read-access.
