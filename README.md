@@ -20,7 +20,6 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Text Editing:** micro (Primary terminal editor with CUA keybinds)
 * **Status Bar:** Waybar (Minimalist "Pill-less" layout with Git/Sync auditors)
 * **App Launcher:** Walker (Rust-based, native Wayland)
-* **File Management:** Nautilus (GUI)
 * **System/Network TUIs:** btop, wiremix, nmtui
 * **Browser:** Brave
 * **Clipboard Manager:** Cliphist
@@ -30,6 +29,15 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Cloud/Hardware Sync:** Rclone (Guarded Two-Way Bisync)
 * **Secret Management:** Bitwarden (via `walker` plugin and `rbw` CLI)
 * **Quick Notes:** `note.sh` (Custom Walker dmenu frontend -> `~/notes.txt`)
+
+### 📂 File Management & Portals (Native Void Stack)
+- **Primary File Manager:** Dolphin (KDE) - Replaced Nautilus for rock-solid GDrive (KIO) network stability and async I/O.
+- **UI Theming:** Native Void #000000 aesthetics enforced via `QT_QPA_PLATFORMTHEME=qt6ct` and `kvantum`.
+- **Terminal Integration:** Embedded panel (F4) and right-click actions strictly bound to Kitty.
+- **MIME Associations:** Hard-coded in `~/.config/mimeapps.list` (`inode/directory=org.kde.dolphin.desktop`) to prevent system fallback to GNOME tools.
+- **XDG Portals (The GTK Override):** - `xdg-desktop-portal-kde` handles file chooser dialogs to enforce UI parity in GTK/Chromium apps (like Brave).
+  - Globally enforced via `env = GTK_USE_PORTAL,1` in `hyprland.conf`.
+  - Portal routing locked in `~/.config/xdg-desktop-portal/portals.conf` (`org.freedesktop.impl.portal.FileChooser=kde`).
 
 ## 3. Kernel, Filesystem & Hardware Tuning
 * **Filesystem (Btrfs):** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD wear.
@@ -63,7 +71,7 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 | **Terminal** | `Super + Return` | Kitty |
 | **Close Window** | `Super + Q` | `killactive` (Smart Viber kill logic) |
 | **App Launcher** | `Super + D` | Walker |
-| **File Manager** | `Super + E` | Nautilus |
+| **File Manager** | `Super + E` | Dolphin |
 | **Toggle Floating** | `Super + V` | `togglefloating` |
 | **Quick Note** | `Super + Alt + N` | `note.sh` (Append to `~/notes.txt`) |
 
@@ -73,7 +81,7 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 | **ThinkPad Screenshot** | `Print` | `/home/manokel/.local/bin/screenshot.sh` |
 | **NuPhy Screenshot** | `XF86Tools` (F13) | `/home/manokel/.local/bin/screenshot.sh` |
 | **Area Snipping** | `Super + Shift + S` | Grim + Slurp -> wl-copy |
-**Bitwarden Vault** | `Super + P` | Walker (Bitwarden plugin) |
+| **Bitwarden Vault** | `Super + P` | Walker (Bitwarden plugin) |
 | **Clipboard History**| `Super + Shift + V` | Walker (Clipboard plugin) |
 | **Sync Vault** | `Waybar Click` | `void` script (launched in `floating_terminal`) |
 | **Lock Screen** | `Super + L` | Hyprlock |
