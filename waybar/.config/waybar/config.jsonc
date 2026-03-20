@@ -153,7 +153,7 @@
         "tooltip": false
     },
     
-  "custom/git_sync": {
+	"custom/git_sync": {
                "format": "{}",
                "return-type": "json",
                "interval": 20,
@@ -208,9 +208,9 @@
     },
     
     "custom/bitwarden": {
-            "format": "󰟵", 
-            "on-click": "kitty --class vault_tui -e /home/manokel/.local/bin/pass-picker.sh",
-            "on-click-right": "rbw sync && notify-send 'Bitwarden' 'Vault Synced Successfully' -i security-high",
-            "tooltip": false
+        "format": "󰟵", 
+        "on-click": "kitty --class vault_tui -e /home/manokel/.local/bin/pass-picker.sh",
+        "on-click-right": "rbw sync && notify-send 'Bitwarden' 'Vault Synced Successfully' -i security-high",
+        "tooltip": false
     }
 }

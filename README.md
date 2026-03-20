@@ -89,20 +89,19 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 ## 8. Maintenance Workflow (The "Void" Sync)
 Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to GitHub (`origin main`). The system uses a **Hybrid Deployment Strategy** to balance stability with live UI experimentation.
 
-### The Hybrid Logic
-* **Stow-Managed (Stable):** Apps like `micro`, `kitty`, and `scripts/bin/` (including `note.sh`).
-* **Decoupled (Experimental):** UI files for `hypr`, `waybar`, and `walker`. These are physical files in `~/.config/` for live testing; the `void` script copies them into the vault during sync.
+## The Hybrid Logic
+- **Stow-Managed (Stable):** Core applications and internal logic including `micro`, `kitty`, and all scripts within `~/.local/bin/` (specifically `network-controller.sh`, `note.sh`, and `pass-picker.sh`). These reside permanently in the vault and are symlinked to the system. Changes are detected automatically via `git status`.
+- **Decoupled (Experimental):** UI-critical configurations for `hypr`, `waybar`, and `walker`. To facilitate zero-latency hot-reloading and live testing, these remain **physical files** in `~/.config/`. The `void` script utilizes an explicit **Ingestion Array** to pull these into the vault during sync while safely ignoring stowed symlinks to prevent circular reference errors.
 
 ### The Sync Process (`void` script)
 1. **Live Audit:** A background script (`git_sync_status.sh`) runs a `diff` between physical UI files (`hypr`, `waybar`, `walker`), core scripts (`note.sh`), and the vault. If they differ, the Waybar Git icon alerts the user.
 2. **Vault Ingestion:** The `void` script executes `cp` to pull physical UI and script changes into `~/dotfiles/`. testing and manual auditing before committing to the vault.
 
-### The Sync Process (`void` script)
-1. **Live Audit:** A background script (`git_sync_status.sh`) runs a `diff` between physical UI files and the vault. If they differ, the Waybar Git icon alerts the user.
-2. **Vault Ingestion:** The `void` script executes `cp` to pull physical UI changes into `~/dotfiles/`.
-3. **Unified Staging:** `git add -A` stages both the newly copied UI files and any changes made to stowed configurations.
-4. **Atomic Commit:** The script opens `micro` for a manual commit message.
-5. **Push & Signal:** Upon a successful `git push`, the script sends a `SIGUSR2` signal to Waybar, turning the Git icon **Green** to confirm the local and remote vaults are in sync.
+## The Sync Architecture (`void` & `git_sync_status.sh`)
+1. **Array-Driven Audit:** Both scripts share a unified `UI_TARGETS` array. The background auditor executes a `diff` on these specific paths to detect live system "drift."
+2. **Visual Alerting:** Detected drift or uncommitted vault changes trigger a state change in the Waybar Git icon (Color/Tooltip), signaling the system is "dirty."
+3. **Atomic Ingestion:** The `void` script iterates through the target array, copying physical UI files into the vault while **explicitly ignoring symlinks** (preventing the `cp: same file` error).
+4. **GitHub Serialization:** Changes are staged (`git add -A`), committed with a manual description, and pushed. A `SIGUSR2` signal resets the Waybar icon to **Green (Synced)** upon success.
 
 ## 9. Data Integrity & "Split-Brain" Cloud Sync
 The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncing bidirectionally with Google Drive and mirroring to a physical T7 drive. 

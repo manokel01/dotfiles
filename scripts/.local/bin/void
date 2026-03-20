@@ -1,17 +1,25 @@
 #!/bin/bash
 DOTFILES_DIR="$HOME/dotfiles"
 
-# 1. Physical Backup (Decoupled UI -> Vault)
-# Added Walker to the sync logic
-cp ~/.config/hypr/hyprland.conf "$DOTFILES_DIR/hypr/.config/hypr/hyprland.conf"
-cp ~/.config/waybar/config.jsonc "$DOTFILES_DIR/waybar/.config/waybar/config.jsonc"
-cp ~/.config/waybar/style.css "$DOTFILES_DIR/waybar/.config/waybar/style.css"
-cp ~/.config/walker/config.toml "$DOTFILES_DIR/walker/.config/walker/config.toml"
+# List only the specific UI directories/files you want to "ingest"
+# Format: "Source:Destination_Relative_To_Vault"
+UI_TARGETS=(
+    ".config/hypr/hyprland.conf:hypr/.config/hypr/hyprland.conf"
+    ".config/waybar/config.jsonc:waybar/.config/waybar/config.jsonc"
+    ".config/waybar/style.css:waybar/.config/waybar/style.css"
+    ".config/walker/config.toml:walker/.config/walker/config.toml"
+)
 
-# Sync new scripts (note.sh)
-if [ -f "$HOME/.local/bin/note.sh" ]; then
-    cp "$HOME/.local/bin/note.sh" "$DOTFILES_DIR/scripts/.local/bin/note.sh"
-fi
+# 1. Physical Backup (Decoupled UI -> Vault)
+for entry in "${UI_TARGETS[@]}"; do
+    SRC="${entry%%:*}"
+    DEST="${entry#*:}"
+    
+    # Only copy if it's a real file (prevents stowed symlink errors)
+    if [ -f "$HOME/$SRC" ] && [ ! -L "$HOME/$SRC" ]; then
+        cp "$HOME/$SRC" "$DOTFILES_DIR/$DEST"
+    fi
+done
 
 # 2. Preparation for GitHub
 cd "$DOTFILES_DIR" || exit 1
