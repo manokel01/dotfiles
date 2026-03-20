@@ -1,0 +1,44 @@
+# Native Void Walker Configuration
+app_launch_prefix = "uwsm app --"
+terminal = "kitty"
+show_icons = true
+width = 500
+placeholder = "Void Search..."
+
+# Disable Arch and unused plugins to stop the log errors
+disabled_plugins = ["archlinuxpkgs", "onepassword", "translation", "niri", "symbols"]
+
+[[plugins]]
+name = "applications"
+placeholder = "Applications"
+
+[[plugins]]
+name = "windows"
+placeholder = "Windows"
+
+[[plugins]]
+name = "bookmarks"
+placeholder = "Bookmarks"
+
+[[plugins]]
+name = "clipboard"
+placeholder = "Clipboard"
+
+[[plugins]]
+name = "bitwarden"
+placeholder = "Bitwarden"
+
+[[plugins]]
+name = "calc"
+placeholder = "Calculator"
+
+[[plugins]]
+name = "todo"
+placeholder = "Quick Notes"
+
+[web_search]
+# Kept for internal engine stability, but we won't trigger ai/cl
+[[web_search.engines]]
+name = "google"
+url = "https://www.google.com/search?q=%s"
+prefix = "g"

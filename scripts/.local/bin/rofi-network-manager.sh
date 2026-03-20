@@ -4,7 +4,7 @@
 wifi_list=$(nmcli --fields "SECURITY,SSID" device wifi list | sed 1d | sed 's/^--/󰤪 /g' | sed 's/^[* ]/󰤨 /g' | awk -F'  +' '{if (!seen[$2]++) print $1 " " $2}')
 
 # Use Rofi to select a network
-selected_network=$(echo -e "$wifi_list" | rofi -dmenu -i -p "󰖩 Wi-Fi")
+selected_network=$(echo -e "$wifi_list" | walker --dmenu)
 
 # Exit if nothing selected
 [ -z "$selected_network" ] && exit

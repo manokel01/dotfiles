@@ -153,14 +153,14 @@
         "tooltip": false
     },
     
-   "custom/git_sync": {
-            "format": "{}",
-            "return-type": "json",
-            "interval": 20,
-            "exec": "/home/manokel/.local/bin/git_sync_status.sh",
-            "signal": 2,
-           "on-click": "kitty --class float-term -e /home/manokel/.local/bin/void"
-        },
+  "custom/git_sync": {
+               "format": "{}",
+               "return-type": "json",
+               "interval": 20,
+               "exec": "/home/manokel/.local/bin/git_sync_status.sh",
+               "signal": 2,
+               "on-click": "kitty --class floating_terminal -e /home/manokel/.local/bin/void"
+           },
     
     "custom/notification": {
         "tooltip": false,

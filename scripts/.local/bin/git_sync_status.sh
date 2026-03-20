@@ -5,6 +5,9 @@ DOTFILES_DIR="$HOME/dotfiles"
 DIFF_HYPR=$(diff -q ~/.config/hypr/hyprland.conf "$DOTFILES_DIR/hypr/.config/hypr/hyprland.conf" 2>/dev/null)
 DIFF_WB_C=$(diff -q ~/.config/waybar/config.jsonc "$DOTFILES_DIR/waybar/.config/waybar/config.jsonc" 2>/dev/null)
 DIFF_WB_S=$(diff -q ~/.config/waybar/style.css "$DOTFILES_DIR/waybar/.config/waybar/style.css" 2>/dev/null)
+# NEW: Walker & Note Script Audits
+DIFF_WALKER=$(diff -q ~/.config/walker/config.toml "$DOTFILES_DIR/walker/.config/walker/config.toml" 2>/dev/null)
+DIFF_NOTE=$(diff -q ~/.local/bin/note.sh "$DOTFILES_DIR/scripts/.local/bin/note.sh" 2>/dev/null)
 
 cd "$DOTFILES_DIR" || exit
 
@@ -19,7 +22,8 @@ sanitize() {
 }
 
 # 3. PRIORITY LOGIC
-if [[ -n "$DIFF_HYPR" || -n "$DIFF_WB_C" || -n "$DIFF_WB_S" || -n "$STATUS" ]]; then
+# Added DIFF_WALKER and DIFF_NOTE to the "Dirty" check
+if [[ -n "$DIFF_HYPR" || -n "$DIFF_WB_C" || -n "$DIFF_WB_S" || -n "$DIFF_WALKER" || -n "$DIFF_NOTE" || -n "$STATUS" ]]; then
     # Something is changed in .config OR something is uncommitted in the repo
     echo "{\"text\": \"$ICON\", \"tooltip\": \"󱈸 UNCOMMITTED OR LIVE CHANGES\", \"class\": \"dirty\"}"
 elif [[ -n "$LOCAL" && -n "$REMOTE" && "$LOCAL" != "$REMOTE" ]]; then

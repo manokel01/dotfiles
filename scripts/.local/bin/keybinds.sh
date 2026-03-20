@@ -19,6 +19,7 @@ echo -e "SUPER + SHIFT + W      󰁔  Reload Waybar (Void Sync)"
 echo -e "SUPER + ALT + C        󰁔  Fix Webcam Service"
 echo -e "SUPER + M              󰁔  Exit Hyprland (Logout)"
 echo -e "SUPER + P              󰁔  Bitwarden Picker (rbw)\n"
+echo -e "SUPER + ALT + N        󰁔  Append Quick Note (notes.txt)"
 
 echo -e "󰹑  SCREENSHOTS"
 echo -e "--------------"

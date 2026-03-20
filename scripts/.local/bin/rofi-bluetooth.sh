@@ -25,7 +25,7 @@ else
 fi
 
 # 3. Show Rofi menu
-selection=$(echo -e "$menu" | rofi -dmenu -i -p "󰂯 Bluetooth")
+selection=$(echo -e "$menu" | walker --dmenu)
 
 [ -z "$selection" ] && exit
 
