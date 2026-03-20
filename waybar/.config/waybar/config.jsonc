@@ -99,15 +99,16 @@
         "on-click-right": "kitty --class floating_terminal -e /home/manokel/.local/bin/network-controller.sh --manage"
     },
 
-    "bluetooth": {
+	"bluetooth": {
         "format": "󰂯",
         "format-connected": "󰂱",
         "format-disabled": "󰂲",
         "on-click": "/home/manokel/.local/bin/rofi-bluetooth.sh",
         "on-click-right": "/home/manokel/.local/bin/bt-codec-picker.sh",
-        "tooltip-format": "{controller_alias}\t{controller_address}",
-        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
+        "tooltip-format": "Bluetooth Enabled (No Devices)",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "󰂱 {device_alias} ({device_battery_percentage}%)",
+        "tooltip-format-disabled": "Bluetooth Disabled"
     },
 
     "custom/language": {
