@@ -95,8 +95,8 @@
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪",
         "tooltip-format-wifi": "{essid} {frequency}GHz ({signalStrength}%)",
-        "on-click": "/home/manokel/.local/bin/rofi-network-manager.sh",
-        "on-click-right": "kitty --class floating_terminal sh -c 'ls /etc/NetworkManager/system-connections/; echo \"----------------\"; echo \"Type file name to edit:\"; read file; [ -n \"$file\" ] && sudo micro /etc/NetworkManager/system-connections/\"$file\"'"
+        "on-click": "/home/manokel/.local/bin/network-controller.sh --menu",
+        "on-click-right": "kitty --class floating_terminal -e /home/manokel/.local/bin/network-controller.sh --manage"
     },
 
     "bluetooth": {

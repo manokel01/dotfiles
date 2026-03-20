@@ -1,4 +1,5 @@
 #!/bin/bash
+# Native Void: Keybind Cheat Sheet (Walker Edition)
 
 (
 echo -e "  HYPRLAND SHORTCUTS CHEAT SHEET"
@@ -8,17 +9,17 @@ echo -e "󰣆  SYSTEM & APPS"
 echo -e "----------------"
 echo -e "SUPER + RETURN         󰁔  Open Terminal (Kitty)"
 echo -e "SUPER + Q              󰁔  Close Window (Smart Viber Kill)"
-echo -e "SUPER + D / 󰍉           󰁔  App Launcher (Rofi)"
-echo -e "SUPER + Space          󰁔  Toggle Language (Script-based US/GR)"
-echo -e "SHIFT + ALT            󰁔  Toggle Language (Hardware-level US/GR)"
+echo -e "SUPER + D              󰁔  App Launcher (Walker)"
+echo -e "SUPER + SHIFT + R      󰁔  Reload Hyprland Config"
+echo -e "SUPER + Space          󰁔  Toggle Language (US/GR)"
 echo -e "SUPER + E              󰁔  File Manager (Nautilus)"
 echo -e "SUPER + SHIFT + E      󰁔  Terminal File Manager (Yazi)"
-echo -e "SUPER + SHIFT + V      󰁔  Clipboard History (Cliphist)"
-echo -e "SUPER + N              󰁔  Toggle Notification Center"
-echo -e "SUPER + SHIFT + W      󰁔  Reload Waybar (Void Sync)"
+echo -e "SUPER + SHIFT + V      󰁔  Clipboard History (Walker/Cliphist)"
+echo -e "SUPER + N              󰁔  Toggle Notification Center (SwayNC)"
+echo -e "SUPER + SHIFT + W      󰁔  Reload Waybar (Void Sync Status)"
 echo -e "SUPER + ALT + C        󰁔  Fix Webcam Service"
 echo -e "SUPER + M              󰁔  Exit Hyprland (Logout)"
-echo -e "SUPER + P              󰁔  Bitwarden Picker (rbw)\n"
+echo -e "SUPER + P              󰁔  Bitwarden Vault (Walker Plugin)\n"
 echo -e "SUPER + ALT + N        󰁔  Append Quick Note (notes.txt)"
 
 echo -e "󰹑  SCREENSHOTS"
@@ -30,10 +31,9 @@ echo -e "F13 / Tools (NuPhy)    󰁔  Trigger screenshot.sh\n"
 
 echo -e "󰌌  NUPHY AIR75 V3 SPECIAL"
 echo -e "--------------------------"
-echo -e "F3                     󰁔  Search Open Windows"
-echo -e "Media Keys (  )      󰁔  Player Controls"
-echo -e "Right OPT (Alt Gr)     󰁔  Greek Accents (NuPhy Firmware)"
-echo -e "Top-Right FN5 + 1/2/3  󰁔  Switch Bluetooth Slots\n"
+echo -e "F3 / Search Keys       󰁔  Walker Launcher / Window Switcher"
+echo -e "Media Keys (  )      󰁔  Player Controls (playerctl)"
+echo -e "Right OPT (Alt Gr)     󰁔  Greek Accents (NuPhy Firmware)\n"
 
 echo -e "󰖲  WORKSPACES & WINDOWS"
 echo -e "-----------------------"
@@ -56,6 +56,8 @@ echo -e "󰃠  HARDWARE"
 echo -e "-----------"
 echo -e "Brightness Keys        󰁔  Adjust Screen & DDC/CI Monitor"
 echo -e "Volume Keys / Knob     󰁔  Adjust/Mute Audio (SwayOSD)"
+echo -e "Network (Left Click)   󰁔  Wi-Fi Picker (Walker Overlay)"
+echo -e "Network (Right Click)  󰁔  Network Manager (NMTUI)"
 echo -e "Sleep Key              󰁔  System Suspend"
 ) > /tmp/hypr_keys
 
