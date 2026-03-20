@@ -30,6 +30,17 @@ echo -e "\e[33m🟡 UPDATES PENDING:\e[0m"
 grep -a -i "Queue update" "$DRY_LOG" | sed -E 's/.*(gdrive_manokel.*)/  [Laptop -> Cloud] Queued to update: \1/; s/.*(\/home\/.*)/  [Cloud -> Laptop] Queued to update: \1/' || echo "  None"
 echo "------------------------------------------------"
 
+# 3. The Ghost Flag Trap
+CHANGE_COUNT=$(grep -a -iE "Queue copy|Queue delete|Queue update" "$DRY_LOG" | wc -l)
+
+if [ "$CHANGE_COUNT" -eq 0 ]; then
+    echo -e "\nVOID: Audit confirmed zero changes. Clearing ghost flag..."
+    rm -f "$FLAG_PENDING" "$FLAG_ERROR"
+    pkill -RTMIN+10 waybar
+    sleep 1.5
+    exit 0
+fi
+
 if mountpoint -q /run/media/manokel/t7_ext4; then
     echo -e "STATUS: \e[32m✓ T7_EXT4 CONNECTED\e[0m"
 else
