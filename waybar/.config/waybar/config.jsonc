@@ -4,7 +4,7 @@
     "height": 30,
     "spacing": 15,
     "reload_style_on_change": true,
-    "modules-left": ["hyprland/workspaces", "custom/updates", "custom/git_sync"],
+    "modules-left": ["hyprland/workspaces", "custom/updates", "custom/git_sync","cpu","memory"],
     "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
     "modules-right": [
         "custom/language",
@@ -17,8 +17,6 @@
         "pulseaudio", 
         "bluetooth", 
         "network",
-        "cpu", 
-        "memory",
         "custom/power_profile",
         "battery",
         "custom/power"
