@@ -24,6 +24,7 @@ window#waybar {
 
 /* --- UNIFIED MODULE STYLING --- */
 /* This is your single source of truth for spacing */
+#memory,
 #custom-power_profile,
 #network, 
 #bluetooth, 
@@ -110,4 +111,17 @@ window#waybar {
 
 @keyframes blink {
     to { background-color: rgba(243, 139, 168, 0.4); color: #11111b; }
+}
+
+/* --- MEMORY --- */
+#memory {
+    color: #c0caf5;
+}
+
+#memory.warning {
+    color: #e0af68; /* Tokyo Night Yellow */
+}
+
+#memory.critical {
+    color: #f7768e; /* Tokyo Night Red */
 }
