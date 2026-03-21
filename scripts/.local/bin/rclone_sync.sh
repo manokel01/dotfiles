@@ -52,6 +52,9 @@ if [ "$CLOUD_CHANGES" -gt 0 ]; then
 else
     echo -e "\nVOID: No Cloud changes. Clearing ghost flag..."
     rm -f "$FLAG_PENDING" "$FLAG_ERROR"
+    echo "------------------------------------------------"
+    read -p "Press any key to proceed to mirrors..." -n 1 -s
+    echo -e "\n"
 fi
 
 # --- PHASE 2: DETECT MIRROR TARGETS ---
