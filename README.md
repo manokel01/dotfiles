@@ -42,7 +42,7 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 ## 3. Kernel, Filesystem & Hardware Tuning
 * **Filesystem (Btrfs):** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD wear.
   **Partition Layout:**
-	- Partition 1: Linux root (Btrfs) — Snapper-managed, subvolumes: root, home, .snapshots
+	- Partition 1: Linux root (Btrfs) — Snapper-managed (root + home configs), subvolumes: root, home, .snapshots
 	- Partition 2: /mnt/data (exFAT) — shared read/write across dual-boot, excluded from Snapper
 	- Partition 3: Windows (NTFS)
 * **Shared Storage:** A dedicated `/mnt/data` partition for read/write compatibility across dual-boot environments.
@@ -54,9 +54,11 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 
 ## 4. Disaster Recovery (Snapper)
 System backups are managed via **Snapper** leveraging Fedora's native Btrfs subvolume layout.
+* **Configurations:** Two active configs — `root` covering `/` (NUMBER_LIMIT=10) and `home` covering `/home` (NUMBER_LIMIT=100).
 * **Automated Snapshots:** Pre- and post-transaction snapshots for every `dnf` upgrade.
 * **Pre-Sync Snapshots:** The `void` script triggers a `sudo snapper create` before any Git push.
-* **Rollbacks:** Accessible via Btrfs Assistant GUI.
+* **Claude Code Snapshots:** A pre-tool hook triggers `snapper -c home create` before every individual file write inside the Claude Code container.
+* **Rollbacks:** Accessible via Btrfs Assistant GUI (v2.2, installed via RPM).
 
 ## 5. UI & Theming Decisions
 * **Global Theme:** Flat-Remix-GTK-Blue-Dark
