@@ -41,6 +41,10 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 
 ## 3. Kernel, Filesystem & Hardware Tuning
 * **Filesystem (Btrfs):** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD wear.
+  **Partition Layout:**
+	- Partition 1: Linux root (Btrfs) — Snapper-managed, subvolumes: root, home, .snapshots
+	- Partition 2: /mnt/data (exFAT) — shared read/write across dual-boot, excluded from Snapper
+	- Partition 3: Windows (NTFS)
 * **Shared Storage:** A dedicated `/mnt/data` partition for read/write compatibility across dual-boot environments.
 * **Memory Management:** **8GB ZRAM** (lzo-rle). `vm.swappiness` is set to `10` to prioritize the 64GB RAM pool.
 * **Battery Longevity:** Hardware-locked to **80% charge threshold** via the ThinkPad EC. 
