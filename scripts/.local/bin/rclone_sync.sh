@@ -1,5 +1,5 @@
 #!/bin/bash
-# Native Void: Absolute Final Hardened Sync
+# Native Void: Absolute Final Hardened Sync v2.0
 
 REMOTE="gdrive_manokel:"
 LOCAL="$HOME/gdrive-manokel"
@@ -20,7 +20,7 @@ TARGETS=(
 echo "VOID: Performing Cloud (Two-Way) dry-run..."
 /usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
     --dry-run --resilient --fast-list --drive-acknowledge-abuse \
-    --exclude ".logs/**" --exclude "**/.venv/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
+    --exclude ".logs/**" --exclude "**/.venv/**" --exclude "**/.git/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
     --verbose > "$DRY_LOG" 2>&1
 
 echo "------------------------------------------------"
@@ -42,7 +42,7 @@ if [ "$CLOUD_CHANGES" -gt 0 ]; then
         echo "VOID: Syncing Cloud..."
         if /usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
             --resilient --fast-list \
-            --exclude ".logs/**" --exclude "**/.venv/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
+            --exclude ".logs/**" --exclude "**/.venv/**" --exclude "**/.git/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
             --verbose --log-file="$LOG_FILE"; then
             rm -f "$FLAG_PENDING" "$FLAG_ERROR"
         else
@@ -68,7 +68,9 @@ done
 
 if [ ${#AVAILABLE[@]} -eq 0 ]; then
     echo -e "\e[33mNo target drives connected. Exiting.\e[0m"
-    pkill -RTMIN+10 waybar && sleep 1.5 && exit 0
+    pkill -RTMIN+10 waybar
+    read -p "Press any key to close this window..." -n 1 -s
+    exit 0
 fi
 
 echo "Connected Targets:"
@@ -96,14 +98,13 @@ for t in "${TARGET_QUEUE[@]}"; do
     DEST_PATH="$path/gdrive-manokel"
     mkdir -p "$DEST_PATH"
     
-    # Base flags - Remove --local-encoding from here
-    # Added --skip-links because exFAT cannot store them and you manage them via GitHub
-    FLAGS="--fast-list --progress --skip-links --exclude .logs/** --exclude **/.venv/** --exclude */__pycache__/** --exclude *.pyc --verbose --log-file=$LOG_FILE"
+    # Base flags - Removed --local-encoding, added --skip-links, added **/.git/**
+    FLAGS="--fast-list --progress --skip-links --exclude .logs/** --exclude **/.venv/** --exclude **/.git/** --exclude */__pycache__/** --exclude *.pyc --verbose --log-file=$LOG_FILE"
     
     FINAL_DEST="$DEST_PATH"
 
     if [ "$type" == "exfat" ]; then
-        # Use only valid Rclone keywords (Removed DotDot/LessThan/etc based on your terminal help output)
+        # Use only valid Rclone keywords
         ENCODING="Slash,Dot,Ctl,Colon,Question,Asterisk,Pipe,BackSlash,LtGt,DoubleQuote"
         
         # Attach the encoding surgically to the destination ONLY
