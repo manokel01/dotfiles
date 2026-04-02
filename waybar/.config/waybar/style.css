@@ -99,8 +99,11 @@ window#waybar {
 #custom-updates { color: #e0af68; }
 #custom-updates.updated { color: #9ece6a; }
 #custom-updates.reboot {
-    color: #f7768e; 
-    animation: blink 2s infinite; 
+    color: #ffffff;
+    background-color: #f7768e; /* Tokyo Night Red */
+    padding: 0 10px;
+    border-radius: 0; /* Keep it Native Void (no rounding) */
+    animation: blink 0.5s infinite alternate; /* Faster, urgent blink */
 }
 
 /* --- TRAY --- */
