@@ -1,22 +1,19 @@
 #!/bin/bash
-# Force systemd to see standard binary paths
 export PATH="/usr/bin:/usr/local/bin:/bin:$PATH"
 
-# 1. Count updates. No --refresh (prevents sudo hangs). Broad match for DNF5.
-UPDATES=$(dnf check-update -q | grep -cE '(x86_64|noarch|i686|aarch64)')
+# 1. Quick count (Quiet mode, no metadata refresh)
+UPDATES=$(dnf check-update -q | grep -cE '^\S+\s+\S+\s+\S+')
 
-# 2. Check if a reboot is required
-dnf needs-restarting -r > /tmp/waybar_reboot.log 2>&1
-EXIT_CODE=$?
-
-# 3. Guard against missing commands
-if [ "$EXIT_CODE" -eq 1 ] && ! grep -qi "error\|failed\|lock\|not found" /tmp/waybar_reboot.log; then
-    REBOOT_NEEDED=1
-else
-    REBOOT_NEEDED=0
+# 2. Reboot check (Only run if updates exist to save battery)
+REBOOT_NEEDED=0
+if [ "$UPDATES" -gt 0 ]; then
+    # dnf needs-restarting -r returns 1 if a reboot IS needed
+    if ! dnf needs-restarting -r >/dev/null 2>&1; then
+        REBOOT_NEEDED=1
+    fi
 fi
 
-# 4. Output the JSON state
+# 3. Output JSON
 if [ "$REBOOT_NEEDED" -eq 1 ]; then
     echo "{\"text\": \"󰑐 REBOOT\", \"tooltip\": \"System updated. Reboot required.\", \"class\": \"reboot\"}"
 elif [ "$UPDATES" -gt 0 ]; then

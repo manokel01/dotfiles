@@ -194,10 +194,11 @@
     "custom/updates": {
             "format": "{}",
             "return-type": "json",
-            "interval": 3600,
+            "interval": 43200,
             "exec": "/home/manokel/.local/bin/dnf_updates.sh",
             "on-click": "kitty --class float-term bash -c 'sudo dnf upgrade; pkill -RTMIN+8 waybar; exec bash'",
-            "signal": 8
+            "signal": 8,
+            "tooltip": true
         },
     
     "custom/nordvpn": {
