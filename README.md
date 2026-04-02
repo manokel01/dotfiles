@@ -133,6 +133,7 @@ The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncin
 * **UI Feedback:** Waybar module (`custom/rclone`) uses `rclone_status.sh` to change colors based on state: Green (Idle), Red (Active), Blue (Pending Review), Yellow (Error).
 * **Manual Approval (The Gatekeeper):** Clicking the Blue icon launches `rclone_sync.sh` in a floating Kitty window. It utilizes a `pgrep` memory check to stall execution until background database locks are cleared, then prompts for line-item review and `y/n` confirmation.
 * **Vault Integration:** All sync scripts are managed via GNU Stow under the `scripts` package.
+* **Hard Resync Tool:** Utilize the "Hard Resync" right-click script (`--resync --resilient`) to resolve persistent Blue Icon / Split-Brain states. This clears `.rclone_pending_review` and rebuilds the Bisync database, forcing the laptop to align with the GDrive truth.
 
 ## 10. Secrets & Biometrics (Bitwarden Native)
 The system uses a strictly non-GUI password architecture to minimize memory overhead.
