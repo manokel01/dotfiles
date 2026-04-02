@@ -27,13 +27,14 @@
     },
 
     "custom/rclone": {
-        "format": "{}",
-        "return-type": "json",
-        "exec": "/home/manokel/.local/bin/rclone_status.sh",
-        "interval": 20,
-        "on-click": "kitty --class sync_floats -e /home/manokel/.local/bin/rclone_sync.sh",
-        "signal": 10,
-        "tooltip": true
+            "format": "{}",
+            "return-type": "json",
+            "exec": "/home/manokel/.local/bin/rclone_status.sh",
+            "interval": 20,
+            "on-click": "kitty --class sync_floats -e /home/manokel/.local/bin/rclone_sync.sh",
+            "on-click-right": "kitty --class sync_floats -e /home/manokel/.local/bin/rclone_resync.sh",
+            "signal": 10,
+            "tooltip": true
     },
 
     "custom/power_profile": {

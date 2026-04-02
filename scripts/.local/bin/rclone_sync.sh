@@ -17,6 +17,9 @@ TARGETS=(
 )
 
 # --- PHASE 1: CLOUD ---
+echo "VOID: Performing Cloud Pre-Flight Checks (Self-Healing)..."
+/usr/bin/rclone dedupe "$REMOTE" --dedupe-mode rename --fast-list > /dev/null 2>&1
+
 echo "VOID: Performing Cloud (Two-Way) dry-run..."
 /usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
     --dry-run --resilient --fast-list --drive-acknowledge-abuse \
@@ -66,30 +69,27 @@ for t in "${TARGETS[@]}"; do
     mountpoint -q "$path" && AVAILABLE+=("$t")
 done
 
-if [ ${#AVAILABLE[@]} -eq 0 ]; then
-    echo -e "\e[33mNo target drives connected. Exiting.\e[0m"
-    pkill -RTMIN+10 waybar
-    read -p "Press any key to close this window..." -n 1 -s
-    exit 0
-fi
-
-echo "Connected Targets:"
-for i in "${!AVAILABLE[@]}"; do
-    IFS='|' read -r label path type <<< "${AVAILABLE[$i]}"
-    echo "$((i+1))) $label ($type) -> $path"
-done
-echo "a) All of them | s) Skip"
-
-read -p "Select Target(s) (e.g. '1 2'): " -a choices
 TARGET_QUEUE=()
-if [[ "${choices[0]}" == "a" ]]; then
-    TARGET_QUEUE=("${AVAILABLE[@]}")
-elif [[ "${choices[0]}" == "s" || -z "${choices[0]}" ]]; then
-    pkill -RTMIN+10 waybar && exit 0
+if [ ${#AVAILABLE[@]} -eq 0 ]; then
+    echo -e "\e[33mNo target drives connected. Skipping mirrors...\e[0m"
 else
-    for choice in "${choices[@]}"; do
-        [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -le "${#AVAILABLE[@]}" ] && TARGET_QUEUE+=("${AVAILABLE[choice-1]}")
+    echo "Connected Targets:"
+    for i in "${!AVAILABLE[@]}"; do
+        IFS='|' read -r label path type <<< "${AVAILABLE[$i]}"
+        echo "$((i+1))) $label ($type) -> $path"
     done
+    echo "a) All of them | s) Skip"
+
+    read -p "Select Target(s) (e.g. '1 2'): " -a choices
+    if [[ "${choices[0]}" == "a" ]]; then
+        TARGET_QUEUE=("${AVAILABLE[@]}")
+    elif [[ "${choices[0]}" == "s" || -z "${choices[0]}" ]]; then
+        echo "Skipping mirrors..."
+    else
+        for choice in "${choices[@]}"; do
+            [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -le "${#AVAILABLE[@]}" ] && TARGET_QUEUE+=("${AVAILABLE[choice-1]}")
+        done
+    fi
 fi
 
 # --- PHASE 3: EXECUTE MIRRORS ---
