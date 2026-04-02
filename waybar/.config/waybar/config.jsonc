@@ -158,7 +158,7 @@
 	"custom/git_sync": {
                "format": "{}",
                "return-type": "json",
-               "interval": 20,
+               "interval": 86400,
                "exec": "/home/manokel/.local/bin/git_sync_status.sh",
                "signal": 2,
                "on-click": "kitty --class floating_terminal -e /home/manokel/.local/bin/void"

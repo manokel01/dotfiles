@@ -2,7 +2,6 @@
 DOTFILES_DIR="$HOME/dotfiles"
 
 # List only the specific UI directories/files you want to "ingest"
-# Format: "Source:Destination_Relative_To_Vault"
 UI_TARGETS=(
     ".config/hypr/hyprland.conf:hypr/.config/hypr/hyprland.conf"
     ".config/waybar/config.jsonc:waybar/.config/waybar/config.jsonc"
@@ -15,7 +14,6 @@ for entry in "${UI_TARGETS[@]}"; do
     SRC="${entry%%:*}"
     DEST="${entry#*:}"
     
-    # Only copy if it's a real file (prevents stowed symlink errors)
     if [ -f "$HOME/$SRC" ] && [ ! -L "$HOME/$SRC" ]; then
         cp "$HOME/$SRC" "$DOTFILES_DIR/$DEST"
     fi
@@ -27,6 +25,8 @@ git add -A
 
 if git diff --staged --quiet; then
     echo -e "\n--- VOID: NOTHING TO COMMIT ---"
+    # Signal Waybar anyway (ensures icon turns Green if it was Red)
+    pkill -RTMIN+2 waybar
     echo ""
     read -n 1 -s -r -p "Press any key to close..."
     exit 0
@@ -43,6 +43,7 @@ read -r COMMIT_MSG
 
 if [ -z "$COMMIT_MSG" ]; then
     echo -e "\nAborted: Commit message cannot be empty."
+    pkill -RTMIN+2 waybar
     echo ""
     read -n 1 -s -r -p "Press any key to close..."
     exit 1
@@ -52,14 +53,15 @@ fi
 git commit -m "$COMMIT_MSG"
 
 if git push origin main; then
-    # Signal Waybar to turn the Git icon Green
-    pkill -RTMIN+2 waybar
     echo -e "\n--- VOID: GITHUB SYNC SUCCESSFUL ---"
 else
     echo -e "\n!!! VOID: GITHUB PUSH FAILED !!!"
     notify-send -u critical "Void Sync" "GitHub Push FAILED"
 fi
 
-# 5. The Audit Freeze
+# 5. Final State Sync (The "Native Void" 24h refresh)
+# This wakes up the Waybar icon regardless of success or failure
+pkill -RTMIN+2 waybar
+
 echo -e "\n========================================"
 read -n 1 -s -r -p "Audit complete. Press any key to close this window..."
