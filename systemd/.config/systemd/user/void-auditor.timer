@@ -1,8 +1,10 @@
 [Unit]
-Description=Run Void Auditor Hourly
+Description=Run Void Auditor Daily
 
 [Timer]
-OnCalendar=hourly
+# Triggers once a day at midnight
+OnCalendar=daily
+# Ensures it runs immediately on boot if the laptop was off at midnight
 Persistent=true
 
 [Install]

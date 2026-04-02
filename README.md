@@ -49,8 +49,10 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Memory Management:** **8GB ZRAM** (lzo-rle). `vm.swappiness` is set to `10` to prioritize the 64GB RAM pool.
 * **Battery Longevity:** Hardware-locked to **80% charge threshold** via the ThinkPad EC. 
 * **Power Efficiency:** `powertop --auto-tune` runs at boot. Idle discharge is optimized to **<6W**.
-* **GPU Media Engine (AMD Radeon 780M):** * **Drivers:** Swapped to `mesa-va-drivers-freeworld` via RPM Fusion to unlock H.264/H.265 hardware decoding (disabled in stock Fedora).
-* **Browser Acceleration:** Forced via `~/.config/brave-flags.conf` using Vulkan and VA-API. achieved **0 RPM fan curves** and **~45°C thermals** during 1080p live streams.
+* **GPU Media Engine (AMD Radeon 780M):** Swapped drivers to `mesa-va-drivers-freeworld` via RPM Fusion to unlock H.264/H.265 hardware decoding.
+* **Browser Acceleration:** Forced via `~/.config/brave-flags.conf` using Vulkan and VA-API. Achieved **0 RPM fan curves** and **~45°C thermals** during 1080p live streams.
+* **Disk I/O & SSD Optimizations (The Hard Filter):** Set `Storage=persistent` but applied `MaxLevelStore=warning` via a drop-in file (`/etc/systemd/journald.conf.d/10-hard-filter.conf`). This drops 95% of routine OS logging (Info/Debug), allowing the NVMe drive to remain in its deepest sleep states to preserve battery. Only system Warnings, Errors, and Panics are written to disk for post-mortem crash analysis, capped at `SystemMaxUse=100M`.
+* **Background Service Scheduling:** Converted cyclical systemd timers (`nl_auto`, `void-auditor`, `rclone-sync`) to fixed-point daily triggers. This eliminates redundant background CPU wake-ups, strictly prioritizing AMD Ryzen C10 deep-sleep efficiency.
 
 ## 4. Disaster Recovery (Snapper)
 System backups are managed via **Snapper** leveraging Fedora's native Btrfs subvolume layout.
@@ -67,6 +69,7 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 * **Hyprland Aesthetics:** Pure black background (`0x000000`), `0` rounding, zero shadows/blur.
 * **Cursor:** Nordzy (White), Size 24.
 * **Vibrancy Fix:** `hyprshade` applied to boost saturation on the Matte IPS panel.
+* **Window Rule Architecture:** Strict block-syntax rules enforce the Dwindle layout. LibreOffice is explicitly stripped of `maximize` and `fullscreen` Wayland requests and forced to tile via `float = off`, abandoning splash-screen vanity rules in favor of structural workspace integrity.
 
 ## 6. Keybindings (Native Hardware Swap)
 **Modifier Key:** `SUPER` (Windows Key)
@@ -109,7 +112,7 @@ Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to
 
 ### The Sync Process (`void` script)
 1. **Live Audit:** A background script (`git_sync_status.sh`) runs a `diff` between physical UI files (`hypr`, `waybar`, `walker`), core scripts (`note.sh`), and the vault. If they differ, the Waybar Git icon alerts the user.
-2. **Vault Ingestion:** The `void` script executes `cp` to pull physical UI and script changes into `~/dotfiles/`. testing and manual auditing before committing to the vault.
+2. **Vault Ingestion:** The `void` script executes `cp` to pull physical UI and script changes into `~/dotfiles/`, allowing for live testing and manual auditing before committing to the vault.
 
 ## The Sync Architecture (`void` & `git_sync_status.sh`)
 1. **Array-Driven Audit:** Both scripts share a unified `UI_TARGETS` array. The background auditor executes a `diff` on these specific paths to detect live system "drift."
@@ -120,12 +123,12 @@ Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to
 ## 9. Data Integrity & "Split-Brain" Cloud Sync
 The local data directory (`~/gdrive-manokel`) serves as the Ground Truth, syncing bidirectionally with Google Drive and mirroring to a physical T7 drive. 
 
-* **The Silent Auditor:** A systemd user-timer triggers `rclone_auditor.sh` hourly. 
+* **The Silent Auditor:** A systemd user-timer triggers `rclone_auditor.sh` daily (shifted from hourly to maximize battery). 
     * **Safe Auto-Commit:** If only additions ("Queue copy") are detected, it syncs invisibly.
     * **Guarded Interrupt:** If "Queue delete" or "Queue update" is detected, it aborts and drops `~/.rclone_pending_review`.
 * **Strict Exclusions:** Python virtual environments (`.venv`), cache directories (`__pycache__`), and logs are hard-filtered from all sync and audit operations to prevent massive file-count API throttling on Google Drive.
 * **UI Feedback:** Waybar module (`custom/rclone`) uses `rclone_status.sh` to change colors based on state: Green (Idle), Red (Active), Blue (Pending Review), Yellow (Error).
-* **Manual Approval:** Clicking the Blue icon launches `rclone_sync.sh` in a floating Kitty window for line-item review and `y/n` confirmation.
+* **Manual Approval (The Gatekeeper):** Clicking the Blue icon launches `rclone_sync.sh` in a floating Kitty window. It utilizes a `pgrep` memory check to stall execution until background database locks are cleared, then prompts for line-item review and `y/n` confirmation.
 * **Vault Integration:** All sync scripts are managed via GNU Stow under the `scripts` package.
 
 ## 10. Secrets & Biometrics (Bitwarden Native)
