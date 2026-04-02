@@ -53,6 +53,9 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Browser Acceleration:** Forced via `~/.config/brave-flags.conf` using Vulkan and VA-API. Achieved **0 RPM fan curves** and **~45°C thermals** during 1080p live streams.
 * **Disk I/O & SSD Optimizations (The Hard Filter):** Set `Storage=persistent` but applied `MaxLevelStore=warning` via a drop-in file (`/etc/systemd/journald.conf.d/10-hard-filter.conf`). This drops 95% of routine OS logging (Info/Debug), allowing the NVMe drive to remain in its deepest sleep states to preserve battery. Only system Warnings, Errors, and Panics are written to disk for post-mortem crash analysis, capped at `SystemMaxUse=100M`.
 * **Background Service Scheduling:** Converted cyclical systemd timers (`nl_auto`, `void-auditor`, `rclone-sync`) to fixed-point daily triggers. This eliminates redundant background CPU wake-ups, strictly prioritizing AMD Ryzen C10 deep-sleep efficiency.
+* **Adaptive Idle (hypridle):** Implemented dual-path power sensing via `/sys/class/power_supply/AC/online`. 
+    - **Battery Path:** Aggressive 150s Dim / 180s Lock / 210s DPMS / 900s Suspend.
+    - **AC Path:** Relaxed 540s Dim / 600s Lock / 660s DPMS for home/desk workflow.
 
 ## 4. Disaster Recovery (Snapper)
 System backups are managed via **Snapper** leveraging Fedora's native Btrfs subvolume layout.
@@ -108,7 +111,7 @@ Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to
 
 ## The Hybrid Logic
 - **Stow-Managed (Stable):** Core applications and internal logic including `micro`, `kitty`, and all scripts within `~/.local/bin/` (specifically `network-controller.sh`, `note.sh`, and `pass-picker.sh`). These reside permanently in the vault and are symlinked to the system. Changes are detected automatically via `git status`.
-- **Decoupled (Experimental):** UI-critical configurations for `hypr`, `waybar`, and `walker`. To facilitate zero-latency hot-reloading and live testing, these remain **physical files** in `~/.config/`. The `void` script utilizes an explicit **Ingestion Array** to pull these into the vault during sync while safely ignoring stowed symlinks to prevent circular reference errors.
+- **Decoupled (Experimental):** UI-critical configurations for `hypr` (including `hyprland.conf` and `hypridle.conf`), `waybar`, and `walker`. To facilitate zero-latency hot-reloading and live testing, these remain **physical files** in `~/.config/`. The `void` script utilizes an explicit **Ingestion Array** (`UI_TARGETS`) to map and pull these into the vault during sync while safely ignoring stowed symlinks to prevent circular reference errors.
 
 ### The Sync Process (`void` script)
 1. **Live Audit:** A background script (`git_sync_status.sh`) runs a `diff` between physical UI files (`hypr`, `waybar`, `walker`), core scripts (`note.sh`), and the vault. If they differ, the Waybar Git icon alerts the user.

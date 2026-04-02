@@ -4,6 +4,7 @@ DOTFILES_DIR="$HOME/dotfiles"
 # List only the specific UI directories/files you want to "ingest"
 UI_TARGETS=(
     ".config/hypr/hyprland.conf:hypr/.config/hypr/hyprland.conf"
+    ".config/hypr/hypridle.conf:hypr/.config/hypr/hypridle.conf"  # <--- Add this line
     ".config/waybar/config.jsonc:waybar/.config/waybar/config.jsonc"
     ".config/waybar/style.css:waybar/.config/waybar/style.css"
     ".config/walker/config.toml:walker/.config/walker/config.toml"
