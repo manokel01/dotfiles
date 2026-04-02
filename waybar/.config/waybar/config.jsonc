@@ -4,8 +4,18 @@
     "height": 30,
     "spacing": 15,
     "reload_style_on_change": true,
-    "modules-left": ["hyprland/workspaces", "custom/updates", "custom/git_sync","cpu","memory"],
-    "modules-center": ["clock#time", "custom/keybinds", "clock#date"],
+    "modules-left": [
+        "hyprland/workspaces", 
+        "custom/updates", 
+        "custom/git_sync",
+        "cpu",
+        "memory"
+    ],
+    "modules-center": [
+        "clock#time", 
+        "custom/keybinds", 
+        "clock#date"
+    ],
     "modules-right": [
         "custom/language",
         "custom/bitwarden",
