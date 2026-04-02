@@ -16,6 +16,14 @@ TARGETS=(
     "exfat_M3|/run/media/manokel/exfat_M3|exfat"
 )
 
+# --- PHASE 0: THE GATEKEEPER (LOCK CHECK) ---
+echo "VOID: Checking for background auditor locks..."
+while pgrep -x "rclone" > /dev/null; do
+    echo -ne "\e[33mWaiting for background Rclone process to release locks...\e[0m\r"
+    sleep 1
+done
+echo -e "\n\e[32mLocks cleared. Proceeding to sync.\e[0m"
+
 # --- PHASE 1: CLOUD ---
 echo "VOID: Performing Cloud Pre-Flight Checks (Self-Healing)..."
 /usr/bin/rclone dedupe "$REMOTE" --dedupe-mode rename --fast-list > /dev/null 2>&1
