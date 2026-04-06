@@ -105,6 +105,7 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 3. **NuPhy Firmware Master:** Keyboard layout (Super/Alt swap, Alt Gr mapping) is handled at the **hardware firmware level** via NuPhyIO. This ensures identical physical layouts between the ThinkPad and Air75 without software-level "double-swaps."
 4. **Absolute Path Binding:** Hyprland keybinds for local scripts MUST use absolute paths (e.g., `/home/manokel/.local/bin/screenshot.sh`) to bypass the restricted environment `$PATH`.
 5. **Decoupled UI Testing:** `~/.config/waybar/` and `~/.config/hypr/` MUST remain physical directories in the live OS, NOT Stow symlinks. This physical separation is required for `git_sync_status.sh` to execute `diff` checks against the `~/dotfiles` vault.
+6. **Qualcomm QCNFA765 s2idle Hangover:** The `ath11k_pci` Wi-Fi driver fails to exit ASPM L1.2 sleep states properly. Fixed via a root systemd service (`/etc/systemd/system/wifi-resume.service`) that forcefully executes `systemctl restart NetworkManager` upon triggering `suspend.target`.
 
 ## 8. Maintenance Workflow (The "Void" Sync)
 Dotfiles are managed via a centralized repository at `~/dotfiles/` and pushed to GitHub (`origin main`). The system uses a **Hybrid Deployment Strategy** to balance stability with live UI experimentation.
