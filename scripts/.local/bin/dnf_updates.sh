@@ -2,14 +2,15 @@
 export PATH="/usr/bin:/usr/local/bin:/bin:$PATH"
 
 # 1. Standalone Reboot Check (High Priority)
-# dnf needs-restarting -r returns 1 if a reboot IS needed
+# Explicitly grepping for the required string prevents false positives when DNF is locked.
 REBOOT_NEEDED=0
-if ! dnf needs-restarting -r >/dev/null 2>&1; then
+if dnf needs-restarting -r 2>/dev/null | grep -qi "Reboot is required"; then
     REBOOT_NEEDED=1
 fi
 
 # 2. Standalone Update Count
-UPDATES=$(dnf check-update -q | grep -cE '^\S+\s+\S+\s+\S+')
+# Silencing stderr prevents background dnf-makecache locks from generating ghost output.
+UPDATES=$(dnf check-update -q 2>/dev/null | grep -cE '^\S+\s+\S+\s+\S+')
 
 # 3. Output JSON with priority logic
 if [ "$REBOOT_NEEDED" -eq 1 ]; then
