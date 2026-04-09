@@ -1,5 +1,5 @@
 #!/bin/bash
-# Native Void: Absolute Final Hardened Sync v2.0
+# Native Void: Absolute Final Hardened Sync v2.1
 
 REMOTE="gdrive_manokel:"
 LOCAL="$HOME/gdrive-manokel"
@@ -9,6 +9,7 @@ LOG_FILE="$LOG_DIR/sync_$(date +%Y%m%d_%H%M%S).log"
 DRY_LOG="/tmp/rclone_cloud_dry.log"
 FLAG_PENDING="$HOME/.rclone_pending_review"
 FLAG_ERROR="$HOME/.rclone_error"
+ARCHIVE_REMOTE="gdrive_manokel:_archive/$(date +%Y-%m-%d)"
 
 TARGETS=(
     "t7_ext4|/run/media/manokel/t7_ext4|ext4"
@@ -29,9 +30,13 @@ echo "VOID: Performing Cloud Pre-Flight Checks (Self-Healing)..."
 /usr/bin/rclone dedupe "$REMOTE" --dedupe-mode rename --fast-list > /dev/null 2>&1
 
 echo "VOID: Performing Cloud (Two-Way) dry-run..."
-/usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
+# Path 1 is now $LOCAL to enforce the Native Void Master hierarchy
+/usr/bin/rclone bisync "$LOCAL" "$REMOTE" \
     --dry-run --resilient --fast-list --drive-acknowledge-abuse \
-    --exclude ".logs/**" --exclude "**/.venv/**" --exclude "**/.git/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
+    --conflict-resolve newer --drive-export-formats link.html \
+    --ignore-case-sync \
+    --backup-dir2 "$ARCHIVE_REMOTE" \
+    --exclude "_archive/**" --exclude ".logs/**" --exclude "**/.venv/**" --exclude "**/.git/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
     --verbose > "$DRY_LOG" 2>&1
 
 echo "------------------------------------------------"
@@ -51,9 +56,12 @@ if [ "$CLOUD_CHANGES" -gt 0 ]; then
     read -t 60 -p "VOID: Execute Cloud Sync? (y/N) [60s timeout]: " cloud_confirm
     if [[ "$cloud_confirm" =~ ^[Yy]$ ]]; then
         echo "VOID: Syncing Cloud..."
-        if /usr/bin/rclone bisync "$REMOTE" "$LOCAL" \
+        if /usr/bin/rclone bisync "$LOCAL" "$REMOTE" \
             --resilient --fast-list \
-            --exclude ".logs/**" --exclude "**/.venv/**" --exclude "**/.git/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
+            --conflict-resolve newer --drive-export-formats link.html \
+            --ignore-case-sync \
+            --backup-dir2 "$ARCHIVE_REMOTE" \
+            --exclude "_archive/**" --exclude ".logs/**" --exclude "**/.venv/**" --exclude "**/.git/**" --exclude "*/__pycache__/**" --exclude "*.pyc" \
             --verbose --log-file="$LOG_FILE"; then
             rm -f "$FLAG_PENDING" "$FLAG_ERROR"
         else
@@ -106,8 +114,8 @@ for t in "${TARGET_QUEUE[@]}"; do
     DEST_PATH="$path/gdrive-manokel"
     mkdir -p "$DEST_PATH"
     
-    # Base flags - Removed --local-encoding, added --skip-links, added **/.git/**
-    FLAGS="--fast-list --progress --skip-links --exclude .logs/** --exclude **/.venv/** --exclude **/.git/** --exclude */__pycache__/** --exclude *.pyc --verbose --log-file=$LOG_FILE"
+    # Base flags
+    FLAGS="--fast-list --progress --skip-links --exclude _archive/** --exclude .logs/** --exclude **/.venv/** --exclude **/.git/** --exclude */__pycache__/** --exclude *.pyc --verbose --log-file=$LOG_FILE"
     
     FINAL_DEST="$DEST_PATH"
 
