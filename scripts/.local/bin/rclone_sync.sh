@@ -1,5 +1,5 @@
 #!/bin/bash
-# Native Void: Absolute Final Hardened Sync v2.1
+# Native Void: Absolute Final Hardened Sync v2.2
 
 REMOTE="gdrive_manokel:"
 LOCAL="$HOME/gdrive-manokel"
@@ -114,8 +114,17 @@ for t in "${TARGET_QUEUE[@]}"; do
     DEST_PATH="$path/gdrive-manokel"
     mkdir -p "$DEST_PATH"
     
-    # Base flags
-    FLAGS="--fast-list --progress --skip-links --exclude _archive/** --exclude .logs/** --exclude **/.venv/** --exclude **/.git/** --exclude */__pycache__/** --exclude *.pyc --verbose --log-file=$LOG_FILE"
+    # Base flags via Bash Array to prevent glob expansion
+    FLAGS=(
+        "--fast-list" "--progress" "--skip-links"
+        "--exclude" "_archive/**"
+        "--exclude" ".logs/**"
+        "--exclude" "**/.venv/**"
+        "--exclude" "**/.git/**"
+        "--exclude" "*/__pycache__/**"
+        "--exclude" "*.pyc"
+        "--verbose" "--log-file=$LOG_FILE"
+    )
     
     FINAL_DEST="$DEST_PATH"
 
@@ -125,11 +134,12 @@ for t in "${TARGET_QUEUE[@]}"; do
         
         # Attach the encoding surgically to the destination ONLY
         FINAL_DEST=":local,encoding='$ENCODING':$DEST_PATH"
-        FLAGS="$FLAGS --modify-window 1s"
+        FLAGS+=("--modify-window" "1s")
     fi
 
     echo -e "\n\e[34m🔵 VOID: Mirroring Laptop -> $label...\e[0m"
-    if /usr/bin/rclone sync "$LOCAL" "$FINAL_DEST" $FLAGS; then
+    # Execute array using "${FLAGS[@]}" to preserve exact string quoting
+    if /usr/bin/rclone sync "$LOCAL" "$FINAL_DEST" "${FLAGS[@]}"; then
          echo -e "\e[32mSTATUS: $label Mirror Complete.\e[0m"
     else
          echo -e "\e[31mError: $label Mirror failed. Check logs.\e[0m"
