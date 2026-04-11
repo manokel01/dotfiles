@@ -8,7 +8,7 @@
 
 ## 1. Design Philosophy
 This system is configured to strip away flashy aesthetics in favor of a strictly professional, minimalist workflow. 
-* **Visuals:** High-contrast, pure black backgrounds, zero rounded corners, zero blur, and no UI clutter.
+* **Visuals:** High-contrast dark backgrounds, zero rounded corners, zero blur, and no UI clutter.
 * **Performance:** Unnecessary graphical effects and background polling scripts are aggressively disabled to maximize responsiveness and battery life.
 * **Control:** Configuration is a hybrid architecture utilizing a central Git vault (`~/dotfiles`). It uses **GNU Stow** for stable binaries/apps and **Decoupled Physical Files** for dynamic UI components. This allows for live testing and granular file-diffing without corrupting the version-controlled vault.
 
@@ -30,11 +30,11 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 * **Secret Management:** Bitwarden (via `walker` plugin and `rbw` CLI)
 * **Quick Notes:** `note.sh` (Custom Walker dmenu frontend -> `~/notes.txt`)
 
-### 📂 File Management & Portals (Native Void Stack)
-- **Primary File Manager:** Dolphin (KDE) - Replaced Nautilus for rock-solid GDrive (KIO) network stability and async I/O.
-- **UI Theming:** Native Void #000000 aesthetics enforced via `QT_QPA_PLATFORMTHEME=qt6ct` and `kvantum`.
+### File Management & Portals (Native Void Stack)
+- **Primary File Manager:** Dolphin (KDE) - Chosen for rock-solid GDrive (KIO) network stability and async I/O.
+- **UI Theming:** Native Void dark aesthetics enforced via `QT_QPA_PLATFORMTHEME=qt6ct` and `kvantum`.
 - **Terminal Integration:** Embedded panel (F4) and right-click actions strictly bound to Kitty.
-- **MIME Associations:** Hard-coded in `~/.config/mimeapps.list` (`inode/directory=org.kde.dolphin.desktop`) to prevent system fallback to GNOME tools.
+- **MIME Associations:** Hard-coded in `~/.config/mimeapps.list` (`inode/directory=org.kde.dolphin.desktop`) to prevent system fallback to standard GTK tools.
 - **XDG Portals (The GTK Override):** - `xdg-desktop-portal-kde` handles file chooser dialogs to enforce UI parity in GTK/Chromium apps (like Brave).
   - Globally enforced via `env = GTK_USE_PORTAL,1` in `hyprland.conf`.
   - Portal routing locked in `~/.config/xdg-desktop-portal/portals.conf` (`org.freedesktop.impl.portal.FileChooser=kde`).
@@ -42,9 +42,9 @@ This system is configured to strip away flashy aesthetics in favor of a strictly
 ## 3. Kernel, Filesystem & Hardware Tuning
 * **Filesystem (Btrfs):** `/etc/fstab` is configured with `noatime`, `compress=zstd:1`, and `discard=async` to reduce SSD wear.
   **Partition Layout:**
-	- Partition 1: Linux root (Btrfs) — Snapper-managed (root + home configs), subvolumes: root, home, .snapshots
-	- Partition 2: /mnt/data (exFAT) — shared read/write across dual-boot, excluded from Snapper
-	- Partition 3: Windows (NTFS)
+    - Partition 1: Linux root (Btrfs) — Snapper-managed (root + home configs), subvolumes: root, home, .snapshots
+    - Partition 2: /mnt/data (exFAT) — shared read/write across dual-boot, excluded from Snapper
+    - Partition 3: Windows (NTFS)
 * **Shared Storage:** A dedicated `/mnt/data` partition for read/write compatibility across dual-boot environments.
 * **Memory Management:** **8GB ZRAM** (lzo-rle). `vm.swappiness` is set to `10` to prioritize the 64GB RAM pool.
 * **Battery Longevity:** Hardware-locked to **80% charge threshold** via the ThinkPad EC. 
@@ -69,7 +69,7 @@ System backups are managed via **Snapper** leveraging Fedora's native Btrfs subv
 * **Global Theme:** Flat-Remix-GTK-Blue-Dark
 * **Icon Pack:** Tokyonight-Moon
 * **Theming Sync:** Flatpaks respect the theme via `DarkLight.sh` punching through the sandbox.
-* **Hyprland Aesthetics:** Pure black background (`0x000000`), `0` rounding, zero shadows/blur.
+* **Hyprland Aesthetics:** Minimalist dark background, `0` rounding, zero shadows/blur.
 * **Cursor:** Nordzy (White), Size 24.
 * **Vibrancy Fix:** `hyprshade` applied to boost saturation on the Matte IPS panel.
 * **Window Rule Architecture:** Strict block-syntax rules enforce the Dwindle layout. LibreOffice is explicitly stripped of `maximize` and `fullscreen` Wayland requests and forced to tile via `float = off`, abandoning splash-screen vanity rules in favor of structural workspace integrity.
